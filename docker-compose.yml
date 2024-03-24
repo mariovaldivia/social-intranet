@@ -1,0 +1,44 @@
+version: '3.5'
+
+services:
+  application:
+    container_name: application
+    build:
+      context: ./docker
+      args:
+        UID: $U_ID
+    volumes:
+      - ./:/appdata/www
+    ###> XDEBUG 3 ###
+    # Use your client IP here
+    # Linux: run "ip a | grep docker0" 172.17.0.1
+    # Windows (with WSL2) and Mac: host.docker.internal
+    environment:
+      XDEBUG_CLIENT_HOST: host.docker.internal
+      XDEBUG_CLIENT_PORT: 9003
+      PHP_IDE_CONFIG: serverName=application
+    ports:
+      - '1000:8000'
+    networks:
+      - application-network
+
+  db:
+      image: mysql:8.0.20
+      command: --default-authentication-plugin=mysql_native_password
+      volumes:
+          - db:/var/lib/mysql
+      environment:
+          MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+          MYSQL_DATABASE: ${MYSQL_DATABASE}
+          MYSQL_USER: ${MYSQL_USER}
+          MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      ports:
+          - 33061:3306
+      networks:
+          - application-network
+
+networks:
+  application-network:
+
+volumes:
+  db:
