@@ -3,12 +3,31 @@
 {% block title %}Social Intranet{% endblock %}
 
 {% block body %}
-<div class="card text-bg-light mb-3">
-  
-  <div class="card-body">
-    <h5 class="card-title">Mario Valdivia</h5>
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-  </div>
-</div>
+  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+    {{ form_widget(form) }}
+
+    <button class="btn">Save</button>
+  {{ form_end(form) }}
+
+  {% for post in posts %}
+
+    <div class="card text-bg-light mb-3">    
+      <div class="card-body">
+        <h5 class="card-title">{{ post.user }}</h5>
+        <p class="card-text">
+          {{ post.message }}
+        </p>
+      </div>
+    </div>
+  {% else %}
+    <div class="card text-bg-light mb-3">    
+      <div class="card-body">
+        
+        <p class="card-text">
+          No posts
+        </p>
+      </div>
+    </div>
+  {% endfor %}
 
 {% endblock %}
