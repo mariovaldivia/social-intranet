@@ -10,10 +10,11 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 use App\Controller\Admin\UserCrudController;
-use App\Entity\User;
+use App\Entity\Department;
 use App\Entity\Event;
 use App\Entity\Management;
-use App\Entity\Department;
+use App\Entity\Profile;
+use App\Entity\User;
 
 class DashboardController extends AbstractDashboardController
 {
@@ -49,6 +50,7 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
+        yield MenuItem::linkToCrud('Profiles', 'fas fa-user', Profile::class);
         yield MenuItem::linkToCrud('Events', 'fas fa-calendar', Event::class);
 
         yield MenuItem::linkToCrud('Managements', 'fas fa-list', Management::class);
