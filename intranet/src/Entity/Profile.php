@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\ProfileRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
@@ -48,6 +49,13 @@ class Profile
 
     #[ORM\Column(nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
+    private ?User $user = null;
+
+    public function __toString(){
+        return $this->name." ".$this->lastName;
+    }
 
     public function getId(): ?int
     {
@@ -195,6 +203,28 @@ class Profile
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($user === null && $this->user !== null) {
+            $this->user->setProfile(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($user !== null && $user->getProfile() !== $this) {
+            $user->setProfile($this);
+        }
+
+        $this->user = $user;
 
         return $this;
     }

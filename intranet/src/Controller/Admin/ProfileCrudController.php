@@ -19,7 +19,6 @@ class ProfileCrudController extends AbstractCrudController
     {
         return Profile::class;
     }
-
     
     public function configureFields(string $pageName): iterable
     {
@@ -37,8 +36,7 @@ class ProfileCrudController extends AbstractCrudController
                 ->setFormType(VichImageType::class) // Use VichImageType for handling uploads
                 // ->setBasePath('/uploads/users') // Define the base path for displaying images
                 // ->onlyOnDetail()
-                // ->onlyOnForms(),
-            // TextEditorField::new('description'),
+                //  ->onlyOnForms(),
         ];
     }
     

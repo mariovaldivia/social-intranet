@@ -3,6 +3,7 @@ vich_uploader:
 
     mappings:
         users:
-           uri_prefix: /images/users
-           upload_destination: '%kernel.project_dir%/public/images/users'
+           uri_prefix: /upload/users
+           upload_destination: '%kernel.project_dir%/public/upload/users'
            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+           inject_on_load: true
