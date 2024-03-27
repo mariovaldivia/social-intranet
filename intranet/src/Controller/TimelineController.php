@@ -9,6 +9,7 @@ use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Post;
 use App\Repository\PostRepository;
+use App\Repository\UserRepository;
 use App\Form\PostType;
 
 class TimelineController extends AbstractController
@@ -16,8 +17,6 @@ class TimelineController extends AbstractController
     #[Route('/', name: 'app_timeline')]
     public function index(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
     {
-        // $posts = $entityManager->getRepository(Post::class)->findAll();
-
         $post = new Post();
         $form = $this->createForm(PostType::class, $post, [
             'action' => $this->generateUrl('app_post_new'),
@@ -47,6 +46,14 @@ class TimelineController extends AbstractController
         return $this->render('event/new.html.twig', [
             'event' => $post,
             'form' => $form,
+        ]);
+    }
+
+    #[Route('/wall/{username}', name: 'app_wall')]
+    public function wall(EntityManagerInterface $entityManager, string $username, UserRepository $userRepository): Response
+    {
+        return $this->render('timeline/wall.html.twig', [
+            'user' => $userRepository->findOneByUsername($username)
         ]);
     }
 }
