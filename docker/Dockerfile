@@ -16,7 +16,7 @@ RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
 RUN apt update \
     && apt install -y git acl openssl openssh-client wget zip vim libssh-dev \
     && apt install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
-    && docker-php-ext-install intl pdo pdo_mysql zip \
+    && docker-php-ext-install intl pdo pdo_mysql zip gd\
     && pecl install xdebug apcu\
     && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
 
