@@ -1,0 +1,63 @@
+{% set user = post.user %}
+{% set profile = user.profile %}
+<div class="card text-bg-light mb-3">
+    <div class="card-body">
+        <div class="card-title">
+            <div class="d-flex flex">
+                <div>
+                    {% if profile and profile.imageFile %}            
+                        <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
+                                title="{{ profile }}"
+                                class="rounded-circle"
+                                loading="lazy"
+                                onerror="this.src='{{ 'images/user-default.jpg' | imagine_filter('user_post') }}'" />
+                    {% else %}
+                        <img src="{{ asset('images/user-default.jpg')| imagine_filter('user_post') }}" 
+                            class="rounded-circle"
+                             />
+                    {% endif %}
+                </div>
+            
+                <div class="ms-3">
+                    {% if user.username %}
+                        <h4 class="post_user">
+                            <a href="{{ path('app_wall', {'username': user.username}) }}">
+                                {{ user }}
+                            </a>
+                        </h4>
+                    {% else %}
+                        {{ user }}
+                    {% endif %}
+
+                    {% if profile %}              
+                        <span>
+                            {{ profile.position }} - {{ profile.department }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <p class="card-text">
+            {{ post.message }}
+        </p>
+
+        {% include "timeline/_likes.html.twig" with {'likes': post.likes} %}
+
+        <div class="row mb-0">
+            <div class="col align-middle text-center mx-auto d-grid">
+                <a href="{{ path('like_post', {'id': post.id}) }}" class="btn btn-outline-secondary">
+                    <i class="bi bi-hand-thumbs-up me-2"></i>
+                    Like
+                </a>
+            </div>
+
+            <div class="col align-middle text-center mx-auto d-grid">
+                <button class="btn btn-outline-secondary" type="button">
+                    <i class="bi bi-chat me-2"></i>
+                    Comment
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

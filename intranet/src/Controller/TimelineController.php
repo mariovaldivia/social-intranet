@@ -7,10 +7,12 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Like;
 use App\Entity\Post;
+use App\Form\PostType;
+use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\UserRepository;
-use App\Form\PostType;
 
 class TimelineController extends AbstractController
 {
@@ -24,7 +26,7 @@ class TimelineController extends AbstractController
         ]);
         return $this->render('timeline/index.html.twig', [
             'posts' => $postRepository->findAll(),
-            'form' => $form
+            'form' => $form,
         ]);
     }
 
@@ -46,14 +48,36 @@ class TimelineController extends AbstractController
         return $this->render('event/new.html.twig', [
             'event' => $post,
             'form' => $form,
+            
         ]);
     }
 
     #[Route('/wall/{username}', name: 'app_wall')]
-    public function wall(EntityManagerInterface $entityManager, string $username, UserRepository $userRepository): Response
+    public function wall(EntityManagerInterface $entityManager, string $username, UserRepository $userRepository, PostRepository $postRepository): Response
     {
+        $user = $userRepository->findOneByUsername($username);
         return $this->render('timeline/wall.html.twig', [
-            'user' => $userRepository->findOneByUsername($username)
+            'user' => $user,
+            'posts' => $postRepository->findByUser($user)
         ]);
+    }
+
+    #[Route('/post/{id}/like', name: 'like_post')]
+    public function likePost(EntityManagerInterface $entityManager, Post $post, LikeRepository $likeRepository): Response
+    {
+        $user = $this->getUser();
+        $previousLike = $likeRepository->findOneBy([
+            'post' => $post,
+            'user' => $user
+        ]);
+        if($previousLike){
+            return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+        }
+        $like = new Like();
+        $like->setUser($user);
+        $like->setPost($post);
+        $entityManager->persist($like);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
     }
 }

@@ -4,15 +4,63 @@
 
 {% block body %}
     {% if user.profile %}
+        <div class="card mt-3">
+            <div class="d-flex flex">
+                <div class=" p-3">
+                    {% if user.profile.imageFile %}                        
+                        <img class="rounded-circle" src="{{ vich_uploader_asset(user.profile , 'imageFile')| imagine_filter('user') }}" 
+                            title="{{ user.profile }}" 
+                                />
+                    {% else %}
+                        <img class="rounded-circle" src="{{ asset('images/user-default.jpg')| imagine_filter('user') }}" 
+                                />
+                    {% endif %}
+                </div>
 
-        {% if user.profile.imageFile %}
-              <img src="{{ vich_uploader_asset(user.profile , 'imageFile')| imagine_filter('user') }}" 
-					title="{{ user.profile }}" 
-					/>
-        {% endif %}
-        
-        {{ user.profile }}
+                <div class=" p-3">
+                    <h2>{{ user.profile }}</h2>
+                    <h4>{{ user.profile.position }} - {{ user.profile.department }}</h4>
+                </div>
+             </div> 
+        </div>
     {% endif %}
 
-    
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <div class="card mt-3 p-3">
+                <p class="m-2">
+                   <i class="bi bi-envelope me-2"></i> 
+                   {{ user.email }}    
+                </p>
+                
+                {% if user.profile %}
+                
+                    <p class="m-2">
+                        <i class="bi bi-telephone me-2"></i>  {{ user.profile.phone }}
+                    </p>
+
+                    <p class="m-2">
+                        <i class="bi bi-gift me-2"></i> {{ user.profile.birthDate | date('d M') }}
+                    </p>
+                {% endif %}
+            </div>
+        </div>
+
+        <div class="col-md-8 col-xs-12 mt-3">
+            {% for post in posts %}
+
+                {% include "timeline/_post.html.twig" with {'post': post} %}
+            {% else %}
+                <div class="card text-bg-light mb-3">    
+                    <div class="card-body">
+                        
+                        <p class="card-text">
+                        No posts
+                        </p>
+                    </div>
+                </div>
+            {% endfor %}
+        
+        </div>
+    </div>
 {% endblock %}

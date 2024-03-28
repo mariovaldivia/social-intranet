@@ -1,0 +1,70 @@
+{% set gusta = false %}
+{% set num_likes = likes | length %}
+
+{# {% for like in likes  %} 
+    {% if app.user == like.user %}
+        {% set gusta = true %}
+    {% endif %}
+{% endfor %} #}
+<p class="me-gusta">
+
+    {# {% if principal is defined %}
+        <a href="#" class="comentar">Comentar</a>
+    {% endif %} #}
+
+        <span>
+        {% if not gusta %}    
+            {# si aun no ha dado click a "me gusta" #}   
+            {# <a class="like" href="{{ path('me_gusta', {'id':id, 'recurso':recurso}) }}" data-id="{{ id }}" title="Indica que te gusta esta publicación"> #}
+                {#<i class="fa fa-thumbs-up fa-2x"></i>#}
+                {# Me gusta #}
+
+            {# </a> #}
+
+            {# si hay personas que le gusta la publicacion #}
+            {% if num_likes > 1  %}
+                <i class="bi bi-hand-thumbs-up me-1"></i>
+                A 
+                {# <a class="ver-likes"  href="{{ path('ver_me_gusta', {'id':id, 'recurso':'timeline'})}}"> #}
+                    {{ num_likes }} personas 
+                {# </a>  #}
+                les gusta esto.
+            {% endif %}
+
+            {# si hay un unico usuario que le gusta la publicacion  #}
+            {% if num_likes == 1  %}
+                <i class="bi bi-hand-thumbs-up me-1"></i>
+                A <a href="{{ path('app_wall', {'username': likes[0].user.username }) }}">{{ likes[0].user }} </a> le gusta esto.
+            {% endif %}
+
+        {% else %}
+            
+        <i class="fa fa-thumbs-o-up"></i>
+            {# si hay personas que le gusta la publicacion #}
+            {% if num_likes-1 > 1  %}
+                A ti y a 
+                {# <a class="ver-likes" href="{{ path('ver_me_gusta', {'id':id, 'recurso':'timeline'})}}"> #}
+                    {{ num_likes-1 }} personas
+                {# </a>  #}
+                les gusta esto.
+            {% endif %}
+
+            {# si hay un unico usuario que le gusta la publicacion  #}
+            {% if num_likes-1 == 1  %}
+            A ti y a
+                {% if likes[0].user == app.user %}
+                    {% set usuario = likes[1].user %}
+                {% else %}    
+                    {% set usuario = likes[0].user %}
+                {% endif %}
+                <a {#href="{{ path('usuario_muro',{'slug': usuario.username }) }}"#}>{{ usuario }} </a>le gusta esto.
+            {% endif %}
+
+            {# si solo le gusta la publicacion al usuario actual #}
+            {% if num_likes-1 == 0  %}
+                Te gusta esto.
+            {% endif %}
+        {% endif %}
+
+        </span>
+</p>
