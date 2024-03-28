@@ -1,3 +1,7 @@
 body {
     background-color: whitesmoke
 }
+
+h4.post_user a{
+    list-style: none;
+}

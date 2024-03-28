@@ -53,6 +53,22 @@ class Profile
     #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
     private ?User $user = null;
 
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->name,
+        ]);
+    }
+
+    public function unserialize($serialized) {
+
+        list (
+        $this->id,
+        $this->name,
+        ) = unserialize($serialized);
+    }
+
     public function __toString(){
         return $this->name." ".$this->lastName;
     }

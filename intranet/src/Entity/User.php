@@ -8,7 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\HttpFoundation\File\File;
+// use Symfony\Component\HttpFoundation\File\File;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
@@ -47,9 +47,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?Profile $profile = null;
 
     public function __toString(){
-        return $this->email;
+        return $this->profile ? $this->profile : $this->email;
     }
 
+    public function serialize()
+    {
+        return serialize([
+            $this->id,
+            $this->email,
+            $this->profile
+        ]);
+    }
 
     public function __construct()
     {
