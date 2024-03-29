@@ -46,17 +46,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(inversedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Profile $profile = null;
 
-    public function __toString(){
+    public function __toString()
+    {
         return $this->profile ? $this->profile : $this->email;
     }
 
-    public function serialize()
+
+    public function __serialize(): array
     {
-        return serialize([
-            $this->id,
-            $this->email,
-            $this->profile
-        ]);
+        return [
+            'id' => $this->id,
+            'email' => $this->email,
+            'password' => $this->password,
+            // 'profile' => $this->profile
+        ];
+    }
+
+    public function __unserialize(array $serialized)
+    {
+        $this->id = $serialized['id'];
+        $this->email = $serialized['email'];
+        $this->password = $serialized['password'];
+        // $this->profile = $serialized['profile'];
+        
     }
 
     public function __construct()
