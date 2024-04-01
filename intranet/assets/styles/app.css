@@ -2,6 +2,7 @@ body {
     background-color: whitesmoke
 }
 
-h4.post_user a{
+.post > a{
     list-style: none;
+    color: black;
 }

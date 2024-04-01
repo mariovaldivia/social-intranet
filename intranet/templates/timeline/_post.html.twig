@@ -1,21 +1,22 @@
 {% set user = post.user %}
 {% set profile = user.profile %}
 <div class="card text-bg-light mb-3">
-    <div class="card-body">
+    <div class="card-body post">
         <div class="card-title">
             <div class="d-flex flex">
                 <div>
-                    {% if profile and profile.imageFile %}            
+                    {% if profile %}            
                         <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
                                 title="{{ profile }}"
                                 class="rounded-circle"
                                 loading="lazy"
-                                onerror="this.src='{{ 'images/user-default.jpg' | imagine_filter('user_post') }}'" />
+                                {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
+                                 />
                     {% else %}
-                        <img src="{{ asset('images/user-default.jpg')| imagine_filter('user_post') }}" 
+                    {% endif %}
+                        <img src="{{ asset('images/user.png')|imagine_filter('user_post') }}" 
                             class="rounded-circle"
                              />
-                    {% endif %}
                 </div>
             
                 <div class="ms-3">
