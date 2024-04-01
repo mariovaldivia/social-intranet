@@ -1,7 +1,7 @@
-FROM php:8.3.3-fpm
+FROM php:8.2.17-fpm
 
 ARG UID
-
+ARG HOME_DIR=/appdata/www
 # Create user and some useful stuff
 RUN adduser --disabled-password --gecos "" appuser
 # RUN adduser -u ${UID} --disabled-password --gecos "" appuser
@@ -14,11 +14,50 @@ RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
 
 # Install packages and PHP extensions
 RUN apt update \
-    && apt install -y git acl openssl openssh-client wget zip vim libssh-dev \
-    && apt install -y libpng-dev zlib1g-dev libzip-dev libxml2-dev libicu-dev \
-    && docker-php-ext-install intl pdo pdo_mysql zip gd\
-    && pecl install xdebug apcu\
-    && docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
+    && apt install -y git acl openssl openssh-client wget zip vim libssh-dev coreutils
+
+RUN set -eux; \
+    apt install -y --no-install-recommends \
+    zlib1g-dev libjpeg62-turbo-dev\
+    libzip-dev libxml2-dev libicu-dev\
+    libfreetype6 libonig-dev libxslt1-dev; 
+    # rm -rf /var/lib/apt/lists/*
+
+RUN set -eux; \
+    apt-get update; \
+    apt-get upgrade -y; \
+    apt-get install -y --no-install-recommends \
+            libmemcached-dev \
+            libz-dev \
+            libpq-dev \
+            libjpeg-dev \
+            libpng-dev \
+            libfreetype6-dev \
+            libssl-dev \
+            libwebp-dev \
+            libxpm-dev \
+            libmcrypt-dev \
+            libonig-dev; \
+    rm -rf /var/lib/apt/lists/*
+RUN pecl install xdebug apcu
+
+# RUN docker-php-ext-configure gd --enable-gd --with-jpeg --with-freetype
+RUN set -eux; \
+    docker-php-ext-configure gd \
+            --prefix=/usr \
+            --with-jpeg \
+            --with-webp \
+            --with-xpm \
+            --with-freetype; \
+    docker-php-ext-install gd; \
+    php -r 'var_dump(gd_info());'
+# RUN docker-php-ext-install -j$(nproc) gd
+# RUN pecl install gmagick
+RUN docker-php-ext-install intl pdo pdo_mysql zip xsl exif mbstring 
+RUN docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
+# RUN apt-get install -y libmagickwand-dev imagemagick \
+#     && pecl install imagick \
+#     && docker-php-ext-enable imagick
 
 # Install and update composer
 RUN curl https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
@@ -43,3 +82,7 @@ RUN mkdir -p /appdata/www
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
 WORKDIR /appdata/www
+
+RUN chown -R appuser:appuser ${HOME_DIR}
+    # && usermod --uid appuser --home ${HOME_DIR} --shell /bin/bash www-data \
+    # && groupmod --gid appuser www-data

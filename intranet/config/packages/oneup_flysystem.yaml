@@ -1,0 +1,15 @@
+# Read the documentation: https://github.com/1up-lab/OneupFlysystemBundle
+oneup_flysystem:
+    adapters:
+        default_adapter:
+            local:
+                location: '%kernel.cache_dir%'
+        profile_photos:
+            local:
+                location:  '%kernel.project_dir%/public/'
+    filesystems:
+        default_filesystem:
+            adapter: default_adapter
+            alias: League\Flysystem\Filesystem
+        profile_photos:
+            adapter: profile_photos

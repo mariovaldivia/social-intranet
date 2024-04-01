@@ -47,6 +47,9 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
+    "knplabs/knp-gaufrette-bundle": {
+        "version": "v0.9.0"
+    },
     "liip/imagine-bundle": {
         "version": "2.12",
         "recipe": {
@@ -58,6 +61,18 @@
         "files": [
             "config/packages/liip_imagine.yaml",
             "config/routes/liip_imagine.yaml"
+        ]
+    },
+    "oneup/flysystem-bundle": {
+        "version": "4.12",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "3ae1b83985e89138f5443bbc2d9b8c074b497d49"
+        },
+        "files": [
+            "config/packages/oneup_flysystem.yaml"
         ]
     },
     "phpunit/phpunit": {
