@@ -13,11 +13,10 @@
         {% block javascripts %}
             {% block importmap %}
                 {{ importmap('app') }}
-               
             {% endblock %}
-        {% endblock %}
-        
+        {% endblock %}        
     </head>
+  
     <body>
     <nav class="navbar bg-primary" data-bs-theme="dark">
       <div class="container-fluid">
@@ -39,31 +38,33 @@
               <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Social Intranet</h5>
               <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <div class="offcanvas-body">
-            {% if app.user %}
-              {% set profile = app.user.profile %}
-              <div class="d-flex flex">
-                <div class=" p-3">
-                    {% if profile.imageFile %}                        
-                        <img class="rounded-circle" src="{{ vich_uploader_asset(profile , 'imageFile')| imagine_filter('user') }}" 
-                            title="{{ profile }}" 
-                                />
-                    {% else %}
-                        <img class="rounded-circle" src="{{ asset('images/user-default.jpg')| imagine_filter('user') }}" 
-                                />
-                    {% endif %}
-                </div>
 
-                <div class=" p-3">
-                  <h3>{{ profile }}</h3>
-                  <p>{{ profile.position }} - {{ profile.department }}</p>
-                  <a class="btn btn-outline-primary" href="{{ path('app_logout') }}">
-                      <i class="bi bi-box-arrow-right"></i> Logout
-                  </a> 
-                </div>
-             </div> 
-              
-            {% endif %}
+            <div class="offcanvas-body">
+              {% if app.user %}
+                {% set profile = app.user.profile %}
+                <div class="d-flex flex">
+                  <div class=" p-3">
+                      {% if profile.imageName %}
+                          <img src="{{ vich_uploader_asset(profile , 'imageFile')| imagine_filter('user') }}"
+                            class="rounded-circle"
+                            title="{{ profile }}" 
+                                  />
+                      {% else %}
+                          <img src="{{ asset('images/user-default.jpg')| imagine_filter('user') }}" 
+                            class="rounded-circle"      />
+                      {% endif %}
+                  </div>
+
+                  <div class=" p-3">
+                    <h3>{{ profile }}</h3>
+                    <p>{{ profile.position }} <br> {{ profile.department }}</p>
+                    <a class="btn btn-outline-primary" href="{{ path('app_logout') }}">
+                        <i class="bi bi-box-arrow-right"></i> Logout
+                    </a> 
+                  </div>
+              </div> 
+                
+              {% endif %}
               {# <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
                 <li class="nav-item">
                   <a class="nav-link active" aria-current="page" href="#">Home</a>

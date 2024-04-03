@@ -5,7 +5,7 @@
         <div class="card-title">
             <div class="d-flex flex">
                 <div>
-                    {% if profile %}            
+                    {% if profile and profile.imageName %}            
                         <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
                                 title="{{ profile }}"
                                 class="rounded-circle"
@@ -13,10 +13,10 @@
                                 {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
                                  />
                     {% else %}
-                    {% endif %}
                         <img src="{{ asset('images/user.png')|imagine_filter('user_post') }}" 
                             class="rounded-circle"
                              />
+                    {% endif %}
                 </div>
             
                 <div class="ms-3">

@@ -2,7 +2,12 @@ body {
     background-color: whitesmoke
 }
 
-.post > a{
-    list-style: none;
+.post a{
+
     color: black;
+    text-decoration: none;
+}
+
+.post h4{
+    margin-bottom: 0;
 }
