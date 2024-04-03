@@ -45,4 +45,22 @@ class ProfileRepository extends ServiceEntityRepository
     //            ->getOneOrNullResult()
     //        ;
     //    }
+
+    /**
+     * @return Profile[] Returns an array of Profile objects
+    */
+    public function nextBirthdays($limit): array
+    {
+        $q = $this
+            ->createQueryBuilder('u')
+            ->select('u')
+            // ->where('u.isActive = 1')
+            ->andWhere("DATE_FORMAT(u.birthdate, '%m%d') >= DATE_FORMAT(CURRENT_DATE(), '%m%d')")         
+            ->orderBy("MONTH(u.birthdate)")
+            ->addOrderBy("DAY(u.birthdate)");
+
+        $q->setMaxResults($limit);
+        return $q->getQuery()->getResult();
+    }
+
 }

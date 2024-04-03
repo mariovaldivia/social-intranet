@@ -12,21 +12,24 @@ use App\Entity\Post;
 use App\Form\PostType;
 use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
+use App\Repository\ProfileRepository;
 use App\Repository\UserRepository;
 
 class TimelineController extends AbstractController
 {
     #[Route('/', name: 'app_timeline')]
-    public function index(EntityManagerInterface $entityManager, PostRepository $postRepository): Response
+    public function index(EntityManagerInterface $entityManager, PostRepository $postRepository, ProfileRepository $profileRepository): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post, [
             'action' => $this->generateUrl('app_post_new'),
             'method' => 'POST',
         ]);
+        $birthdays = $profileRepository->nextBirthdays(5);
         return $this->render('timeline/index.html.twig', [
             'posts' => $postRepository->findAll(),
             'form' => $form,
+            'birthdays' => $birthdays
         ]);
     }
 

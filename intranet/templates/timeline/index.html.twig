@@ -4,40 +4,84 @@
 
 {% block body %}
 
-  <div class="mt-3">
-  {% set profile = app.user ? app.user.profile : null %}
+<div class="row">
+  <div class="col-md-8">
+        <div class="mt-3">
+        {% set profile = app.user ? app.user.profile : null %}
 
-  {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-  <div class="d-flex flex">
-    {% if profile %} 
-    <div class="px-2">
-        <img class="rounded" src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
-                title="{{ profile }}" />          
-    </div>    
-    {% endif %} 
-                    
-    <div class="input-group mb-3">
-      {{ form_widget(form.message) }}
-      <button class="btn btn-outline-secondary">
-        <i class="bi bi-send"></i>
-        
-      </button>
-    </div>
-</div>
-  {{ form_end(form) }}
+        {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        <div class="d-flex flex">
+          {% if profile %} 
+            <div class="px-2">
+                <img class="rounded" src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
+                        title="{{ profile }}" />          
+            </div>    
+          {% endif %} 
+                          
+          <div class="input-group mb-3">
+            {{ form_widget(form.message) }}
+            <button class="btn btn-outline-secondary">
+              <i class="bi bi-send"></i>
+              
+            </button>
+          </div>
+      </div>
+        {{ form_end(form) }}
+        </div>
+
+        {% for post in posts %}
+          {% include "timeline/_post.html.twig" with {'post': post} %}
+        {% else %}
+          <div class="card text-bg-light mb-3">    
+            <div class="card-body">
+              
+              <p class="card-text">
+                No posts
+              </p>
+            </div>
+          </div>
+        {% endfor %}
   </div>
 
-  {% for post in posts %}
-    {% include "timeline/_post.html.twig" with {'post': post} %}
-  {% else %}
-    <div class="card text-bg-light mb-3">    
-      <div class="card-body">
-        
-        <p class="card-text">
-          No posts
-        </p>
+  <div class="col-md-4">
+    <div class="card text-bg-light mb-3 mt-3">    
+        <div class="card-body">
+          <div class="card-title">
+            <i class="bi bi-gift me-2"></i> Upcoming birthdays
+          </div>
+          <p class="card-text">
+            {% for profile in birthdays %}
+              <div class="d-flex flex mb-3 ">
+                <div class="me-3 w-25 align-middle">
+                  {% if profile and profile.imageName %}            
+                    <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
+                            title="{{ profile }}"
+                            class="rounded-circle"
+                            loading="lazy"
+                            {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
+                              />
+                  {% else %}
+                      <img src="{{ asset('images/user.png')|imagine_filter('user_post') }}" 
+                          class="rounded-circle"
+                            />
+                  {% endif %}  
+                </div>
+                <div class="align-middle">
+                  <p>     
+                    {{ profile }} <br>
+                    <i class="bi bi-calendar3 me-2"></i>  {{ profile.birthDate | date('d M') }}
+                 </p>
+                </div>
+                
+              </div>
+            {% endfor %}
+          </p>
+        </div>
       </div>
-    </div>
-  {% endfor %}
+  </div>
+
+</div>
+
+
 
 {% endblock %}
