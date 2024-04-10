@@ -7,9 +7,11 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Entity\Comment;
 use App\Entity\Like;
 use App\Entity\Post;
 use App\Form\PostType;
+use App\Form\CommentType;
 use App\Repository\LikeRepository;
 use App\Repository\PostRepository;
 use App\Repository\ProfileRepository;
@@ -48,8 +50,8 @@ class TimelineController extends AbstractController
             return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('event/new.html.twig', [
-            'event' => $post,
+        return $this->render('comment/new.html.twig', [
+            'comment' => $post,
             'form' => $form,
             
         ]);
@@ -82,5 +84,33 @@ class TimelineController extends AbstractController
         $entityManager->persist($like);
         $entityManager->flush();
         return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/post/{id}/comment', name: 'post_comment')]
+    public function commentPost(Request $request, EntityManagerInterface $entityManager, Post $post): Response
+    {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment, [
+            'method' => 'POST',
+            'action' => $this->generateUrl('post_comment', ['id' => $post->getId()])
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setPost($post);
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->render('timeline/_commentItem.html.twig', [
+                'comment' => $comment,
+                // 'form' => $form,
+            ]);
+        }
+
+        return $this->render('timeline/_commentForm.html.twig', [
+            // 'comment' => $comment,
+            'form' => $form,
+        ]);
     }
 }

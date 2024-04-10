@@ -1,0 +1,13 @@
+{% set profile = user.profile %}
+{% if profile and profile.imageName %}            
+    <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter(size) }}" 
+            title="{{ profile }}"
+            class="rounded-circle"
+            loading="lazy"
+            {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
+                />
+{% else %}
+    <img src="{{ asset('images/user.png')|imagine_filter(size) }}" 
+        class="rounded-circle"
+            />
+{% endif %}

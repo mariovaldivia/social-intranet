@@ -22,5 +22,10 @@ liip_imagine:
         user_post:
             quality: 75
             filters:
+                thumbnail: { size: [48, 48], mode: outbound }
+        
+        user_comment:
+            quality: 75
+            filters:
                 thumbnail: { size: [32, 32], mode: outbound }
                 

@@ -1,0 +1,12 @@
+<div class="d-flex flex comment mt-2">
+    <div>
+        {% include "_imageUser.html.twig" with {'user': comment.user, 'size': 'user_comment'} %}
+    </div>
+
+    <div class="mx-2 p-2 bs-border-color rounded-3 flex-fill comment__message">
+        <h5>{{ comment.user }}</h5>
+        <p>
+            {{ comment.message }}
+        </p>
+    </div>
+</div>

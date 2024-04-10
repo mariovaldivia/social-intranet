@@ -12,4 +12,36 @@ import 'bootstrap';
  */
 import './styles/app.css';
 
+import {live} from './js/event.js'
+import axios from 'axios'
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
+
+live('a.add-comment', 'click', function(event){
+    event.preventDefault();
+    console.log(event.target.href)
+    axios.get(event.target.href).then(function(response){
+        let parent = event.target.closest(".post")
+        if(parent){
+            let form_div = parent.querySelector(".comment-form")
+            form_div.innerHTML = response.data
+        }
+        
+    })
+})
+
+live('.comment-form form', 'submit', function(event){
+    event.preventDefault();
+    console.log(event.target.action)
+    const formData = new FormData(event.target);
+    axios.post(event.target.action, formData)
+        .then(function(response){
+            let parent = event.target.closest(".post")
+            if(parent){
+                let comments = parent.querySelector(".comments")
+                let div = document.createElement('div');
+                div.innerHTML = response.data
+                comments.insertBefore(div, comments.firstChild)
+            }
+        })
+
+})

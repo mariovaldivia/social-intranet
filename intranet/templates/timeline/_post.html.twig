@@ -5,18 +5,7 @@
         <div class="card-title">
             <div class="d-flex flex">
                 <div>
-                    {% if profile and profile.imageName %}            
-                        <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
-                                title="{{ profile }}"
-                                class="rounded-circle"
-                                loading="lazy"
-                                {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
-                                 />
-                    {% else %}
-                        <img src="{{ asset('images/user.png')|imagine_filter('user_post') }}" 
-                            class="rounded-circle"
-                             />
-                    {% endif %}
+                    {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
                 </div>
             
                 <div class="ms-3">
@@ -54,11 +43,19 @@
             </div>
 
             <div class="col align-middle text-center mx-auto d-grid">
-                <button class="btn btn-outline-secondary" type="button">
+                <a href="{{ path('post_comment', {'id': post.id}) }}" class="btn btn-outline-secondary add-comment">
                     <i class="bi bi-chat me-2"></i>
                     Comment
-                </button>
+                </a>
             </div>
+        </div>
+
+        <div class="comment-form"></div>
+
+        <div class="comments">
+            {% for comment in post.comments %}
+                {% include "timeline/_commentItem.html.twig" with {'comment': comment} %}
+            {% endfor %}
         </div>
     </div>
 </div>

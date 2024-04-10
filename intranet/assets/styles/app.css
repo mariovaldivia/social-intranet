@@ -11,3 +11,16 @@ body {
 .post h4{
     margin-bottom: 0;
 }
+
+.comment__message {
+    background-color: rgba(var(--bs-secondary-bg-rgb), .5)
+}
+
+.comment__message h5{
+    font-size: 1rem;
+    margin-bottom: .2rem;
+}
+.comment__message p{
+    font-size: .9rem;
+    margin-bottom: .2rem;
+}
