@@ -44,6 +44,7 @@
   </div>
 
   <div class="col-md-4">
+
     <div class="card text-bg-light mb-3 mt-3">    
         <div class="card-body">
           <div class="card-title">
@@ -78,6 +79,30 @@
           </p>
         </div>
       </div>
+
+      <div class="card text-bg-light mb-3 mt-3">    
+        <div class="card-body">
+          <div class="card-title">
+            <i class="bi bi-calendar2 me-2"></i> Upcoming Events
+          </div>
+          <p class="card-text">
+            {% for event in events %}
+              <div class="d-flex flex mb-3 ">
+                <div class="me-3 w-10 align-middle">
+
+                  <i class="bi bi-calendar3 me-2"></i>
+               </div>
+                <div>
+                   {{ event.date|date('d/M')}} <br>
+                  {{ event.description }}
+
+                </div>
+              </div>
+            {% endfor %}
+          </p>
+        </div>
+      </div>
+
   </div>
 
 </div>
