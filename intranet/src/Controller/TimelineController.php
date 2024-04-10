@@ -27,7 +27,7 @@ class TimelineController extends AbstractController
         ]);
         $birthdays = $profileRepository->nextBirthdays(5);
         return $this->render('timeline/index.html.twig', [
-            'posts' => $postRepository->findAll(),
+            'posts' => $postRepository->lastPosts(),
             'form' => $form,
             'birthdays' => $birthdays
         ]);
