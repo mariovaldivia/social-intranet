@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Employees{% endblock %}
+
+{% block body %}
+    <h1>Employees</h1>
+
+    <div class="mb-3">
+        <a href="{{ path('app_profile_new') }}"
+            class="btn btn-primary">
+                Create new
+        </a>
+    </div>
+
+    {% for profile in profiles %}
+        <div class="card text-bg-light mb-3">
+            <div class="d-flex align-content-center flex-wrap">
+                <div class="m-3" >
+                    {% include "_imageUser.html.twig" with {'user': profile.user, 'size': 'user_post'} %}
+                </div>
+
+                <div class="card-body post">
+                    <div class="card-title">
+                        <h4>
+                            {{ profile }}
+                        </h4>
+                    </div>
+
+                    <p class="card-text">
+                        {{ profile.position }} - {{ profile.department}}
+
+                        <div>
+                            <span class="me-3">
+                                <i class="bi bi-envelope me-1"></i> 
+                                {{ profile.user.email }}  
+                            </span>
+                            
+                            <span class="me-3">
+                                <i class="bi bi-telephone me-1"></i> 
+                                {{ profile.phone }}
+                            </span>
+
+                            <span class="me-3">
+                                <i class="bi bi-gift me-1"></i> 
+                                {{ profile.birthDate | date('d M') }}
+                            
+                            </span>
+                        </div>
+                    </p>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <tr>
+            <td colspan="11">no records found</td>
+        </tr>
+    {% endfor %}
+ 
+
+    
+{% endblock %}

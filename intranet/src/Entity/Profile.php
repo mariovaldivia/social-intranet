@@ -9,6 +9,7 @@ use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: ProfileRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 #[Vich\Uploadable]
 class Profile
 {
@@ -52,6 +53,15 @@ class Profile
 
     #[ORM\OneToOne(mappedBy: 'profile', cascade: ['persist', 'remove'])]
     private ?User $user = null;
+
+    #[ORM\Column(length: 100, nullable: true)]
+    private ?string $email = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\ManyToOne]
+    private ?User $createdBy = null;
 
     public function serialize()
     {
@@ -241,6 +251,42 @@ class Profile
         }
 
         $this->user = $user;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(?string $email): static
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $createdAt): static
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
+    public function getCreatedBy(): ?User
+    {
+        return $this->createdBy;
+    }
+
+    public function setCreatedBy(?User $createdBy): static
+    {
+        $this->createdBy = $createdBy;
 
         return $this;
     }
