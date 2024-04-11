@@ -65,7 +65,7 @@ class TimelineController extends AbstractController
         $user = $userRepository->findOneByUsername($username);
         return $this->render('timeline/wall.html.twig', [
             'user' => $user,
-            'posts' => $postRepository->findByUser($user)
+            'posts' => $postRepository->lastPosts($user)
         ]);
     }
 

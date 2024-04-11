@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Post;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -24,16 +25,19 @@ class PostRepository extends ServiceEntityRepository
        /**
         * @return Post[] Returns an array of Post objects
         */
-       public function lastPosts(): array
+       public function lastPosts(User $user = null): array
        {
-           return $this->createQueryBuilder('p')
-            //    ->andWhere('p.exampleField = :val')
-            //    ->setParameter('val', $value)
-               ->orderBy('p.date', 'DESC')
+            $query = $this->createQueryBuilder('p')
+               ->orderBy('p.date', 'DESC');
             //    ->setMaxResults(10)
+            if($user){
+                $query->andWhere('p.user = :user')
+                    ->setParameter('user', $user);
+            }
+            return $query
                ->getQuery()
                ->getResult()
-           ;
+            ;
        }
 
     //    public function findOneBySomeField($value): ?Post

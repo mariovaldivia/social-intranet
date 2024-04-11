@@ -1,10 +1,16 @@
 <div class="d-flex flex comment mt-2">
     <div>
-        {% include "_imageUser.html.twig" with {'user': comment.user, 'size': 'user_comment'} %}
+        <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
+            {% include "_imageUser.html.twig" with {'user': comment.user, 'size': 'user_comment'} %}
+        </a>
     </div>
 
     <div class="mx-2 p-2 bs-border-color rounded-3 flex-fill comment__message">
-        <h5>{{ comment.user }}</h5>
+        <h5>
+            <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
+                {{ comment.user }}
+            </a>
+        </h5>
         <p>
             {{ comment.message }}
         </p>

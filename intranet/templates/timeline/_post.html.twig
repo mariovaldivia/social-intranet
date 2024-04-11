@@ -5,7 +5,9 @@
         <div class="card-title">
             <div class="d-flex flex">
                 <div>
-                    {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
+                    <a href="{{ path('app_wall', {'username': user.username}) }}">
+                        {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
+                    </a>
                 </div>
             
                 <div class="ms-3">
