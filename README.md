@@ -5,7 +5,7 @@ Built with PHP8.2, Symfony7 using Docker containers.
 
 ### Clone repository
 ```sh
-git clone https://github.com/mariovaldivia/sattel-intranet.git
+git clone https://github.com/mariovaldivia/social-intranet.git
 ```
 
 ### Build docker containers
