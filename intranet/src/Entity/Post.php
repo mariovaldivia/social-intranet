@@ -33,6 +33,9 @@ class Post
     #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post')]
     private Collection $likes;
 
+    #[ORM\OneToOne(inversedBy: 'post', cascade: ['persist', 'remove'])]
+    private ?Event $event = null;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
@@ -142,6 +145,18 @@ class Post
                 $like->setPost(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getEvent(): ?Event
+    {
+        return $this->event;
+    }
+
+    public function setEvent(?Event $event): static
+    {
+        $this->event = $event;
 
         return $this;
     }

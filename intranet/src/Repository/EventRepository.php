@@ -22,7 +22,7 @@ class EventRepository extends ServiceEntityRepository
     }
 
         /**
-    * @return Event[] Returns an array of Post objects
+    * @return Event[] Returns an array of Event objects
     */
     public function upcomingEvents(int $limit = 5): array
     {
@@ -35,21 +35,6 @@ class EventRepository extends ServiceEntityRepository
             ->getResult()
         ;
     }
-
-    //    /**
-    //     * @return Event[] Returns an array of Event objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('e')
-    //            ->andWhere('e.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('e.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
 
     //    public function findOneBySomeField($value): ?Event
     //    {
