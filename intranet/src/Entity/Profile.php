@@ -83,6 +83,10 @@ class Profile
         return $this->name." ".$this->lastName;
     }
 
+    public function generateUsername(){
+        return strtolower($this->name).'.'.strtolower($this->lastName);
+    }
+
     public function getId(): ?int
     {
         return $this->id;

@@ -26,9 +26,9 @@ class UserFixtures extends Fixture
             $manage->getRepository(Deparment::class)->findOneByName('TI'));
         $manager->persist($profile1);
 
-
         $user = new User();
         $user->setEmail('mvaldivia@gmail.com');
+        $user->setUsername($profile->generateUsername());
         $plaintextPassword = "intranet123";
 
         $hashedPassword = $this->passwordHasher->hashPassword(
@@ -52,6 +52,7 @@ class UserFixtures extends Fixture
 
         $user2 = new User();
         $user2->setEmail('jperez@gmail.com');
+        $user2->setUsername($profile2->generateUsername());
         $plaintextPassword = "intranet123";
 
         $hashedPassword = $this->passwordHasher->hashPassword(

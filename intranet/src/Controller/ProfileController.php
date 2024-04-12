@@ -2,14 +2,16 @@
 
 namespace App\Controller;
 
-use App\Entity\Profile;
-use App\Form\ProfileType;
-use App\Repository\ProfileRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use App\Entity\Profile;
+use App\Entity\User;
+use App\Form\ProfileType;
+use App\Repository\ProfileRepository;
 
 #[Route('/profile')]
 class ProfileController extends AbstractController
@@ -23,16 +25,27 @@ class ProfileController extends AbstractController
     }
 
     #[Route('/new', name: 'app_profile_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $profile = new Profile();
         $form = $this->createForm(ProfileType::class, $profile);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $profile->setCreatedBy($this->getUser());
             $entityManager->persist($profile);
-            $entityManager->flush();
+            $user = new User();
+            $user->setEmail($profile->getEmail());
+            $user->setUsername($profile->generateUsername());
+            $hashedPassword = $passwordHasher->hashPassword(
+                $user,
+                $profile->getIdentification()
+            );
+            $user->setPassword($hashedPassword);
+            $user->setProfile($profile);
 
+            $entityManager->persist($user);
+            $entityManager->flush();
             return $this->redirectToRoute('app_profile_index', [], Response::HTTP_SEE_OTHER);
         }
 

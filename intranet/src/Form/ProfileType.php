@@ -23,7 +23,7 @@ class ProfileType extends AbstractType
                 'class' => Department::class,
                 // 'choice_label' => 'id',
             ])
-
+            ->add('email')    
             ->add('birthdate', null, [
                 'widget' => 'single_text',
             ])
