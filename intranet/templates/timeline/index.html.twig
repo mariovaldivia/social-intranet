@@ -11,7 +11,7 @@
 
         {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
         <div class="d-flex flex">
-          {% if profile %} 
+          {% if profile and profile.imageName %} 
             <div class="px-2">
                 <img class="rounded" src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
                         title="{{ profile }}" />          

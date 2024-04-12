@@ -24,3 +24,9 @@ body {
     font-size: .9rem;
     margin-bottom: .2rem;
 }
+
+.comment__info {
+    font-size: .8rem;
+    color: #666;
+    padding-left: .5rem;
+}

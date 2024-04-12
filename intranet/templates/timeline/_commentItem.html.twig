@@ -5,14 +5,30 @@
         </a>
     </div>
 
-    <div class="mx-2 p-2 bs-border-color rounded-3 flex-fill comment__message">
-        <h5>
-            <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
-                {{ comment.user }}
+    <div class="mx-2 bs-border-color rounded-3 flex-fill ">
+        <div class="comment__message p-2">
+        
+            <h5>
+                <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
+                    {{ comment.user }}
+                </a>
+            </h5>
+            <p>
+                {{ comment.message }}
+            </p>
+        </div>
+        <div class="comment__info">
+            {{ comment.date|date('d/m') }}
+
+             {% include "timeline/_likes.html.twig" with {'likes': comment.likes} %}
+
+            
+            <a href="{{ path('like_comment', {'id': comment.id}) }}"
+                class="ms-3 p-0 btn btn-link {% if comment.hasLike(app.user) %}active{% endif %}">
+                <i class="bi bi-hand-thumbs-up"></i>
+                Like
             </a>
-        </h5>
-        <p>
-            {{ comment.message }}
-        </p>
+        </div>
     </div>
 </div>
+

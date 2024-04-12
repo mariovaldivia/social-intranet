@@ -88,6 +88,25 @@ class TimelineController extends AbstractController
         return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/comment/{id}/like', name: 'like_comment')]
+    public function likeComment(EntityManagerInterface $entityManager, Comment $comment, LikeRepository $likeRepository): Response
+    {
+        $user = $this->getUser();
+        $previousLike = $likeRepository->findOneBy([
+            'comment' => $comment,
+            'user' => $user
+        ]);
+        if($previousLike){
+            return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+        }
+        $like = new Like();
+        $like->setUser($user);
+        $like->setComment($comment);
+        $entityManager->persist($like);
+        $entityManager->flush();
+        return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+    }
+
     #[Route('/post/{id}/comment', name: 'post_comment')]
     public function commentPost(Request $request, EntityManagerInterface $entityManager, Post $post): Response
     {

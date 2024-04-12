@@ -6,13 +6,13 @@
         {% set gusta = true %}
     {% endif %}
 {% endfor %} #}
-<p class="me-gusta">
+
 
     {# {% if principal is defined %}
         <a href="#" class="comentar">Comentar</a>
     {% endif %} #}
-
-        <span>
+    
+<span>
         {% if not gusta %}    
             {# si aun no ha dado click a "me gusta" #}   
             {# <a class="like" href="{{ path('me_gusta', {'id':id, 'recurso':recurso}) }}" data-id="{{ id }}" title="Indica que te gusta esta publicación"> #}
@@ -66,5 +66,5 @@
             {% endif %}
         {% endif %}
 
-        </span>
-</p>
+</span>
+

@@ -5,8 +5,10 @@ namespace App\Entity;
 use App\Repository\PostRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\User;
 
 #[ORM\Entity(repositoryClass: PostRepository::class)]
 #[ORM\HasLifecycleCallbacks]
@@ -46,6 +48,14 @@ class Post
     public function setCreatedAtValue(): void
     {
         $this->date = new \DateTimeImmutable();
+    }
+
+    public function hasLike(User $user)
+    {
+        $criteria = Criteria::create()
+            ->where(Criteria::expr()->eq("user", $user));
+            
+        return $this->likes->matching($criteria)[0] ?? null;
     }
 
     public function getId(): ?int
