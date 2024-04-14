@@ -41,7 +41,54 @@ live('.comment-form form', 'submit', function(event){
                 let div = document.createElement('div');
                 div.innerHTML = response.data
                 comments.insertBefore(div, comments.firstChild)
+
+                let input = parent.querySelector("textarea")
+                input.value = ""
             }
         })
 
 })
+
+live('a.comment-like', 'click', function(event){
+    event.preventDefault();
+    console.log(event.target.href)
+
+    axios.get(event.target.href)
+        .then(function(response){
+            let parent = event.target.closest(".comment")
+            if(parent){
+                parent.outerHTML = response.data
+            }
+        })
+})
+
+live('a.post-like', 'click', function(event){
+    event.preventDefault();
+
+    axios.get(event.target.href)
+        .then(function(response){
+            let parent = event.target.closest(".post")
+            if(parent){
+                parent.parentNode.outerHTML = response.data
+            }
+        })
+
+})
+
+const infoModal = document.getElementById('info-modal')
+if (infoModal) {
+  infoModal.addEventListener('show.bs.modal', event => {
+    // Button that triggered the modal
+    const button = event.relatedTarget
+    console.log(button.href)
+    // Update the modal's content.
+    const modalTitle = infoModal.querySelector('.modal-title')
+    const modalBody = infoModal.querySelector('.modal-body')
+    modalTitle.textContent = button.title
+    axios.get(button.href)
+        .then(function(response){
+            modalBody.innerHTML = response.data
+        })
+    // modalBodyInput.value = recipient
+  })
+}

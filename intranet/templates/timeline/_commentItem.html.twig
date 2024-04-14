@@ -24,7 +24,7 @@
 
             
             <a href="{{ path('like_comment', {'id': comment.id}) }}"
-                class="ms-3 p-0 btn btn-link {% if comment.hasLike(app.user) %}active{% endif %}">
+                class="comment-like ms-3 p-0 btn btn-link {% if comment.hasLike(app.user) %}active{% endif %}">
                 <i class="bi bi-hand-thumbs-up"></i>
                 Like
             </a>

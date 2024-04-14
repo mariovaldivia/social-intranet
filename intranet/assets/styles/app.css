@@ -30,3 +30,8 @@ body {
     color: #666;
     padding-left: .5rem;
 }
+
+.modal a {
+    text-decoration: none;
+    color: inherit
+}

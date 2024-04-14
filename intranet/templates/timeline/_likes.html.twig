@@ -1,40 +1,28 @@
 {% set gusta = false %}
 {% set num_likes = likes | length %}
-
-{# {% for like in likes  %} 
-    {% if app.user == like.user %}
-        {% set gusta = true %}
-    {% endif %}
-{% endfor %} #}
-
-
-    {# {% if principal is defined %}
-        <a href="#" class="comentar">Comentar</a>
-    {% endif %} #}
     
 <span>
-        {% if not gusta %}    
-            {# si aun no ha dado click a "me gusta" #}   
-            {# <a class="like" href="{{ path('me_gusta', {'id':id, 'recurso':recurso}) }}" data-id="{{ id }}" title="Indica que te gusta esta publicación"> #}
-                {#<i class="fa fa-thumbs-up fa-2x"></i>#}
-                {# Me gusta #}
-
-            {# </a> #}
 
             {# si hay personas que le gusta la publicacion #}
             {% if num_likes > 1  %}
                 <i class="bi bi-hand-thumbs-up me-1"></i>
                 A 
-                {# <a class="ver-likes"  href="{{ path('ver_me_gusta', {'id':id, 'recurso':'timeline'})}}"> #}
+                <a href="{{ path('likes_post', {'id':id}) }}"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#info-modal"
+                    title="People who likes this post"> 
                     {{ num_likes }} personas 
-                {# </a>  #}
+                </a>
                 les gusta esto.
             {% endif %}
 
             {# si hay un unico usuario que le gusta la publicacion  #}
             {% if num_likes == 1  %}
                 <i class="bi bi-hand-thumbs-up me-1"></i>
-                A <a href="{{ path('app_wall', {'username': likes[0].user.username }) }}">{{ likes[0].user }} </a> le gusta esto.
+                A 
+                <a href="{{ path('app_wall', {'username': likes[0].user.username }) }}">
+                    {{ likes[0].user }} 
+                </a> le gusta esto.
             {% endif %}
 
         {% else %}
@@ -57,14 +45,13 @@
                 {% else %}    
                     {% set usuario = likes[0].user %}
                 {% endif %}
-                <a {#href="{{ path('usuario_muro',{'slug': usuario.username }) }}"#}>{{ usuario }} </a>le gusta esto.
+                <a href="">{{ usuario }} </a>le gusta esto.
             {% endif %}
 
             {# si solo le gusta la publicacion al usuario actual #}
             {% if num_likes-1 == 0  %}
                 Te gusta esto.
             {% endif %}
-        {% endif %}
 
 </span>
 

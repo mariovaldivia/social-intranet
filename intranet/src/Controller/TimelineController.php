@@ -78,14 +78,28 @@ class TimelineController extends AbstractController
             'user' => $user
         ]);
         if($previousLike){
-            return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+            $entityManager->remove($previousLike);
+            $entityManager->flush();
+            return $this->render('timeline/_post.html.twig', [
+                'post' => $post,
+            ]);        
         }
         $like = new Like();
         $like->setUser($user);
         $like->setPost($post);
         $entityManager->persist($like);
         $entityManager->flush();
-        return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+        return $this->render('timeline/_post.html.twig', [
+            'post' => $post,
+        ]);
+    }
+
+    #[Route('/post/{id}/likes', name: 'likes_post')]
+    public function showLikesPost(Post $post): Response
+    {
+        return $this->render('timeline/_postLikes.html.twig', [
+            'likes' => $post->getLikes()
+        ]);
     }
 
     #[Route('/comment/{id}/like', name: 'like_comment')]
@@ -97,14 +111,21 @@ class TimelineController extends AbstractController
             'user' => $user
         ]);
         if($previousLike){
-            return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+            $entityManager->remove($previousLike);
+            $entityManager->flush();
+            return $this->render('timeline/_commentItem.html.twig', [
+                'comment' => $comment,
+            ]);
         }
         $like = new Like();
         $like->setUser($user);
         $like->setComment($comment);
         $entityManager->persist($like);
         $entityManager->flush();
-        return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
+
+        return $this->render('timeline/_commentItem.html.twig', [
+            'comment' => $comment,
+        ]);
     }
 
     #[Route('/post/{id}/comment', name: 'post_comment')]

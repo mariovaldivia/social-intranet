@@ -44,14 +44,15 @@
         </p>
 
 
-        {% include "timeline/_likes.html.twig" with {'likes': post.likes} %}
+        {% include "timeline/_likes.html.twig" with {'likes': post.likes, 'id': post.id} %}
 
         <div class="row mb-0">
 
             <div class="col align-middle text-center mx-auto d-grid ">
-                <a href="{{ path('like_post', {'id': post.id}) }}" class="btn btn-outline-secondary {% if post.hasLike(app.user) %}active{% endif %}">
-                    <i class="bi bi-hand-thumbs-up me-2"></i>
-                    Like
+                <a href="{{ path('like_post', {'id': post.id}) }}" 
+                    class="post-like btn btn-outline-secondary {% if post.hasLike(app.user) %}active{% endif %}">
+                        <i class="bi bi-hand-thumbs-up me-2"></i>
+                        Like
                 </a>
             </div>
 
