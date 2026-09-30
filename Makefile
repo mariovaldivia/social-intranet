@@ -12,10 +12,10 @@ help: ## Show this help message
 start: ## Start the containers
 	docker network create application-network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
-	U_ID=${UID} docker-compose up -d
+	U_ID=${UID} docker compose up -d
 
 stop: ## Stop the containers
-	U_ID=${UID} docker-compose stop
+	U_ID=${UID} docker compose stop
 
 restart: ## Restart the containers
 	$(MAKE) stop && $(MAKE) start
@@ -23,13 +23,13 @@ restart: ## Restart the containers
 build: ## Rebuilds all the containers
 	docker network create application_network || true
 	cp -n docker-compose.yml.dist docker-compose.yml || true
-	U_ID=${UID} docker-compose build
+	U_ID=${UID} docker compose build
 
 prepare: ## Runs backend commands
 	$(MAKE) composer-install
 
 run: ## starts the Symfony development server
-	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony serve -d
+	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony serve -d --allow-all-ip
 
 logs: ## Show Symfony logs in real time
 	U_ID=${UID} docker exec -it --user ${UID} ${DOCKER_BE} symfony server:log

@@ -3,14 +3,13 @@ FROM php:8.2.17-fpm
 ARG UID
 ARG HOME_DIR=/appdata/www
 # Create user and some useful stuff
-RUN adduser --disabled-password --gecos "" appuser
-# RUN adduser -u ${UID} --disabled-password --gecos "" appuser
+RUN adduser -u ${UID:-1000} --disabled-password --gecos "" appuser
 RUN usermod -aG sudo appuser
 RUN mkdir /home/appuser/.ssh
 RUN chown -R appuser:appuser /home/appuser/
 RUN echo "StrictHostKeyChecking no" >> /home/appuser/.ssh/config
 RUN echo "export COLUMNS=300" >> /home/appuser/.bashrc
-RUN echo "alias sf=/appdata/www/bin/console" >> /home/appuser/.bashrc
+RUN echo "alias sf=/appdata/www/intranet/bin/console" >> /home/appuser/.bashrc
 
 # Install packages and PHP extensions
 RUN apt update \
@@ -59,9 +58,8 @@ RUN docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
 #     && pecl install imagick \
 #     && docker-php-ext-enable imagick
 
-# Install and update composer
-RUN curl https://getcomposer.org/composer.phar -o /usr/bin/composer && chmod +x /usr/bin/composer
-RUN composer self-update
+# Install composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
 # Install PHP-CS-FIXER
 RUN wget https://cs.symfony.com/download/php-cs-fixer-v3.phar -O php-cs-fixer
