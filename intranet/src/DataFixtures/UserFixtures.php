@@ -30,6 +30,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $user = new User();
         $user->setEmail('mvaldivia@gmail.com');
         $user->setUsername($profile1->generateUsername());
+        $user->setRoles(['ROLE_ADMIN']);
         $plaintextPassword = "intranet123";
 
         $hashedPassword = $this->passwordHasher->hashPassword(
