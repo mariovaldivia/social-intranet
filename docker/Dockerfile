@@ -1,4 +1,4 @@
-FROM php:8.2.17-fpm
+FROM php:8.4-fpm
 
 ARG UID
 ARG HOME_DIR=/appdata/www
@@ -53,7 +53,7 @@ RUN set -eux; \
 # RUN docker-php-ext-install -j$(nproc) gd
 # RUN pecl install gmagick
 RUN docker-php-ext-install intl pdo pdo_mysql zip xsl exif mbstring 
-RUN docker-php-ext-enable --ini-name 05-opcache.ini opcache xdebug
+RUN docker-php-ext-enable xdebug
 # RUN apt-get install -y libmagickwand-dev imagemagick \
 #     && pecl install imagick \
 #     && docker-php-ext-enable imagick

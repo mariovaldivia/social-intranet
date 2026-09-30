@@ -19,4 +19,5 @@ return [
     Liip\ImagineBundle\LiipImagineBundle::class => ['all' => true],
     Knp\Bundle\GaufretteBundle\KnpGaufretteBundle::class => ['all' => true],
     Oneup\FlysystemBundle\OneupFlysystemBundle::class => ['all' => true],
+    Symfony\UX\TwigComponent\TwigComponentBundle::class => ['all' => true],
 ];
