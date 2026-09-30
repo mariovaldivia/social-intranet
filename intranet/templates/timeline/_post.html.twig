@@ -1,67 +1,59 @@
 {% set user = post.user %}
 {% set profile = user.profile %}
-<div class="card text-bg-light mb-3">
+{# app.js replaces this root element when the post is liked: keep .post as its direct child #}
+<div class="card bg-base-100 shadow-sm mb-4">
     <div class="card-body post">
-        <div class="card-title">
-            <div class="d-flex flex">
-                <div>
-                    <a href="{{ path('app_wall', {'username': user.username}) }}">
-                        {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
-                    </a>
-                </div>
-            
-                <div class="ms-3">
-                    {% if user.username %}
-                        <h4 class="post_user">
-                            <a href="{{ path('app_wall', {'username': user.username}) }}">
-                                {{ user }}
-                            </a>
-                        </h4>
-                    {% else %}
-                        {{ user }}
-                    {% endif %}
+        <div class="flex gap-3 items-center">
+            <a href="{{ path('app_wall', {'username': user.username}) }}" class="shrink-0">
+                {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
+            </a>
 
-                    {% if profile %}              
-                        <span>
-                            {{ profile.position }} - {{ profile.department }}
-                        </span>
-                    {% endif %}
-                </div>
+            <div>
+                {% if user.username %}
+                    <h4 class="font-semibold leading-tight">
+                        <a href="{{ path('app_wall', {'username': user.username}) }}" class="hover:underline">
+                            {{ user }}
+                        </a>
+                    </h4>
+                {% else %}
+                    {{ user }}
+                {% endif %}
+
+                {% if profile %}
+                    <span class="text-sm opacity-70">
+                        {{ profile.position }} - {{ profile.department }}
+                    </span>
+                {% endif %}
             </div>
         </div>
 
-        <p class="card-text">
-            {{ post.message }}
+        <div class="mt-2">
+            {% if post.message %}
+                <p>{{ post.message }}</p>
+            {% endif %}
 
             {% if post.event %}
-                <h4>
-                    <i class="bi bi-calendar2 me-2"></i> 
+                <h4 class="font-semibold mt-1">
+                    <i class="bi bi-calendar2 mr-2"></i>
                     {{ post.event.date ? post.event.date|date('d/m/Y') : '' }}
                 </h4>
                 <p>{{ post.event.description|nl2br }}</p>
-            
             {% endif %}
-        </p>
-
+        </div>
 
         {% include "timeline/_likes.html.twig" with {'likes': post.likes, 'id': post.id} %}
 
-        <div class="row mb-0">
+        <div class="grid grid-cols-2 gap-2 mt-1">
+            <a href="{{ path('like_post', {'id': post.id}) }}"
+                class="post-like btn btn-sm {{ post.hasLike(app.user) ? 'btn-primary btn-soft' : 'btn-ghost' }}">
+                <i class="bi bi-hand-thumbs-up"></i>
+                Like
+            </a>
 
-            <div class="col align-middle text-center mx-auto d-grid ">
-                <a href="{{ path('like_post', {'id': post.id}) }}" 
-                    class="post-like btn btn-outline-secondary {% if post.hasLike(app.user) %}active{% endif %}">
-                        <i class="bi bi-hand-thumbs-up me-2"></i>
-                        Like
-                </a>
-            </div>
-
-            <div class="col align-middle text-center mx-auto d-grid">
-                <a href="{{ path('post_comment', {'id': post.id}) }}" class="btn btn-outline-secondary add-comment">
-                    <i class="bi bi-chat me-2"></i>
-                    Comment
-                </a>
-            </div>
+            <a href="{{ path('post_comment', {'id': post.id}) }}" class="add-comment btn btn-sm btn-ghost">
+                <i class="bi bi-chat"></i>
+                Comment
+            </a>
         </div>
 
         <div class="comment-form"></div>

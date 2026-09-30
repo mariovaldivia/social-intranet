@@ -1,18 +1,13 @@
-{% set num_likes = likes | length %}
-    
-{% if num_likes > 0  %}
-                
-    <span class="my-2">
-                    
+{% set num_likes = likes|length %}
+
+{% if num_likes > 0 %}
+    <span class="text-sm">
         <a href="{{ path('likes_post', {'id': id}) }}"
-            data-bs-toggle="modal" 
-            data-bs-target="#info-modal"
-            title="People who likes this post"> 
-        <i class="bi bi-hand-thumbs-up me-1"></i>
+            data-info-modal
+            class="link link-hover"
+            title="People who likes this post">
+            <i class="bi bi-hand-thumbs-up mr-1"></i>
             {{ num_likes }}
         </a>
     </span>
-               
 {% endif %}
-
-

@@ -2,20 +2,18 @@
     {% set profile = app.user ? app.user.profile : null %}
 
     {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-    <div class="d-flex flex">
-        {% if profile %} 
-        <div class="px-2">
-            <img class="rounded" src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter('user_post') }}" 
-                    title="{{ profile }}" />          
-        </div>    
-        {% endif %} 
-                        
-        <div class="input-group mb-3">
-        {{ form_widget(form.message) }}
-        <button class="btn btn-outline-secondary">
-            <i class="bi bi-send"></i>
-            
-        </button>
+    <div class="flex gap-2 items-start">
+        {% if profile %}
+            <div class="shrink-0">
+                {% include "_imageUser.html.twig" with {'user': app.user, 'size': 'user_comment'} %}
+            </div>
+        {% endif %}
+
+        <div class="join w-full">
+            {{ form_widget(form.message, {'attr': {'class': 'join-item min-h-10', 'rows': 1, 'placeholder': 'Write a comment...'}}) }}
+            <button class="btn join-item" aria-label="Send comment">
+                <i class="bi bi-send"></i>
+            </button>
         </div>
     </div>
     {{ form_end(form) }}

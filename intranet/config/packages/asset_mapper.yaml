@@ -3,3 +3,6 @@ framework:
         # The paths to make available to the asset mapper.
         paths:
             - assets/
+        # daisyUI plugins are only read by the Tailwind build, not served
+        excluded_patterns:
+            - '*/assets/styles/daisyui*.mjs'

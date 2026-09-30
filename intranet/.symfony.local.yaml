@@ -1,0 +1,4 @@
+workers:
+    # Rebuild assets/styles/app.css with Tailwind + daisyUI on template changes
+    tailwind:
+        cmd: ['symfony', 'console', 'tailwind:build', '--watch']

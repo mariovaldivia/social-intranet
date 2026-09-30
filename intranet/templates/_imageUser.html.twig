@@ -1,13 +1,10 @@
-{% set profile = user.profile %}
-{% if profile and profile.imageName %}            
-    <img src="{{ vich_uploader_asset(profile, 'imageFile')| imagine_filter(size) }}" 
+{% set profile = user ? user.profile : null %}
+{% if profile and profile.imageName %}
+    <img src="{{ vich_uploader_asset(profile, 'imageFile')|imagine_filter(size) }}"
             title="{{ profile }}"
-            class="rounded-circle"
-            loading="lazy"
-            {# onerror="this.src='{{ 'images/user-default.jpg'|imagine_filter('user_post') }}'" #}
-                />
+            class="rounded-full"
+            loading="lazy">
 {% else %}
-    <img src="{{ 'images/user-default.jpg'|imagine_filter(size) }}" 
-        class="rounded-circle"
-            />
+    <img src="{{ 'images/user-default.jpg'|imagine_filter(size) }}"
+        class="rounded-full">
 {% endif %}

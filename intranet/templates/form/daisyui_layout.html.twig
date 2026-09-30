@@ -1,0 +1,71 @@
+{# Form theme mapping Symfony form widgets to daisyUI 5 components #}
+{% use 'form_div_layout.html.twig' %}
+
+{%- block form_row -%}
+    {%- set widget_attr = {} -%}
+    {%- if help is not empty -%}
+        {%- set widget_attr = {attr: {'aria-describedby': id ~ '_help'}} -%}
+    {%- endif -%}
+    <fieldset class="fieldset">
+        {{- form_label(form) -}}
+        {{- form_widget(form, widget_attr) -}}
+        {{- form_help(form) -}}
+        {{- form_errors(form) -}}
+    </fieldset>
+{%- endblock form_row -%}
+
+{%- block checkbox_row -%}
+    <fieldset class="fieldset">
+        <label class="label cursor-pointer gap-2">
+            {{- form_widget(form) -}}
+            {{- label is same as(false) ? '' : (translation_domain is same as(false) ? label|default(name|humanize) : label|default(name|humanize)|trans(label_translation_parameters, translation_domain)) -}}
+        </label>
+        {{- form_errors(form) -}}
+    </fieldset>
+{%- endblock checkbox_row -%}
+
+{%- block form_label -%}
+    {%- set label_attr = label_attr|merge({class: (label_attr.class|default('') ~ ' fieldset-legend')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_label -%}
+
+{%- block form_widget_simple -%}
+    {%- set type = type|default('text') -%}
+    {%- if type == 'file' -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' file-input w-full' ~ (errors|length ? ' file-input-error' : ''))|trim}) -%}
+    {%- elseif type not in ['hidden', 'checkbox', 'radio'] -%}
+        {%- set attr = attr|merge({class: (attr.class|default('') ~ ' input w-full' ~ (errors|length ? ' input-error' : ''))|trim}) -%}
+    {%- endif -%}
+    {{- parent() -}}
+{%- endblock form_widget_simple -%}
+
+{%- block textarea_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' textarea w-full' ~ (errors|length ? ' textarea-error' : ''))|trim}) -%}
+    {{- parent() -}}
+{%- endblock textarea_widget -%}
+
+{%- block choice_widget_collapsed -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' select w-full' ~ (errors|length ? ' select-error' : ''))|trim}) -%}
+    {{- parent() -}}
+{%- endblock choice_widget_collapsed -%}
+
+{%- block checkbox_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' checkbox')|trim}) -%}
+    {{- parent() -}}
+{%- endblock checkbox_widget -%}
+
+{%- block radio_widget -%}
+    {%- set attr = attr|merge({class: (attr.class|default('') ~ ' radio')|trim}) -%}
+    {{- parent() -}}
+{%- endblock radio_widget -%}
+
+{%- block form_help -%}
+    {%- set help_attr = help_attr|merge({class: (help_attr.class|default('') ~ ' label')|trim}) -%}
+    {{- parent() -}}
+{%- endblock form_help -%}
+
+{%- block form_errors -%}
+    {%- for error in errors -%}
+        <p class="text-error text-sm">{{ error.message }}</p>
+    {%- endfor -%}
+{%- endblock form_errors -%}

@@ -3,18 +3,21 @@
 {% block title %}New Post{% endblock %}
 
 {% block body %}
-    <h1>Create new Post</h1>
+    <h1 class="text-2xl font-bold mb-4">Create new Post</h1>
 
-    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-        {{ form_errors(form) }}
-        {{ form_row(form.message) }}
-        <button class="btn btn-primary">
-            <i class="bi bi-send"></i> Publish
-        </button>
-    {{ form_end(form) }}
+    <div class="card bg-base-100 shadow-sm max-w-2xl">
+        <div class="card-body">
+            {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+                {{ form_errors(form) }}
+                {{ form_row(form.message) }}
+                <button class="btn btn-primary mt-2">
+                    <i class="bi bi-send"></i> Publish
+                </button>
+            {{ form_end(form) }}
+        </div>
+    </div>
 
-    <a href="{{ path('app_timeline') }}"
-        class="btn btn-secondary mt-3">
-        back to timeline
+    <a href="{{ path('app_timeline') }}" class="btn btn-ghost mt-4">
+        <i class="bi bi-arrow-left"></i> back to timeline
     </a>
 {% endblock %}

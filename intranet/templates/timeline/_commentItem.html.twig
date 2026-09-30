@@ -1,34 +1,30 @@
-<div class="d-flex flex comment mt-2">
-    <div>
-        <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
-            {% include "_imageUser.html.twig" with {'user': comment.user, 'size': 'user_comment'} %}
-        </a>
-    </div>
+{# app.js replaces this root element (.comment) when the comment is liked #}
+<div class="comment flex gap-2 mt-3">
+    <a href="{{ path('app_wall', {'username': comment.user.username}) }}" class="shrink-0">
+        {% include "_imageUser.html.twig" with {'user': comment.user, 'size': 'user_comment'} %}
+    </a>
 
-    <div class="mx-2 bs-border-color rounded-3 flex-fill ">
-        <div class="comment__message p-2">
-        
-            <h5>
-                <a href="{{ path('app_wall', {'username': comment.user.username}) }}">
+    <div class="flex-1">
+        <div class="bg-base-200 rounded-box px-3 py-2">
+            <h5 class="text-sm font-semibold">
+                <a href="{{ path('app_wall', {'username': comment.user.username}) }}" class="hover:underline">
                     {{ comment.user }}
                 </a>
             </h5>
-            <p>
+            <p class="text-sm">
                 {{ comment.message }}
             </p>
         </div>
-        <div class="comment__info">
+        <div class="flex items-center gap-3 text-xs opacity-70 pl-2 mt-1">
             {{ comment.date|date('d/m') }}
 
-             {% include "timeline/_commentLikes.html.twig" with {'likes': comment.likes, 'id': comment.id} %}
+            {% include "timeline/_commentLikes.html.twig" with {'likes': comment.likes, 'id': comment.id} %}
 
-            
             <a href="{{ path('like_comment', {'id': comment.id}) }}"
-                class="comment-like ms-3 p-0 btn btn-link {% if comment.hasLike(app.user) %}active{% endif %}">
+                class="comment-like link link-hover {{ comment.hasLike(app.user) ? 'link-primary font-semibold' : '' }}">
                 <i class="bi bi-hand-thumbs-up"></i>
                 Like
             </a>
         </div>
     </div>
 </div>
-

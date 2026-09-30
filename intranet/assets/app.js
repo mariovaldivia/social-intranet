@@ -1,9 +1,4 @@
 import './bootstrap.js';
-import 'bootstrap/dist/css/bootstrap.min.css';
-
-import 'bootstrap';
-// import '@fortawesome/fontawesome-free/css/fontawesome.min.css';
-// import '@fortawesome/fontawesome-free/fontawesome-free.index.js';
 /*
  * Welcome to your app's main JavaScript file!
  *
@@ -16,26 +11,28 @@ import {live} from './js/event.js'
 import axios from 'axios'
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
 
+// live() calls the handler with `this` set to the element matching the
+// selector; event.target may be a child such as the link's <i> icon.
+
 live('a.add-comment', 'click', function(event){
     event.preventDefault();
-    console.log(event.target.href)
-    axios.get(event.target.href).then(function(response){
-        let parent = event.target.closest(".post")
+    const link = this
+    axios.get(link.href).then(function(response){
+        let parent = link.closest(".post")
         if(parent){
             let form_div = parent.querySelector(".comment-form")
             form_div.innerHTML = response.data
         }
-        
     })
 })
 
 live('.comment-form form', 'submit', function(event){
     event.preventDefault();
-    console.log(event.target.action)
-    const formData = new FormData(event.target);
-    axios.post(event.target.action, formData)
+    const form = this
+    const formData = new FormData(form);
+    axios.post(form.action, formData)
         .then(function(response){
-            let parent = event.target.closest(".post")
+            let parent = form.closest(".post")
             if(parent){
                 let comments = parent.querySelector(".comments")
                 let div = document.createElement('div');
@@ -46,16 +43,14 @@ live('.comment-form form', 'submit', function(event){
                 input.value = ""
             }
         })
-
 })
 
 live('a.comment-like', 'click', function(event){
     event.preventDefault();
-    console.log(event.target.href)
-
-    axios.get(event.target.href)
+    const link = this
+    axios.get(link.href)
         .then(function(response){
-            let parent = event.target.closest(".comment")
+            let parent = link.closest(".comment")
             if(parent){
                 parent.outerHTML = response.data
             }
@@ -64,31 +59,30 @@ live('a.comment-like', 'click', function(event){
 
 live('a.post-like', 'click', function(event){
     event.preventDefault();
-
-    axios.get(event.target.href)
+    const link = this
+    axios.get(link.href)
         .then(function(response){
-            let parent = event.target.closest(".post")
+            let parent = link.closest(".post")
             if(parent){
                 parent.parentNode.outerHTML = response.data
             }
         })
-
 })
 
-const infoModal = document.getElementById('info-modal')
-if (infoModal) {
-  infoModal.addEventListener('show.bs.modal', event => {
-    // Button that triggered the modal
-    const button = event.relatedTarget
-    console.log(button.href)
-    // Update the modal's content.
-    const modalTitle = infoModal.querySelector('.modal-title')
+// Links with data-info-modal load their href into the shared <dialog>
+live('a[data-info-modal]', 'click', function(event){
+    event.preventDefault();
+    const link = this
+    const infoModal = document.getElementById('info-modal')
+    if (!infoModal) {
+        return
+    }
     const modalBody = infoModal.querySelector('.modal-body')
-    modalTitle.textContent = button.title
-    axios.get(button.href)
+    infoModal.querySelector('.modal-title').textContent = link.title
+    modalBody.innerHTML = '<span class="loading loading-spinner"></span>'
+    infoModal.showModal()
+    axios.get(link.href)
         .then(function(response){
             modalBody.innerHTML = response.data
         })
-    // modalBodyInput.value = recipient
-  })
-}
+})

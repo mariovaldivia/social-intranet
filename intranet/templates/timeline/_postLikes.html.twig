@@ -1,20 +1,13 @@
-<ul class="list-group">
-
+<ul class="list">
 {% for like in likes %}
-    <li class="list-group-item">
-        <a href="{{ path('app_wall', {'username': like.user.username}) }}">
-        <div class="d-flex flex">
-            <div class="me-3 mt-1">
-                {% include "_imageUser.html.twig" with {'user': like.user, 'size': 'user_post'} %}
-            </div>
+    <li class="list-row p-2">
+        <a href="{{ path('app_wall', {'username': like.user.username}) }}" class="flex gap-3 items-center w-full hover:bg-base-200 rounded-box p-1">
+            {% include "_imageUser.html.twig" with {'user': like.user, 'size': 'user_post'} %}
             <div>
-                {{ like.user }} <br>
-                {{ like.user.profile.position }} - {{ like.user.profile.department }}
-
+                <div class="font-semibold">{{ like.user }}</div>
+                <div class="text-sm opacity-70">{{ like.user.profile.position }} - {{ like.user.profile.department }}</div>
             </div>
-        </div>
         </a>
     </li>
 {% endfor %}
-
 </ul>

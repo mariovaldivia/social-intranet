@@ -3,72 +3,58 @@
 {% block title %}Events{% endblock %}
 
 {% block body %}
-    <h1>Events</h1>
-
-    <div class="mb-2">
-        <a href="{{ path('app_event_new') }}"
-            class="btn btn-primary">
-            Create event
+    <div class="flex items-center justify-between mb-4">
+        <h1 class="text-2xl font-bold">Events</h1>
+        <a href="{{ path('app_event_new') }}" class="btn btn-primary">
+            <i class="bi bi-plus-lg"></i> Create event
         </a>
     </div>
 
     {% for event in events %}
-        <div class="card text-bg-light mb-3">
+        <div class="card bg-base-100 shadow-sm mb-4">
             <div class="card-body post">
-                <div class="card-title">
-                    <h4>
-                        <i class="bi bi-calendar2 me-2"></i> 
+                <div class="flex items-start justify-between gap-2">
+                    <h4 class="card-title">
+                        <i class="bi bi-calendar2"></i>
                         {{ event.date ? event.date|date('d/m/Y') : '' }}
                     </h4>
+                    <div class="flex gap-1">
+                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">show</a>
+                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-ghost btn-xs">edit</a>
+                    </div>
                 </div>
 
-                <p class="card-text">
-                
-                    {{ event.description|nl2br }}
-                    <a href="{{ path('app_event_edit', {'id': event.id}) }}">edit</a>
-                    <a href="{{ path('app_event_show', {'id': event.id}) }}">show</a>
-                
-                    {% set post = event.post %}
-                    {% if post %}
-                        {% include "timeline/_likes.html.twig" with {'likes': post.likes} %}
-                        <div class="row mb-0">
-                            <div class="col align-middle text-center mx-auto d-grid">
-                                <a href="{{ path('like_post', {'id': post.id}) }}" class="btn btn-outline-secondary">
-                                    <i class="bi bi-hand-thumbs-up me-2"></i>
-                                    Like
-                                </a>
-                            </div>
+                <p>{{ event.description|nl2br }}</p>
 
-                            <div class="col align-middle text-center mx-auto d-grid">
-                                <a href="{{ path('post_comment', {'id': post.id}) }}" class="btn btn-outline-secondary add-comment">
-                                    <i class="bi bi-chat me-2"></i>
-                                    Comment
-                                </a>
-                            </div>
-                        </div>
+                {% set post = event.post %}
+                {% if post %}
+                    {% include "timeline/_likes.html.twig" with {'likes': post.likes, 'id': post.id} %}
 
-                        <div class="comment-form"></div>
+                    <div class="grid grid-cols-2 gap-2 mt-1">
+                        <a href="{{ path('like_post', {'id': post.id}) }}" class="btn btn-sm btn-ghost">
+                            <i class="bi bi-hand-thumbs-up"></i>
+                            Like
+                        </a>
 
-                        <div class="comments">
-                            {% for comment in post.comments %}
-                                {% include "timeline/_commentItem.html.twig" with {'comment': comment} %}
-                            {% endfor %}
-                        </div>
+                        <a href="{{ path('post_comment', {'id': post.id}) }}" class="add-comment btn btn-sm btn-ghost">
+                            <i class="bi bi-chat"></i>
+                            Comment
+                        </a>
+                    </div>
 
-                    {% endif %}
-                    
-                
-                
+                    <div class="comment-form"></div>
 
-                </p>
+                    <div class="comments">
+                        {% for comment in post.comments %}
+                            {% include "timeline/_commentItem.html.twig" with {'comment': comment} %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-            
         </div>
     {% else %}
-        <li class="list-group-item ">
-            No events found
-        </li>
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body">No events found</div>
+        </div>
     {% endfor %}
-
-    
 {% endblock %}
