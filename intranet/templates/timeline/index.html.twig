@@ -9,20 +9,12 @@
         <div class="card bg-base-100 shadow-sm mb-4">
             <div class="card-body">
                 {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
-                <div class="flex gap-3 items-start">
-                    {% if app.user %}
-                        <div class="shrink-0">
-                            {% include "_imageUser.html.twig" with {'user': app.user, 'size': 'user_post'} %}
-                        </div>
-                    {% endif %}
-
-                    <div class="join w-full">
-                        {{ form_widget(form.message, {'attr': {'class': 'join-item', 'rows': 2, 'placeholder': "What's on your mind?"}}) }}
-                        <button class="btn btn-primary join-item h-auto" aria-label="Publish">
-                            <i class="bi bi-send"></i>
-                        </button>
-                    </div>
-                </div>
+                    {% include "timeline/_messageBox.html.twig" with {
+                        'field': form.message,
+                        'placeholder': "What's on your mind?",
+                        'submit_label': 'Publish',
+                        'large': true,
+                    } %}
                 {{ form_end(form) }}
             </div>
         </div>

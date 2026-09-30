@@ -27,8 +27,8 @@ live('a.add-comment', 'click', function(event){
     })
 })
 
-// Enter sends the comment, Shift+Enter inserts a line break
-live('.comment-form textarea', 'keydown', function(event){
+// Enter sends the post or comment, Shift+Enter inserts a line break
+live('textarea[data-submit-on-enter]', 'keydown', function(event){
     if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
         event.preventDefault();
         this.form.requestSubmit();
