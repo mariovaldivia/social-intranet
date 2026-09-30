@@ -62,9 +62,9 @@ live('a.post-like', 'click', function(event){
     const link = this
     axios.get(link.href)
         .then(function(response){
-            let parent = link.closest(".post")
-            if(parent){
-                parent.parentNode.outerHTML = response.data
+            let actions = link.closest(".post-actions")
+            if(actions){
+                actions.outerHTML = response.data
             }
         })
 })

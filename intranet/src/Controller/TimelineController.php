@@ -76,19 +76,21 @@ class TimelineController extends AbstractController
             'post' => $post,
             'user' => $user
         ]);
+        // Keep $post->likes in sync: the fragment is rendered from it
         if($previousLike){
+            $post->removeLike($previousLike);
             $entityManager->remove($previousLike);
             $entityManager->flush();
-            return $this->render('timeline/_post.html.twig', [
+            return $this->render('timeline/_postActions.html.twig', [
                 'post' => $post,
-            ]);        
+            ]);
         }
         $like = new Like();
         $like->setUser($user);
-        $like->setPost($post);
+        $post->addLike($like);
         $entityManager->persist($like);
         $entityManager->flush();
-        return $this->render('timeline/_post.html.twig', [
+        return $this->render('timeline/_postActions.html.twig', [
             'post' => $post,
         ]);
     }

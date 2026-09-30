@@ -1,0 +1,17 @@
+{# Returned by like_post; app.js replaces this root element (.post-actions) #}
+<div class="post-actions">
+    {% include "timeline/_likes.html.twig" with {'likes': post.likes, 'id': post.id} %}
+
+    <div class="grid grid-cols-2 gap-2 mt-1">
+        <a href="{{ path('like_post', {'id': post.id}) }}"
+            class="post-like btn btn-sm {{ post.hasLike(app.user) ? 'btn-primary btn-soft' : 'btn-ghost' }}">
+            <i class="bi bi-hand-thumbs-up"></i>
+            Like
+        </a>
+
+        <a href="{{ path('post_comment', {'id': post.id}) }}" class="add-comment btn btn-sm btn-ghost">
+            <i class="bi bi-chat"></i>
+            Comment
+        </a>
+    </div>
+</div>
