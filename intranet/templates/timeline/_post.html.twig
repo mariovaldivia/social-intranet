@@ -42,12 +42,6 @@
 
         {% include "timeline/_postActions.html.twig" with {'post': post} %}
 
-        <div class="comment-form"></div>
-
-        <div class="comments">
-            {% for comment in post.comments %}
-                {% include "timeline/_commentItem.html.twig" with {'comment': comment} %}
-            {% endfor %}
-        </div>
+        {% include "timeline/_comments.html.twig" with {'post': post} %}
     </div>
 </div>

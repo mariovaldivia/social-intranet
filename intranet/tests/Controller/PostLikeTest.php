@@ -3,9 +3,7 @@
 namespace App\Tests\Controller;
 
 use App\Entity\Event;
-use App\Entity\Like;
 use App\Entity\Post;
-use App\Entity\User;
 use App\Tests\Traits\LogsInUserTrait;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
@@ -15,17 +13,7 @@ class PostLikeTest extends WebTestCase
 
     protected function tearDown(): void
     {
-        // Other suites delete the test user's profile (cascading to the user),
-        // which fails on foreign keys if its likes, posts or events remain
-        $manager = static::getContainer()->get('doctrine')->getManager();
-        $user = $manager->getRepository(User::class)->findOneBy(['email' => 'functional-test@example.com']);
-        if ($user) {
-            foreach ([Like::class, Post::class, Event::class] as $class) {
-                $manager->createQuery(sprintf('DELETE FROM %s e WHERE e.user = :user', $class))
-                    ->setParameter('user', $user)
-                    ->execute();
-            }
-        }
+        $this->removeTestUserContent(static::getContainer()->get('doctrine')->getManager());
 
         parent::tearDown();
     }

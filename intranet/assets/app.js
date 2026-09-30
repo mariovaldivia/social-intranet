@@ -22,25 +22,44 @@ live('a.add-comment', 'click', function(event){
         if(parent){
             let form_div = parent.querySelector(".comment-form")
             form_div.innerHTML = response.data
+            form_div.querySelector("textarea")?.focus()
         }
     })
+})
+
+// Enter sends the comment, Shift+Enter inserts a line break
+live('.comment-form textarea', 'keydown', function(event){
+    if (event.key === 'Enter' && !event.shiftKey && !event.isComposing) {
+        event.preventDefault();
+        this.form.requestSubmit();
+    }
 })
 
 live('.comment-form form', 'submit', function(event){
     event.preventDefault();
     const form = this
     const formData = new FormData(form);
-    axios.post(form.action, formData)
+    // Symfony answers an invalid form with 422, which axios rejects by default
+    axios.post(form.action, formData, {validateStatus: (status) => status === 200 || status === 422})
         .then(function(response){
             let parent = form.closest(".post")
-            if(parent){
-                let comments = parent.querySelector(".comments")
-                let div = document.createElement('div');
-                div.innerHTML = response.data
-                comments.insertBefore(div, comments.firstChild)
-
-                let input = parent.querySelector("textarea")
+            if(!parent){
+                return
+            }
+            // A valid submit returns the new comment; an invalid one returns
+            // the form again, with its errors
+            const template = document.createElement('template')
+            template.innerHTML = response.data.trim()
+            const element = template.content.firstElementChild
+            if (element && element.classList.contains('comment')) {
+                parent.querySelector(".comments").appendChild(element)
+                const input = form.querySelector("textarea")
                 input.value = ""
+                input.focus()
+            } else {
+                const form_div = parent.querySelector(".comment-form")
+                form_div.innerHTML = response.data
+                form_div.querySelector("textarea")?.focus()
             }
         })
 })

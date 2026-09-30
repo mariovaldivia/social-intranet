@@ -26,6 +26,7 @@ class Post
     private ?string $message = null;
 
     #[ORM\OneToMany(targetEntity: Comment::class, mappedBy: 'post', orphanRemoval: true)]
+    #[ORM\OrderBy(['date' => 'ASC'])]
     private Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'posts')]

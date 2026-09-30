@@ -9,13 +9,18 @@ use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 class CommentType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('message')
+            ->add('message', null, [
+                'constraints' => [
+                    new NotBlank(message: 'Write something before commenting.'),
+                ],
+            ])
         ;
     }
 

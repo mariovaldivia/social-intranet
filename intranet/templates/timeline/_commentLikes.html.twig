@@ -3,9 +3,9 @@
 {% if num_likes > 0 %}
     <a href="{{ path('likes_comment', {'id': id}) }}"
         data-info-modal
-        class="link link-hover"
+        class="badge badge-sm badge-soft badge-primary gap-1 hover:underline"
         title="People who likes this comment">
-        <i class="bi bi-hand-thumbs-up mr-1"></i>
+        <i class="bi bi-hand-thumbs-up-fill"></i>
         {{ num_likes }}
     </a>
 {% endif %}
