@@ -21,12 +21,12 @@ class AppFixtures extends Fixture
         $manager->persist($produccion);
 
 
-        $ti = new Deparment();
+        $ti = new Department();
         $ti->setName('TI');
         $ti->setManagement($operaciones);
         $manager->persist($ti);
 
-        $prod = new Deparment();
+        $prod = new Department();
         $prod->setName('Producción');
         $prod->setManagement($produccion);
         $manager->persist($prod);
