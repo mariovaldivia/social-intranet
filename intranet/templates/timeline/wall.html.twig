@@ -12,7 +12,7 @@
                             title="{{ user.profile }}" 
                                 />
                     {% else %}
-                        <img class="rounded-circle" src="{{ asset('images/user-default.jpg')| imagine_filter('user') }}" 
+                        <img class="rounded-circle" src="{{ 'images/user-default.jpg'|imagine_filter('user') }}" 
                                 />
                     {% endif %}
                 </div>

@@ -4,10 +4,10 @@
             title="{{ profile }}"
             class="rounded-circle"
             loading="lazy"
-            {# onerror="this.src='{{ asset('images/user-default.jpg') | imagine_filter('user_post') }}'" #}
+            {# onerror="this.src='{{ 'images/user-default.jpg'|imagine_filter('user_post') }}'" #}
                 />
 {% else %}
-    <img src="{{ asset('images/user.png')|imagine_filter(size) }}" 
+    <img src="{{ 'images/user-default.jpg'|imagine_filter(size) }}" 
         class="rounded-circle"
             />
 {% endif %}
