@@ -101,6 +101,14 @@ class TimelineController extends AbstractController
         ]);
     }
 
+    #[Route('/comment/{id}/likes', name: 'likes_comment')]
+    public function showLikesComment(Comment $comment): Response
+    {
+        return $this->render('timeline/_postLikes.html.twig', [
+            'likes' => $comment->getLikes()
+        ]);
+    }
+
     #[Route('/comment/{id}/like', name: 'like_comment')]
     public function likeComment(EntityManagerInterface $entityManager, Comment $comment, LikeRepository $likeRepository): Response
     {

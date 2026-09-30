@@ -20,7 +20,7 @@
         <div class="comment__info">
             {{ comment.date|date('d/m') }}
 
-             {% include "timeline/_likes.html.twig" with {'likes': comment.likes} %}
+             {% include "timeline/_commentLikes.html.twig" with {'likes': comment.likes, 'id': comment.id} %}
 
             
             <a href="{{ path('like_comment', {'id': comment.id}) }}"
