@@ -23,7 +23,7 @@
                     </tr>
                     <tr>
                         <th>Birthdate</th>
-                        <td>{{ profile.birthdate ? profile.birthdate|date('Y-m-d') : '' }}</td>
+                        <td>{{ profile.birthdate ? profile.birthdate|date('Y-m-d', false) : '' }}</td>
                     </tr>
                     <tr>
                         <th>Phone</th>

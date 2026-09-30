@@ -40,7 +40,7 @@
                         <div>
                             {{ profile }}<br>
                             <span class="text-sm opacity-70">
-                                <i class="bi bi-calendar3 mr-1"></i> {{ profile.birthDate|date('d M') }}
+                                <i class="bi bi-calendar3 mr-1"></i> {{ profile.birthDate|date('d M', false) }}
                             </span>
                         </div>
                     </div>
@@ -59,7 +59,7 @@
                     <div class="flex gap-3">
                         <i class="bi bi-calendar3"></i>
                         <div>
-                            <span class="font-semibold">{{ event.date|date('d/M') }}</span><br>
+                            <span class="font-semibold">{{ event.date|date('d/M', false) }}</span><br>
                             {{ event.description }}
                         </div>
                     </div>

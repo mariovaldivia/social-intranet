@@ -31,7 +31,7 @@
                         </p>
 
                         <p>
-                            <i class="bi bi-gift mr-2"></i> {{ user.profile.birthDate|date('d M') }}
+                            <i class="bi bi-gift mr-2"></i> {{ user.profile.birthDate|date('d M', false) }}
                         </p>
                     {% endif %}
                 </div>

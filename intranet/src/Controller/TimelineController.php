@@ -7,6 +7,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use App\Entity\Comment;
 use App\Entity\Like;
 use App\Entity\Post;
@@ -21,17 +22,17 @@ use App\Repository\UserRepository;
 class TimelineController extends AbstractController
 {
     #[Route('/', name: 'app_timeline')]
-    public function index(EntityManagerInterface $entityManager, PostRepository $postRepository, ProfileRepository $profileRepository, EventRepository $eventRepository): Response
+    public function index(EntityManagerInterface $entityManager, PostRepository $postRepository, ProfileRepository $profileRepository, EventRepository $eventRepository, ClockInterface $clock): Response
     {
         $post = new Post();
         $form = $this->createForm(PostType::class, $post, [
             'action' => $this->generateUrl('app_post_new'),
             'method' => 'POST',
         ]);
-        $birthdays = $profileRepository->nextBirthdays(5);
+        $birthdays = $profileRepository->nextBirthdays(5, $clock->now());
         return $this->render('timeline/index.html.twig', [
             'posts' => $postRepository->lastPosts(),
-            'events' => $eventRepository->upcomingEvents(),
+            'events' => $eventRepository->findUpcoming($clock->now(), 5),
             'form' => $form,
             'birthdays' => $birthdays
         ]);

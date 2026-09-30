@@ -1,13 +1,25 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Events{% endblock %}
+{% block title %}{{ past ? 'Past events' : 'Events' }}{% endblock %}
 
 {% block body %}
-    <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-bold">Events</h1>
+    <div class="flex items-center justify-between mb-2">
+        <h1 class="text-2xl font-bold">{{ past ? 'Past events' : 'Events' }}</h1>
         <a href="{{ path('app_event_new') }}" class="btn btn-primary">
             <i class="bi bi-plus-lg"></i> Create event
         </a>
+    </div>
+
+    <div class="mb-4 text-sm">
+        {% if past %}
+            <a href="{{ path('app_event_index') }}" class="link link-primary">
+                <i class="bi bi-arrow-left"></i> Back to current and upcoming events
+            </a>
+        {% else %}
+            <a href="{{ path('app_event_past') }}" class="link link-primary">
+                <i class="bi bi-clock-history"></i> View past events
+            </a>
+        {% endif %}
     </div>
 
     {% for event in events %}
@@ -16,7 +28,7 @@
                 <div class="flex items-start justify-between gap-2">
                     <h4 class="card-title">
                         <i class="bi bi-calendar2"></i>
-                        {{ event.date ? event.date|date('d/m/Y') : '' }}
+                        {{ event.date ? event.date|date('d/m/Y', false) : '' }}
                     </h4>
                     <div class="flex gap-1">
                         <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">show</a>
@@ -36,7 +48,7 @@
         </div>
     {% else %}
         <div class="card bg-base-100 shadow-sm">
-            <div class="card-body">No events found</div>
+            <div class="card-body">{{ past ? 'No past events' : 'No current or upcoming events' }}</div>
         </div>
     {% endfor %}
 {% endblock %}

@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Profile;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -49,13 +50,14 @@ class ProfileRepository extends ServiceEntityRepository
     /**
      * @return Profile[] Returns an array of Profile objects
     */
-    public function nextBirthdays($limit): array
+    public function nextBirthdays($limit, \DateTimeInterface $today): array
     {
         $q = $this
             ->createQueryBuilder('u')
             ->select('u')
             // ->where('u.isActive = 1')
-            ->andWhere("DATE_FORMAT(u.birthdate, '%m%d') >= DATE_FORMAT(CURRENT_DATE(), '%m%d')")         
+            ->andWhere("DATE_FORMAT(u.birthdate, '%m%d') >= DATE_FORMAT(:today, '%m%d')")
+            ->setParameter('today', $today, Types::DATE_MUTABLE)
             ->orderBy("MONTH(u.birthdate)")
             ->addOrderBy("DAY(u.birthdate)");
 

@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,10 +18,20 @@ use App\Services\TimelineService;
 class EventController extends AbstractController
 {
     #[Route('/', name: 'app_event_index', methods: ['GET'])]
-    public function index(EventRepository $eventRepository): Response
+    public function index(EventRepository $eventRepository, ClockInterface $clock): Response
     {
         return $this->render('event/index.html.twig', [
-            'events' => $eventRepository->findAll(),
+            'events' => $eventRepository->findUpcoming($clock->now()),
+            'past' => false,
+        ]);
+    }
+
+    #[Route('/past', name: 'app_event_past', methods: ['GET'])]
+    public function past(EventRepository $eventRepository, ClockInterface $clock): Response
+    {
+        return $this->render('event/index.html.twig', [
+            'events' => $eventRepository->findPast($clock->now()),
+            'past' => true,
         ]);
     }
 
@@ -45,7 +56,7 @@ class EventController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_event_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_event_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Event $event): Response
     {
         return $this->render('event/show.html.twig', [

@@ -4,6 +4,10 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    # Time zone the intranet is used in. Dates are stored in UTC (PHP's default);
+    # this is used to show them and to decide what "today" is.
+    env(APP_TIMEZONE): 'America/Santiago'
+    app.timezone: '%env(APP_TIMEZONE)%'
 
 services:
     # default configuration for services in *this* file
@@ -22,3 +26,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # now() in the intranet's time zone, so "today" (upcoming events,
+    # birthdays) follows local midnight rather than UTC
+    Psr\Clock\ClockInterface:
+        class: Symfony\Component\Clock\Clock
+        factory: ['@clock', 'withTimeZone']
+        arguments: ['%app.timezone%']

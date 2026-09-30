@@ -42,7 +42,7 @@
                         {% if profile.birthDate %}
                             <span>
                                 <i class="bi bi-gift mr-1"></i>
-                                {{ profile.birthDate|date('d M') }}
+                                {{ profile.birthDate|date('d M', false) }}
                             </span>
                         {% endif %}
                     </div>

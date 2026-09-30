@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Event;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -21,16 +22,34 @@ class EventRepository extends ServiceEntityRepository
         parent::__construct($registry, Event::class);
     }
 
-        /**
-    * @return Event[] Returns an array of Event objects
-    */
-    public function upcomingEvents(int $limit = 5): array
+    /**
+     * Events happening on $today or later, soonest first.
+     *
+     * @return Event[]
+     */
+    public function findUpcoming(\DateTimeInterface $today, ?int $limit = null): array
     {
-        return $this->createQueryBuilder('p')
-               ->andWhere('p.date >= CURRENT_DATE()')
-            //    ->setParameter('val', $value)
-            ->orderBy('p.date', 'ASC')
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.date >= :today')
+            ->setParameter('today', $today, Types::DATE_MUTABLE)
+            ->orderBy('e.date', 'ASC')
             ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+    /**
+     * Events that happened before $today, most recent first.
+     *
+     * @return Event[]
+     */
+    public function findPast(\DateTimeInterface $today): array
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.date < :today')
+            ->setParameter('today', $today, Types::DATE_MUTABLE)
+            ->orderBy('e.date', 'DESC')
             ->getQuery()
             ->getResult()
         ;

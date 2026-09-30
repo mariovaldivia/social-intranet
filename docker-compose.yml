@@ -16,6 +16,7 @@ services:
       XDEBUG_CLIENT_HOST: host.docker.internal
       XDEBUG_CLIENT_PORT: 9003
       PHP_IDE_CONFIG: serverName=application
+      APP_TIMEZONE: ${TIMEZONE:-America/Santiago}
     ports:
       - '1000:8000'
     networks:

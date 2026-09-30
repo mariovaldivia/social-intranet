@@ -19,7 +19,7 @@
                     </tr>
                     <tr>
                         <th>Date</th>
-                        <td>{{ event.date ? event.date|date('Y-m-d') : '' }}</td>
+                        <td>{{ event.date ? event.date|date('Y-m-d', false) : '' }}</td>
                     </tr>
                 </tbody>
             </table>
