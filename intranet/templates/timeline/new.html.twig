@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Post{% endblock %}
+
+{% block body %}
+    <h1>Create new Post</h1>
+
+    {{ form_start(form, {'attr': {'novalidate': 'novalidate'}}) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.message) }}
+        <button class="btn btn-primary">
+            <i class="bi bi-send"></i> Publish
+        </button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('app_timeline') }}"
+        class="btn btn-secondary mt-3">
+        back to timeline
+    </a>
+{% endblock %}

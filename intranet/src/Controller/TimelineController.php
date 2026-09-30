@@ -52,10 +52,9 @@ class TimelineController extends AbstractController
             return $this->redirectToRoute('app_timeline', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->render('comment/new.html.twig', [
-            'comment' => $post,
+        return $this->render('timeline/new.html.twig', [
+            'post' => $post,
             'form' => $form,
-            
         ]);
     }
 
