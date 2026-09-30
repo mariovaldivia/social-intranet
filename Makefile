@@ -37,6 +37,13 @@ logs: ## Show Symfony logs in real time
 # Backend commands
 composer-install: ## Installs composer dependencies
 	U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} composer install --no-interaction
+
+test-db: ## Creates the test database (only needed for db volumes created before docker/mysql/init existed)
+	U_ID=${UID} docker compose exec -T db sh /docker-entrypoint-initdb.d/01-test-database.sh
+
+test: ## Migrates the test database and runs PHPUnit
+	U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} php bin/console --env=test doctrine:migrations:migrate --no-interaction
+	U_ID=${UID} docker exec --user ${UID} ${DOCKER_BE} php bin/phpunit
 # End backend commands
 
 ssh-be: ## bash into the be container

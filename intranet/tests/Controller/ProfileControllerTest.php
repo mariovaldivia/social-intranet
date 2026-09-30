@@ -3,6 +3,7 @@
 namespace App\Test\Controller;
 
 use App\Entity\Profile;
+use App\Tests\Traits\LogsInUserTrait;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -10,6 +11,8 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 
 class ProfileControllerTest extends WebTestCase
 {
+    use LogsInUserTrait;
+
     private KernelBrowser $client;
     private EntityManagerInterface $manager;
     private EntityRepository $repository;
@@ -26,6 +29,8 @@ class ProfileControllerTest extends WebTestCase
         }
 
         $this->manager->flush();
+
+        $this->logIn($this->client, $this->manager);
     }
 
     public function testIndex(): void
@@ -33,7 +38,7 @@ class ProfileControllerTest extends WebTestCase
         $crawler = $this->client->request('GET', $this->path);
 
         self::assertResponseStatusCodeSame(200);
-        self::assertPageTitleContains('Profile index');
+        self::assertPageTitleContains('Employees');
 
         // Use the $crawler to perform additional assertions e.g.
         // self::assertSame('Some text on the page', $crawler->filter('.p')->first());
