@@ -30,9 +30,10 @@ composer install
 
 ### Migrate database
 ```sh
-php bin/console make:migration
 php bin/console doctrine:migrations:migrate
 ```
+
+Only run `make:migration` after changing an entity, and commit the generated file in `migrations/`.
 
 ### Load fixtures
 ```sh

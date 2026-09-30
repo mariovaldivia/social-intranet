@@ -39,7 +39,6 @@
 /web/bundles/
 /intranet/public/upload/
 /intranet/public/media/
-/intranet/migrations/
 
 # PHPUnit
 /app/phpunit.xml
