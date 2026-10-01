@@ -1,10 +1,11 @@
-{# Comment thread of a post, oldest first. app.js appends new comments to
-   .comments and loads the form into .comment-form. .comments is kept free of
-   whitespace so `empty:hidden` hides its divider when there are no comments. #}
-<div class="comments border-t border-base-200 mt-3 pt-1 empty:hidden">
+{# Comment thread of a post, oldest first, inside a data-controller="comments"
+   element: new comments are appended to the list target and the form is
+   loaded into the form target. The list is kept free of whitespace so
+   `empty:hidden` hides its divider when there are no comments. #}
+<div class="comments border-t border-base-200 mt-3 pt-1 empty:hidden" data-comments-target="list">
     {%- for comment in post.comments -%}
         {%- include "timeline/_commentItem.html.twig" with {'comment': comment} -%}
     {%- endfor -%}
 </div>
 
-<div class="comment-form"></div>
+<div class="comment-form" data-comments-target="form"></div>

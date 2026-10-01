@@ -3,7 +3,7 @@
 {% if num_likes > 0 %}
     <span class="text-sm">
         <a href="{{ path('likes_post', {'id': id}) }}"
-            data-info-modal
+            data-action="info-modal#open"
             class="link link-hover"
             title="People who likes this post">
             <i class="bi bi-hand-thumbs-up mr-1"></i>

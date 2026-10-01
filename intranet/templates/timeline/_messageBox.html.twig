@@ -1,6 +1,6 @@
 {# Pill-shaped message input with the current user's avatar, shared by the
    post and comment forms. Enter submits, Shift+Enter adds a line break
-   (data-submit-on-enter, see app.js).
+   (submit-on-enter controller).
 
    Parameters: field (the form's message field), placeholder, submit_label,
    large (bigger avatar and text, for new posts) #}
@@ -18,7 +18,8 @@
                 'class': 'bg-transparent border-0 shadow-none outline-none focus:outline-none px-0 py-1 min-h-0 resize-none field-sizing-content ' ~ (large ? 'max-h-60' : 'max-h-40 text-sm'),
                 'rows': 1,
                 'placeholder': placeholder,
-                'data-submit-on-enter': true,
+                'data-controller': 'submit-on-enter',
+                'data-action': 'keydown->submit-on-enter#submit',
             }}) }}
             <button class="btn btn-ghost btn-circle {{ large ? '' : 'btn-sm' }} text-primary" aria-label="{{ submit_label }}">
                 <i class="bi bi-send-fill"></i>

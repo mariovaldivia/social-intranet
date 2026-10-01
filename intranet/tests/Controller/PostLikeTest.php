@@ -30,17 +30,17 @@ class PostLikeTest extends WebTestCase
         $manager->persist($post);
         $manager->flush();
 
-        // app.js swaps the .post-actions element with this response
+        // The replace controller swaps the .post-actions element with this response
         $crawler = $client->request('GET', sprintf('/post/%d/like', $post->getId()));
         self::assertResponseIsSuccessful();
-        self::assertCount(1, $crawler->filter('div.post-actions'));
+        self::assertCount(1, $crawler->filter('div.post-actions[data-controller="replace"]'));
         self::assertStringContainsString('btn-soft', $crawler->filter('a.post-like')->attr('class'));
-        self::assertSame('1', trim($crawler->filter('a[data-info-modal]')->text()));
+        self::assertSame('1', trim($crawler->filter('a[data-action="info-modal#open"]')->text()));
 
         $crawler = $client->request('GET', sprintf('/post/%d/like', $post->getId()));
         self::assertResponseIsSuccessful();
         self::assertStringContainsString('btn-ghost', $crawler->filter('a.post-like')->attr('class'));
-        self::assertCount(0, $crawler->filter('a[data-info-modal]'));
+        self::assertCount(0, $crawler->filter('a[data-action="info-modal#open"]'));
     }
 
     public function testEventListUsesAjaxLikeButton(): void

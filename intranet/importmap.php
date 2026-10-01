@@ -32,7 +32,4 @@ return [
         'version' => '6.5.1',
         'type' => 'css',
     ],
-    'axios' => [
-        'version' => '1.6.8',
-    ],
 ];

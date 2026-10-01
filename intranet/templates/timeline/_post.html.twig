@@ -1,7 +1,7 @@
 {% set user = post.user %}
 {% set profile = user.profile %}
 <div class="card bg-base-100 shadow-sm mb-4">
-    <div class="card-body post">
+    <div class="card-body post" data-controller="comments">
         <div class="flex gap-3 items-center">
             <a href="{{ path('app_wall', {'username': user.username}) }}" class="shrink-0">
                 {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}

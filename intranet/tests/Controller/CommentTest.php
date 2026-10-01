@@ -21,13 +21,14 @@ class CommentTest extends WebTestCase
     {
         [$client, $post] = $this->createPost();
 
-        // app.js appends the response to .comments when its root is .comment
+        // The comments controller appends this to its list; the root keeps the
+        // replace controller so its Like button works once inserted
         $crawler = $client->request('POST', sprintf('/post/%d/comment', $post->getId()), [
             'comment' => ['message' => 'Nice post', '_token' => 'csrf-token'],
         ], [], ['HTTP_ORIGIN' => 'http://localhost']);
 
         self::assertResponseIsSuccessful();
-        self::assertCount(1, $crawler->filter('body > div.comment'));
+        self::assertCount(1, $crawler->filter('body > div.comment[data-controller="replace"]'));
         self::assertStringContainsString('Nice post', $crawler->filter('div.comment p')->text());
     }
 
@@ -39,9 +40,9 @@ class CommentTest extends WebTestCase
             'comment' => ['message' => '   ', '_token' => 'csrf-token'],
         ], [], ['HTTP_ORIGIN' => 'http://localhost']);
 
-        // app.js accepts 422 and shows the returned form instead of a comment
+        // The comments controller shows a 422 response in place of the form
         self::assertResponseStatusCodeSame(422);
-        self::assertCount(1, $crawler->filter('form[name="comment"]'));
+        self::assertCount(1, $crawler->filter('form[name="comment"][data-action="comments#submit"]'));
         self::assertSelectorTextContains('.text-error', 'Write something before commenting.');
     }
 
