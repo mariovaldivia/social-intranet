@@ -7,12 +7,12 @@
             data-action="replace#load"
             class="post-like btn btn-sm {{ post.hasLike(app.user) ? 'btn-primary btn-soft' : 'btn-ghost' }}">
             <i class="bi bi-hand-thumbs-up"></i>
-            Like
+            {{ 'like.action'|trans }}
         </a>
 
         <a href="{{ path('post_comment', {'id': post.id}) }}" data-action="comments#open" class="add-comment btn btn-sm btn-ghost">
             <i class="bi bi-chat"></i>
-            Comment
+            {{ 'post.comment'|trans }}
         </a>
     </div>
 </div>

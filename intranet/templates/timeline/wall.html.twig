@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ user.profile ? user.profile : 'User is not registered'}}{% endblock %}
+{% block title %}{{ user.profile ? user.profile : 'profile.not_registered'|trans }}{% endblock %}
 
 {% block body %}
     {% if user.profile %}
@@ -36,7 +36,7 @@
 
                         {% if user.profile.hireDate %}
                             <p>
-                                <i class="bi bi-door-open mr-2"></i> Joined {{ user.profile.hireDate|date('d M Y', false) }}
+                                <i class="bi bi-door-open mr-2"></i> {{ 'profile.joined'|trans({date: user.profile.hireDate|date('d M Y', false)}) }}
                             </p>
                         {% endif %}
                     {% endif %}
@@ -49,7 +49,7 @@
                 {% include "timeline/_post.html.twig" with {'post': post} %}
             {% else %}
                 <div class="card bg-base-100 shadow-sm">
-                    <div class="card-body">No posts</div>
+                    <div class="card-body">{{ 'timeline.no_posts'|trans }}</div>
                 </div>
             {% endfor %}
         </div>

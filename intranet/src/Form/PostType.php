@@ -17,8 +17,10 @@ class PostType extends AbstractType
             //     'widget' => 'single_text',
             // ])
             ->add('message', null, [
+                'label' => 'post.field.message',
                 'constraints' => [
-                    new NotBlank(message: 'Write something before posting.'),
+                    // Key in translations/validators+intl-icu.*.yaml
+                    new NotBlank(message: 'post.message.not_blank'),
                 ],
             ])
         ;

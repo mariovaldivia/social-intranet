@@ -1,7 +1,7 @@
 {{ form_start(form, {'attr': {'novalidate': 'novalidate', 'class': 'mt-3', 'data-action': 'comments#submit'}}) }}
     {% include "timeline/_messageBox.html.twig" with {
         'field': form.message,
-        'placeholder': 'Write a comment...',
-        'submit_label': 'Send comment',
+        'placeholder': 'comment.placeholder'|trans,
+        'submit_label': 'comment.send'|trans,
     } %}
 {{ form_end(form) }}

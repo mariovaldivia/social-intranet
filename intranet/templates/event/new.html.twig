@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Event{% endblock %}
+{% block title %}{{ 'event.new.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Create new Event</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ 'event.new.heading'|trans }}</h1>
 
     <div class="card bg-base-100 shadow-sm max-w-2xl">
         <div class="card-body">
@@ -12,6 +12,6 @@
     </div>
 
     <a href="{{ path('app_event_index') }}" class="btn btn-ghost mt-4">
-        <i class="bi bi-arrow-left"></i> back to list
+        <i class="bi bi-arrow-left"></i> {{ 'common.back_to_list'|trans }}
     </a>
 {% endblock %}

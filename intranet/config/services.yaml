@@ -7,6 +7,8 @@ parameters:
     # Time zone the intranet is used in. Dates are stored in UTC (PHP's default);
     # this is used to show them and to decide what "today" is.
     env(APP_TIMEZONE): 'America/Santiago'
+    # UI language (see config/packages/translation.yaml)
+    env(APP_LOCALE): 'es'
     app.timezone: '%env(APP_TIMEZONE)%'
 
 services:

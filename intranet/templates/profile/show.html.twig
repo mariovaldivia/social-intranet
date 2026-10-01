@@ -1,56 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Profile{% endblock %}
+{% block title %}{{ 'profile.show.title'|trans }}{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Profile</h1>
+    <h1 class="text-2xl font-bold mb-4">{{ 'profile.show.title'|trans }}</h1>
 
     <div class="card bg-base-100 shadow-sm max-w-2xl">
         <div class="card-body">
             <table class="table">
                 <tbody>
                     <tr>
-                        <th>Id</th>
+                        <th>{{ 'common.id'|trans }}</th>
                         <td>{{ profile.id }}</td>
                     </tr>
                     <tr>
-                        <th>Name</th>
+                        <th>{{ 'profile.field.name'|trans }}</th>
                         <td>{{ profile.name }}</td>
                     </tr>
                     <tr>
-                        <th>Position</th>
+                        <th>{{ 'profile.field.position'|trans }}</th>
                         <td>{{ profile.position }}</td>
                     </tr>
                     <tr>
-                        <th>Birthdate</th>
+                        <th>{{ 'profile.field.birthdate'|trans }}</th>
                         <td>{{ profile.birthdate ? profile.birthdate|date('Y-m-d', false) : '' }}</td>
                     </tr>
                     <tr>
-                        <th>Hire date</th>
+                        <th>{{ 'profile.field.hire_date'|trans }}</th>
                         <td>{{ profile.hireDate ? profile.hireDate|date('Y-m-d', false) : '' }}</td>
                     </tr>
                     <tr>
-                        <th>Phone</th>
+                        <th>{{ 'profile.field.phone'|trans }}</th>
                         <td>{{ profile.phone }}</td>
                     </tr>
                     <tr>
-                        <th>LastName</th>
+                        <th>{{ 'profile.field.last_name'|trans }}</th>
                         <td>{{ profile.lastName }}</td>
                     </tr>
                     <tr>
-                        <th>Identification</th>
+                        <th>{{ 'profile.field.identification'|trans }}</th>
                         <td>{{ profile.identification }}</td>
                     </tr>
                     <tr>
-                        <th>ImageName</th>
+                        <th>{{ 'profile.field.image_name'|trans }}</th>
                         <td>{{ profile.imageName }}</td>
                     </tr>
                     <tr>
-                        <th>ImageSize</th>
+                        <th>{{ 'profile.field.image_size'|trans }}</th>
                         <td>{{ profile.imageSize }}</td>
                     </tr>
                     <tr>
-                        <th>UpdatedAt</th>
+                        <th>{{ 'profile.field.updated_at'|trans }}</th>
                         <td>{{ profile.updatedAt ? profile.updatedAt|date('Y-m-d H:i:s') : '' }}</td>
                     </tr>
                 </tbody>
@@ -58,9 +58,9 @@
 
             <div class="card-actions mt-2">
                 <a href="{{ path('app_profile_index') }}" class="btn btn-ghost">
-                    <i class="bi bi-arrow-left"></i> back to list
+                    <i class="bi bi-arrow-left"></i> {{ 'common.back_to_list'|trans }}
                 </a>
-                <a href="{{ path('app_profile_edit', {'id': profile.id}) }}" class="btn btn-primary">edit</a>
+                <a href="{{ path('app_profile_edit', {'id': profile.id}) }}" class="btn btn-primary">{{ 'common.edit'|trans }}</a>
                 {{ include('profile/_delete_form.html.twig') }}
             </div>
         </div>

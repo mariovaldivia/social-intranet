@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Employees{% endblock %}
+{% block title %}{{ 'profile.list.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="flex items-center justify-between mb-4">
-        <h1 class="text-2xl font-bold">Employees</h1>
+        <h1 class="text-2xl font-bold">{{ 'profile.list.title'|trans }}</h1>
         <a href="{{ path('app_profile_new') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> Create new
+            <i class="bi bi-plus-lg"></i> {{ 'profile.list.create'|trans }}
         </a>
     </div>
 
@@ -51,7 +51,7 @@
         </div>
     {% else %}
         <div class="card bg-base-100 shadow-sm">
-            <div class="card-body">No records found</div>
+            <div class="card-body">{{ 'profile.list.empty'|trans }}</div>
         </div>
     {% endfor %}
     </div>

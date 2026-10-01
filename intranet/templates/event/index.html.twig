@@ -1,23 +1,23 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ past ? 'Past events' : 'Events' }}{% endblock %}
+{% block title %}{{ (past ? 'event.list.past_title' : 'event.list.title')|trans }}{% endblock %}
 
 {% block body %}
     <div class="flex items-center justify-between mb-2">
-        <h1 class="text-2xl font-bold">{{ past ? 'Past events' : 'Events' }}</h1>
+        <h1 class="text-2xl font-bold">{{ (past ? 'event.list.past_title' : 'event.list.title')|trans }}</h1>
         <a href="{{ path('app_event_new') }}" class="btn btn-primary">
-            <i class="bi bi-plus-lg"></i> Create event
+            <i class="bi bi-plus-lg"></i> {{ 'event.list.create'|trans }}
         </a>
     </div>
 
     <div class="mb-4 text-sm">
         {% if past %}
             <a href="{{ path('app_event_index') }}" class="link link-primary">
-                <i class="bi bi-arrow-left"></i> Back to current and upcoming events
+                <i class="bi bi-arrow-left"></i> {{ 'event.list.back_to_upcoming'|trans }}
             </a>
         {% else %}
             <a href="{{ path('app_event_past') }}" class="link link-primary">
-                <i class="bi bi-clock-history"></i> View past events
+                <i class="bi bi-clock-history"></i> {{ 'event.list.view_past'|trans }}
             </a>
         {% endif %}
     </div>
@@ -31,8 +31,8 @@
                         {{ event.date ? event.date|date('d/m/Y', false) : '' }}
                     </h4>
                     <div class="flex gap-1">
-                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">show</a>
-                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-ghost btn-xs">edit</a>
+                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.show'|trans }}</a>
+                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.edit'|trans }}</a>
                     </div>
                 </div>
 
@@ -48,7 +48,7 @@
         </div>
     {% else %}
         <div class="card bg-base-100 shadow-sm">
-            <div class="card-body">{{ past ? 'No past events' : 'No current or upcoming events' }}</div>
+            <div class="card-body">{{ (past ? 'event.list.empty_past' : 'event.list.empty_upcoming')|trans }}</div>
         </div>
     {% endfor %}
 {% endblock %}

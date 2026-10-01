@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'login.title'|trans }}{% endblock %}
 
 {% block body %}
     <div class="card bg-base-100 shadow-sm max-w-md mx-auto mt-8">
@@ -14,17 +14,17 @@
 
                 {% if app.user %}
                     <div class="mb-3">
-                        You are logged in as {{ app.user.userIdentifier }},
+                        {{ 'login.logged_in_as'|trans({user: app.user.userIdentifier}) }}
                         <a href="{{ path('app_logout') }}" class="link">
-                            Logout
+                            {{ 'nav.logout'|trans }}
                         </a>
                     </div>
                 {% endif %}
 
-                <h1 class="text-2xl font-bold mb-2">Please sign in</h1>
+                <h1 class="text-2xl font-bold mb-2">{{ 'login.heading'|trans }}</h1>
 
                 <fieldset class="fieldset">
-                    <label for="username" class="fieldset-legend">Email</label>
+                    <label for="username" class="fieldset-legend">{{ 'login.email'|trans }}</label>
                     <input type="email"
                         value="{{ last_username }}"
                         name="_username"
@@ -36,7 +36,7 @@
                 </fieldset>
 
                 <fieldset class="fieldset">
-                    <label for="password" class="fieldset-legend">Password</label>
+                    <label for="password" class="fieldset-legend">{{ 'login.password'|trans }}</label>
                     <input type="password"
                         name="_password"
                         id="password"
@@ -54,12 +54,12 @@
                     See https://symfony.com/doc/current/security/remember_me.html
 
                     <label class="label mt-2">
-                        <input type="checkbox" name="_remember_me" class="checkbox"> Remember me
+                        <input type="checkbox" name="_remember_me" class="checkbox"> {{ 'login.remember_me'|trans }}
                     </label>
                 #}
 
                 <button class="btn btn-primary w-full mt-4" type="submit">
-                    Sign in
+                    {{ 'login.submit'|trans }}
                 </button>
             </form>
         </div>

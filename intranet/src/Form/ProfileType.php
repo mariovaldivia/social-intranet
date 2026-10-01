@@ -15,24 +15,26 @@ class ProfileType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('lastName')
-            ->add('identification')
-            ->add('position')
+            ->add('name', null, ['label' => 'profile.field.name'])
+            ->add('lastName', null, ['label' => 'profile.field.last_name'])
+            ->add('identification', null, ['label' => 'profile.field.identification'])
+            ->add('position', null, ['label' => 'profile.field.position'])
             ->add('department', EntityType::class, [
                 'class' => Department::class,
+                'label' => 'profile.field.department',
                 // 'choice_label' => 'id',
             ])
-            ->add('email')    
+            ->add('email', null, ['label' => 'profile.field.email'])
             ->add('birthdate', null, [
                 'widget' => 'single_text',
+                'label' => 'profile.field.birthdate',
             ])
             ->add('hireDate', null, [
                 'widget' => 'single_text',
-                'label' => 'Hire date',
+                'label' => 'profile.field.hire_date',
             ])
-            ->add('phone')
-            ->add('imageFile')
+            ->add('phone', null, ['label' => 'profile.field.phone'])
+            ->add('imageFile', null, ['label' => 'profile.field.image'])
 
         ;
     }

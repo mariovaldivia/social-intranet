@@ -2,5 +2,5 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
         {{ form_widget(form) }}
     </div>
-    <button class="btn btn-primary mt-4">{{ button_label|default('Save') }}</button>
+    <button class="btn btn-primary mt-4">{{ (button_label|default('common.save'))|trans }}</button>
 {{ form_end(form) }}

@@ -1,7 +1,16 @@
 framework:
-    default_locale: en
+    # Language of the UI: set APP_LOCALE (es or en); defaults to es in
+    # config/services.yaml. Strings live in translations/, keyed by section
+    # (nav.*, event.*, profile.*, ...).
+    default_locale: '%env(APP_LOCALE)%'
+    enabled_locales: ['en', 'es']
     translator:
         default_path: '%kernel.project_dir%/translations'
         fallbacks:
             - en
         providers:
+
+when@test:
+    framework:
+        # Tests assert English strings
+        default_locale: en

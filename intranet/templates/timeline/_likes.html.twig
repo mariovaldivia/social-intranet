@@ -5,7 +5,7 @@
         <a href="{{ path('likes_post', {'id': id}) }}"
             data-action="info-modal#open"
             class="link link-hover"
-            title="People who likes this post">
+            title="{{ 'like.post_title'|trans }}">
             <i class="bi bi-hand-thumbs-up mr-1"></i>
             {{ num_likes }}
         </a>

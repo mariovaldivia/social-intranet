@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html>
+<html lang="{{ app.request.locale }}">
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>{% block title %}Welcome!{% endblock %}</title>
+        <title>{% block title %}{{ 'app.default_title'|trans }}{% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text><text y=%221.3em%22 x=%220.2em%22 font-size=%2276%22 fill=%22%23fff%22>sf</text></svg>">
         {% block stylesheets %}
         {% endblock %}
@@ -16,18 +16,19 @@
         {% endblock %}
     </head>
 
-    <body class="bg-base-200 min-h-screen" data-controller="info-modal">
+    <body class="bg-base-200 min-h-screen" data-controller="info-modal"
+          data-info-modal-error-value="{{ 'common.load_error'|trans }}">
     <div class="drawer drawer-end">
         <input id="user-drawer" type="checkbox" class="drawer-toggle">
 
         <div class="drawer-content">
             <nav class="navbar bg-primary text-primary-content shadow-sm">
                 <div class="flex-1 gap-2">
-                    <a class="btn btn-ghost text-xl" href="{{ path('app_timeline') }}">Intranet</a>
-                    <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_event_index') }}">Events</a>
+                    <a class="btn btn-ghost text-xl" href="{{ path('app_timeline') }}">{{ 'app.brand'|trans }}</a>
+                    <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_event_index') }}">{{ 'nav.events'|trans }}</a>
                 </div>
                 {% if app.user %}
-                    <label for="user-drawer" class="btn btn-ghost btn-square" aria-label="Open user menu">
+                    <label for="user-drawer" class="btn btn-ghost btn-square" aria-label="{{ 'nav.open_user_menu'|trans }}">
                         <i class="bi bi-list text-2xl"></i>
                     </label>
                 {% endif %}
@@ -41,11 +42,11 @@
         {% if app.user %}
             {% set profile = app.user.profile %}
             <div class="drawer-side z-20">
-                <label for="user-drawer" class="drawer-overlay" aria-label="Close user menu"></label>
+                <label for="user-drawer" class="drawer-overlay" aria-label="{{ 'nav.close_user_menu'|trans }}"></label>
                 <div class="bg-base-100 min-h-full w-80 p-4">
                     <div class="flex items-center justify-between mb-4">
-                        <h5 class="text-lg font-semibold">Social Intranet</h5>
-                        <label for="user-drawer" class="btn btn-sm btn-circle btn-ghost" aria-label="Close">
+                        <h5 class="text-lg font-semibold">{{ 'app.name'|trans }}</h5>
+                        <label for="user-drawer" class="btn btn-sm btn-circle btn-ghost" aria-label="{{ 'common.close'|trans }}">
                             <i class="bi bi-x-lg"></i>
                         </label>
                     </div>
@@ -67,13 +68,13 @@
                     </div>
 
                     <a class="btn btn-outline btn-primary btn-sm mt-4" href="{{ path('app_logout') }}">
-                        <i class="bi bi-box-arrow-right"></i> Logout
+                        <i class="bi bi-box-arrow-right"></i> {{ 'nav.logout'|trans }}
                     </a>
 
                     <ul class="menu w-full mt-4 px-0">
-                        <li><a href="{{ path('app_timeline') }}"><i class="bi bi-house"></i> Timeline</a></li>
-                        <li><a href="{{ path('app_event_index') }}"><i class="bi bi-calendar2"></i> Events</a></li>
-                        <li><a href="{{ path('app_profile_index') }}"><i class="bi bi-people"></i> Employees</a></li>
+                        <li><a href="{{ path('app_timeline') }}"><i class="bi bi-house"></i> {{ 'nav.timeline'|trans }}</a></li>
+                        <li><a href="{{ path('app_event_index') }}"><i class="bi bi-calendar2"></i> {{ 'nav.events'|trans }}</a></li>
+                        <li><a href="{{ path('app_profile_index') }}"><i class="bi bi-people"></i> {{ 'nav.employees'|trans }}</a></li>
                     </ul>
                 </div>
             </div>
@@ -83,7 +84,7 @@
     <dialog id="info-modal" class="modal" data-info-modal-target="dialog">
         <div class="modal-box">
             <form method="dialog">
-                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" aria-label="Close">
+                <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2" aria-label="{{ 'common.close'|trans }}">
                     <i class="bi bi-x-lg"></i>
                 </button>
             </form>
@@ -91,7 +92,7 @@
             <div class="modal-body" data-info-modal-target="body"></div>
         </div>
         <form method="dialog" class="modal-backdrop">
-            <button>close</button>
+            <button>{{ 'common.close'|trans }}</button>
         </form>
     </dialog>
 

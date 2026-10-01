@@ -10,6 +10,8 @@ import { Controller } from '@hotwired/stimulus';
  */
 export default class extends Controller {
     static targets = ['dialog', 'title', 'body'];
+    // Translated message shown when loading fails (data-info-modal-error-value)
+    static values = { error: String };
 
     async open(event) {
         event.preventDefault();
@@ -20,8 +22,14 @@ export default class extends Controller {
         this.dialogTarget.showModal();
 
         const response = await fetch(link.href);
-        this.bodyTarget.innerHTML = response.ok
-            ? await response.text()
-            : '<p class="text-error">Could not load this content.</p>';
+        if (response.ok) {
+            this.bodyTarget.innerHTML = await response.text();
+            return;
+        }
+
+        const error = document.createElement('p');
+        error.className = 'text-error';
+        error.textContent = this.errorValue;
+        this.bodyTarget.replaceChildren(error);
     }
 }

@@ -1,0 +1,122 @@
+app:
+    name: 'Intranet Social'
+    brand: 'Intranet'
+    default_title: '¡Bienvenido!'
+
+nav:
+    timeline: 'Inicio'
+    events: 'Eventos'
+    employees: 'Empleados'
+    logout: 'Cerrar sesión'
+    open_user_menu: 'Abrir menú de usuario'
+    close_user_menu: 'Cerrar menú de usuario'
+
+common:
+    save: 'Guardar'
+    update: 'Actualizar'
+    delete: 'Eliminar'
+    delete_confirm: '¿Seguro que quieres eliminar este elemento?'
+    show: 'ver'
+    edit: 'editar'
+    back_to_list: 'volver al listado'
+    close: 'Cerrar'
+    id: 'Id'
+    load_error: 'No se pudo cargar este contenido.'
+
+login:
+    title: '¡Inicia sesión!'
+    heading: 'Inicia sesión'
+    email: 'Correo electrónico'
+    password: 'Contraseña'
+    remember_me: 'Recordarme'
+    submit: 'Ingresar'
+    logged_in_as: 'Has iniciado sesión como {user},'
+
+timeline:
+    post_placeholder: '¿Qué estás pensando?'
+    publish: 'Publicar'
+    no_posts: 'No hay publicaciones'
+    birthdays:
+        title: 'Próximos cumpleaños'
+        empty: 'No hay cumpleaños próximos'
+    new_hires:
+        title: 'Nuevos integrantes'
+        empty: 'No hay nuevos integrantes'
+    events:
+        title: 'Próximos eventos'
+        empty: 'No hay eventos próximos'
+
+post:
+    new:
+        title: 'Nueva publicación'
+        heading: 'Crear publicación'
+    back_to_timeline: 'volver al inicio'
+    comment: 'Comentar'
+    field:
+        message: 'Mensaje'
+
+comment:
+    placeholder: 'Escribe un comentario...'
+    send: 'Enviar comentario'
+    field:
+        message: 'Mensaje'
+
+like:
+    action: 'Me gusta'
+    post_title: 'Personas a las que les gusta esta publicación'
+    comment_title: 'Personas a las que les gusta este comentario'
+
+event:
+    list:
+        title: 'Eventos'
+        past_title: 'Eventos pasados'
+        create: 'Crear evento'
+        view_past: 'Ver eventos pasados'
+        back_to_upcoming: 'Volver a los eventos actuales y próximos'
+        empty_upcoming: 'No hay eventos actuales ni próximos'
+        empty_past: 'No hay eventos pasados'
+    show:
+        title: 'Evento'
+    new:
+        title: 'Nuevo evento'
+        heading: 'Crear evento'
+    edit:
+        title: 'Editar evento'
+    field:
+        description: 'Descripción'
+        date: 'Fecha'
+
+profile:
+    list:
+        title: 'Empleados'
+        create: 'Crear nuevo'
+        empty: 'No se encontraron registros'
+    show:
+        title: 'Perfil'
+    new:
+        title: 'Nuevo perfil'
+        heading: 'Crear perfil'
+    edit:
+        title: 'Editar perfil'
+    joined: 'Ingresó el {date}'
+    not_registered: 'El usuario no está registrado'
+    field:
+        name: 'Nombre'
+        last_name: 'Apellido'
+        identification: 'Identificación'
+        position: 'Cargo'
+        department: 'Departamento'
+        email: 'Correo electrónico'
+        birthdate: 'Fecha de nacimiento'
+        hire_date: 'Fecha de ingreso'
+        phone: 'Teléfono'
+        image: 'Foto'
+        image_name: 'Nombre de la imagen'
+        image_size: 'Tamaño de la imagen'
+        updated_at: 'Actualizado el'
+
+time_ago:
+    just_now: 'ahora mismo'
+    minutes: '{count, plural, one {hace # minuto} other {hace # minutos}}'
+    hours: '{count, plural, one {hace # hora} other {hace # horas}}'
+    days: '{count, plural, one {hace # día} other {hace # días}}'

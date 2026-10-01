@@ -4,7 +4,7 @@
     <a href="{{ path('likes_comment', {'id': id}) }}"
         data-action="info-modal#open"
         class="badge badge-sm badge-soft badge-primary gap-1 hover:underline"
-        title="People who likes this comment">
+        title="{{ 'like.comment_title'|trans }}">
         <i class="bi bi-hand-thumbs-up-fill"></i>
         {{ num_likes }}
     </a>

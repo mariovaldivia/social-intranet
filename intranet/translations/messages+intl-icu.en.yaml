@@ -1,3 +1,120 @@
+app:
+    name: 'Social Intranet'
+    brand: 'Intranet'
+    default_title: 'Welcome!'
+
+nav:
+    timeline: 'Timeline'
+    events: 'Events'
+    employees: 'Employees'
+    logout: 'Logout'
+    open_user_menu: 'Open user menu'
+    close_user_menu: 'Close user menu'
+
+common:
+    save: 'Save'
+    update: 'Update'
+    delete: 'Delete'
+    delete_confirm: 'Are you sure you want to delete this item?'
+    show: 'show'
+    edit: 'edit'
+    back_to_list: 'back to list'
+    close: 'Close'
+    id: 'Id'
+    load_error: 'Could not load this content.'
+
+login:
+    title: 'Log in!'
+    heading: 'Please sign in'
+    email: 'Email'
+    password: 'Password'
+    remember_me: 'Remember me'
+    submit: 'Sign in'
+    logged_in_as: 'You are logged in as {user},'
+
+timeline:
+    post_placeholder: "What's on your mind?"
+    publish: 'Publish'
+    no_posts: 'No posts'
+    birthdays:
+        title: 'Upcoming birthdays'
+        empty: 'No upcoming birthdays'
+    new_hires:
+        title: 'New team members'
+        empty: 'No new team members'
+    events:
+        title: 'Upcoming Events'
+        empty: 'No upcoming events'
+
+post:
+    new:
+        title: 'New Post'
+        heading: 'Create new Post'
+    back_to_timeline: 'back to timeline'
+    comment: 'Comment'
+    field:
+        message: 'Message'
+
+comment:
+    placeholder: 'Write a comment...'
+    send: 'Send comment'
+    field:
+        message: 'Message'
+
+like:
+    action: 'Like'
+    post_title: 'People who like this post'
+    comment_title: 'People who like this comment'
+
+event:
+    list:
+        title: 'Events'
+        past_title: 'Past events'
+        create: 'Create event'
+        view_past: 'View past events'
+        back_to_upcoming: 'Back to current and upcoming events'
+        empty_upcoming: 'No current or upcoming events'
+        empty_past: 'No past events'
+    show:
+        title: 'Event'
+    new:
+        title: 'New Event'
+        heading: 'Create new Event'
+    edit:
+        title: 'Edit Event'
+    field:
+        description: 'Description'
+        date: 'Date'
+
+profile:
+    list:
+        title: 'Employees'
+        create: 'Create new'
+        empty: 'No records found'
+    show:
+        title: 'Profile'
+    new:
+        title: 'New Profile'
+        heading: 'Create new Profile'
+    edit:
+        title: 'Edit Profile'
+    joined: 'Joined {date}'
+    not_registered: 'User is not registered'
+    field:
+        name: 'Name'
+        last_name: 'Last name'
+        identification: 'Identification'
+        position: 'Position'
+        department: 'Department'
+        email: 'Email'
+        birthdate: 'Birthdate'
+        hire_date: 'Hire date'
+        phone: 'Phone'
+        image: 'Photo'
+        image_name: 'Image name'
+        image_size: 'Image size'
+        updated_at: 'Updated at'
+
 time_ago:
     just_now: 'just now'
     minutes: '{count, plural, one {# minute ago} other {# minutes ago}}'

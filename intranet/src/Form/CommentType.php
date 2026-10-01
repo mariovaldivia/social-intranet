@@ -17,8 +17,10 @@ class CommentType extends AbstractType
     {
         $builder
             ->add('message', null, [
+                'label' => 'comment.field.message',
                 'constraints' => [
-                    new NotBlank(message: 'Write something before commenting.'),
+                    // Key in translations/validators+intl-icu.*.yaml
+                    new NotBlank(message: 'comment.message.not_blank'),
                 ],
             ])
         ;

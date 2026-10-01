@@ -1,0 +1,7 @@
+post:
+    message:
+        not_blank: 'Escribe algo antes de publicar.'
+
+comment:
+    message:
+        not_blank: 'Escribe algo antes de comentar.'
