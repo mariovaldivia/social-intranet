@@ -51,12 +51,14 @@ class Post
         $this->date = new \DateTimeImmutable();
     }
 
-    public function hasLike(User $user)
+    public function hasLike(User $user): bool
     {
         $criteria = Criteria::create()
             ->where(Criteria::expr()->eq("user", $user));
-            
-        return $this->likes->matching($criteria)[0] ?? null;
+
+        // Not matching(...)[0]: an initialized collection keeps its keys when
+        // filtered, so the user's like is not at 0 if someone else liked first
+        return !$this->likes->matching($criteria)->isEmpty();
     }
 
     public function getId(): ?int
