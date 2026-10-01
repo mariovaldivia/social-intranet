@@ -31,6 +31,7 @@ class ProfileCrudController extends AbstractCrudController
             AssociationField::new('department'),
 
             DateField::new('birthDate'),
+            DateField::new('hireDate'),
             TextField::new('phone'),
             TextareaField::new('imageFile')
                 ->setFormType(VichImageType::class) // Use VichImageType for handling uploads

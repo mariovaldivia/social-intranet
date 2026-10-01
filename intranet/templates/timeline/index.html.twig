@@ -53,6 +53,36 @@
         <div class="card bg-base-100 shadow-sm">
             <div class="card-body">
                 <h2 class="card-title text-base">
+                    <i class="bi bi-person-plus"></i> New team members
+                </h2>
+                {% for profile in newHires %}
+                    <div class="flex gap-3 items-center new-hire">
+                        {% include "_imageUser.html.twig" with {'user': profile.user, 'size': 'user_post'} %}
+                        <div class="min-w-0">
+                            {% if profile.user %}
+                                <a href="{{ path('app_wall', {'username': profile.user.username}) }}" class="font-semibold hover:underline">{{ profile }}</a>
+                            {% else %}
+                                <span class="font-semibold">{{ profile }}</span>
+                            {% endif %}
+                            {% if profile.position or profile.department %}
+                                <div class="text-sm opacity-70 truncate">
+                                    {{ profile.position }}{{ profile.position and profile.department ? ' · ' }}{{ profile.department }}
+                                </div>
+                            {% endif %}
+                            <div class="text-sm opacity-70">
+                                <i class="bi bi-door-open mr-1"></i> Joined {{ profile.hireDate|date('d M Y', false) }}
+                            </div>
+                        </div>
+                    </div>
+                {% else %}
+                    <p class="text-sm opacity-70">No new team members</p>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="card bg-base-100 shadow-sm">
+            <div class="card-body">
+                <h2 class="card-title text-base">
                     <i class="bi bi-calendar2"></i> Upcoming Events
                 </h2>
                 {% for event in events %}

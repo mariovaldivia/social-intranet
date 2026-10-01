@@ -34,7 +34,8 @@ class TimelineController extends AbstractController
             'posts' => $postRepository->lastPosts(),
             'events' => $eventRepository->findUpcoming($clock->now(), 5),
             'form' => $form,
-            'birthdays' => $birthdays
+            'birthdays' => $birthdays,
+            'newHires' => $profileRepository->latestHires(5, $clock->now()),
         ]);
     }
 

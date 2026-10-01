@@ -27,6 +27,10 @@ class Profile
     #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $birthdate = null;
 
+    // Date the person joined the company
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $hireDate = null;
+
     #[ORM\Column(length: 50, nullable: true)]
     private ?string $phone = null;
 
@@ -124,6 +128,18 @@ class Profile
     public function setBirthdate(?\DateTimeInterface $birthdate): static
     {
         $this->birthdate = $birthdate;
+
+        return $this;
+    }
+
+    public function getHireDate(): ?\DateTimeInterface
+    {
+        return $this->hireDate;
+    }
+
+    public function setHireDate(?\DateTimeInterface $hireDate): static
+    {
+        $this->hireDate = $hireDate;
 
         return $this;
     }

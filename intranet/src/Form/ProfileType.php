@@ -27,6 +27,10 @@ class ProfileType extends AbstractType
             ->add('birthdate', null, [
                 'widget' => 'single_text',
             ])
+            ->add('hireDate', null, [
+                'widget' => 'single_text',
+                'label' => 'Hire date',
+            ])
             ->add('phone')
             ->add('imageFile')
 

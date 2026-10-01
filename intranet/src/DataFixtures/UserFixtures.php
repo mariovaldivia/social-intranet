@@ -23,6 +23,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $profile1->setPosition('Software Engineer');
         $profile1->setEmail('mvaldivia@gmail.com');
         $profile1->setBirthdate(\DateTime::createFromFormat('m/d/Y', '12/27/1987'));
+        $profile1->setHireDate(new \DateTime('-2 years'));
         $profile1->setDepartment(
             $manager->getRepository(Department::class)->findOneByName('TI'));
         $manager->persist($profile1);
@@ -48,6 +49,7 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $profile2->setPosition('Tecnico');
         $profile2->setEmail('jperez@gmail.com');
         $profile2->setBirthdate(\DateTime::createFromFormat('m/d/Y', '10/15/1995'));
+        $profile2->setHireDate(new \DateTime('-10 days'));
         $profile2->setDepartment(
             $manager->getRepository(Department::class)->findOneByName('Producción'));
         $manager->persist($profile2);

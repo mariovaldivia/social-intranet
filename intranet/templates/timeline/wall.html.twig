@@ -33,6 +33,12 @@
                         <p>
                             <i class="bi bi-gift mr-2"></i> {{ user.profile.birthDate|date('d M', false) }}
                         </p>
+
+                        {% if user.profile.hireDate %}
+                            <p>
+                                <i class="bi bi-door-open mr-2"></i> Joined {{ user.profile.hireDate|date('d M Y', false) }}
+                            </p>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>

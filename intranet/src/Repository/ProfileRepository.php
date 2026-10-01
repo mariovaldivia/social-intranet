@@ -65,4 +65,23 @@ class ProfileRepository extends ServiceEntityRepository
         return $q->getQuery()->getResult();
     }
 
+    /**
+     * People who joined the company most recently, up to $today: future hire
+     * dates (not started yet) and profiles without a hire date are skipped.
+     *
+     * @return Profile[]
+     */
+    public function latestHires(int $limit, \DateTimeInterface $today): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.hireDate <= :today')
+            ->setParameter('today', $today, Types::DATE_MUTABLE)
+            ->orderBy('p.hireDate', 'DESC')
+            ->addOrderBy('p.id', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
 }
