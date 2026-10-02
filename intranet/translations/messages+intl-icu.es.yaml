@@ -7,6 +7,7 @@ nav:
     timeline: 'Inicio'
     events: 'Eventos'
     employees: 'Empleados'
+    gallery: 'Galería'
     logout: 'Cerrar sesión'
     open_user_menu: 'Abrir menú de usuario'
     close_user_menu: 'Cerrar menú de usuario'
@@ -47,6 +48,7 @@ timeline:
         empty: 'No hay eventos próximos'
 
 post:
+    album_photos: '{count, plural, one {agregó una foto al álbum} other {agregó # fotos al álbum}}'
     new:
         title: 'Nueva publicación'
         heading: 'Crear publicación'
@@ -148,3 +150,45 @@ company:
         updated_at: 'Actualizada el'
     help:
         tax_id: 'Para empresas chilenas, el RUT (ej.: 76.123.456-7).'
+
+gallery:
+    title: 'Galería de fotos'
+    empty: 'Todavía no hay álbumes.'
+    back: 'volver a la galería'
+    album:
+        create: 'Crear álbum'
+        new_title: 'Nuevo álbum'
+        photo_count: '{count, plural, =0 {Sin fotos} one {# foto} other {# fotos}}'
+        created_by: 'Por {name}'
+        empty: 'Este álbum aún no tiene fotos. Sube las primeras.'
+        delete: 'Eliminar álbum'
+        delete_confirm: '¿Eliminar este álbum y todas sus fotos?'
+        field:
+            title: 'Título'
+            event_date: 'Fecha de la actividad'
+            description: 'Descripción'
+            created_by: 'Creado por'
+            photos: 'Fotos'
+            created_at: 'Creado el'
+    upload:
+        submit: 'Subir'
+        help: 'JPEG, PNG, WebP o GIF, hasta 10 MB cada una y 20 fotos a la vez.'
+        field:
+            photos: 'Agregar fotos'
+    photo:
+        open: 'Abrir foto'
+        previous: 'Foto anterior'
+        next: 'Foto siguiente'
+        delete: 'Eliminar foto'
+        delete_confirm: '¿Eliminar esta foto?'
+        field:
+            image: 'Foto'
+            album: 'Álbum'
+            caption: 'Pie de foto'
+            uploaded_by: 'Subida por'
+            created_at: 'Subida el'
+    admin:
+        album_singular: 'Álbum'
+        album_plural: 'Álbumes'
+        photo_singular: 'Foto'
+        photo_plural: 'Fotos'

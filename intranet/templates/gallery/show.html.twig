@@ -1,0 +1,114 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ album.title }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_gallery_index') }}" class="btn btn-ghost btn-sm mb-2">
+        <i class="bi bi-arrow-left"></i> {{ 'gallery.back'|trans }}
+    </a>
+
+    <div class="flex flex-wrap items-start justify-between gap-2 mb-4">
+        <div>
+            <h1 class="text-2xl font-bold">{{ album.title }}</h1>
+            <p class="text-sm opacity-70">
+                {% if album.eventDate %}
+                    <i class="bi bi-calendar3 mr-1"></i>{{ album.eventDate|date('d/m/Y', false) }} ·
+                {% endif %}
+                {{ 'gallery.album.created_by'|trans({name: album.createdBy}) }}
+                · {{ 'gallery.album.photo_count'|trans({count: album.photos|length}) }}
+            </p>
+            {% if album.description %}
+                <p class="mt-2 whitespace-pre-line">{{ album.description }}</p>
+            {% endif %}
+        </div>
+
+        {% if is_granted('GALLERY_DELETE', album) %}
+            <form method="post" action="{{ path('app_gallery_delete', {'id': album.id}) }}"
+                onsubmit="return confirm({{ 'gallery.album.delete_confirm'|trans|json_encode|e('html_attr') }});">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete-album' ~ album.id) }}">
+                <button class="btn btn-error btn-outline btn-sm">
+                    <i class="bi bi-trash"></i> {{ 'gallery.album.delete'|trans }}
+                </button>
+            </form>
+        {% endif %}
+    </div>
+
+    <div class="card bg-base-100 shadow-sm mb-4">
+        <div class="card-body py-4">
+            {{ form_start(upload_form, {'attr': {'class': 'flex flex-wrap items-end gap-2'}}) }}
+                <div class="flex-1 min-w-60">
+                    {{ form_label(upload_form.photos) }}
+                    {{ form_widget(upload_form.photos) }}
+                    {# Also shows the per-file errors of the All constraint #}
+                    {{ form_errors(upload_form.photos) }}
+                </div>
+                <button class="btn btn-primary">
+                    <i class="bi bi-cloud-arrow-up"></i> {{ 'gallery.upload.submit'|trans }}
+                </button>
+            {{ form_end(upload_form) }}
+            <p class="text-xs opacity-60">{{ 'gallery.upload.help'|trans }}</p>
+        </div>
+    </div>
+
+    <div data-controller="lightbox">
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2">
+            {% for photo in album.photos %}
+                <div class="photo relative group">
+                    <button type="button"
+                        class="block w-full aspect-square overflow-hidden rounded-box bg-base-300 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                        data-lightbox-target="item"
+                        data-src="{{ vich_uploader_asset(photo, 'imageFile')|imagine_filter('gallery_large') }}"
+                        data-caption="{{ photo.caption }}"
+                        data-action="lightbox#open"
+                        data-lightbox-index-param="{{ loop.index0 }}"
+                        aria-label="{{ 'gallery.photo.open'|trans }}">
+                        <img src="{{ vich_uploader_asset(photo, 'imageFile')|imagine_filter('gallery_thumb') }}"
+                            alt="{{ photo.caption }}"
+                            class="w-full h-full object-cover transition-transform group-hover:scale-105"
+                            loading="lazy">
+                    </button>
+
+                    {% if is_granted('GALLERY_DELETE', photo) %}
+                        <form method="post" action="{{ path('app_gallery_photo_delete', {'id': photo.id}) }}"
+                            class="absolute top-1 right-1 opacity-0 group-hover:opacity-100 focus-within:opacity-100 transition-opacity"
+                            onsubmit="return confirm({{ 'gallery.photo.delete_confirm'|trans|json_encode|e('html_attr') }});">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete-photo' ~ photo.id) }}">
+                            <button class="btn btn-circle btn-xs btn-error" aria-label="{{ 'gallery.photo.delete'|trans }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </form>
+                    {% endif %}
+                </div>
+            {% else %}
+                <p class="col-span-full text-sm opacity-70">{{ 'gallery.album.empty'|trans }}</p>
+            {% endfor %}
+        </div>
+
+        <dialog class="modal" data-lightbox-target="dialog"
+            data-action="keydown.left->lightbox#previous keydown.right->lightbox#next">
+            <div class="modal-box max-w-5xl p-2 bg-base-300">
+                <form method="dialog">
+                    <button class="btn btn-sm btn-circle btn-ghost absolute right-2 top-2 z-10" aria-label="{{ 'common.close'|trans }}">
+                        <i class="bi bi-x-lg"></i>
+                    </button>
+                </form>
+                <img data-lightbox-target="image" class="w-full max-h-[80vh] object-contain rounded" alt="">
+                <div class="flex items-center justify-between gap-2 px-2 pt-2">
+                    <button type="button" class="btn btn-sm btn-ghost" data-action="lightbox#previous" aria-label="{{ 'gallery.photo.previous'|trans }}">
+                        <i class="bi bi-chevron-left"></i>
+                    </button>
+                    <div class="text-center text-sm">
+                        <p data-lightbox-target="caption"></p>
+                        <span class="opacity-60" data-lightbox-target="counter"></span>
+                    </div>
+                    <button type="button" class="btn btn-sm btn-ghost" data-action="lightbox#next" aria-label="{{ 'gallery.photo.next'|trans }}">
+                        <i class="bi bi-chevron-right"></i>
+                    </button>
+                </div>
+            </div>
+            <form method="dialog" class="modal-backdrop">
+                <button>{{ 'common.close'|trans }}</button>
+            </form>
+        </dialog>
+    </div>
+{% endblock %}

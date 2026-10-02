@@ -19,7 +19,7 @@ class CommentType extends AbstractType
             ->add('message', null, [
                 'label' => 'comment.field.message',
                 'constraints' => [
-                    // Key in translations/validators+intl-icu.*.yaml
+                    // Key in translations/validators.*.yaml
                     new NotBlank(message: 'comment.message.not_blank'),
                 ],
             ])

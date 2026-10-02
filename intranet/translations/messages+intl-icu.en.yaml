@@ -7,6 +7,7 @@ nav:
     timeline: 'Timeline'
     events: 'Events'
     employees: 'Employees'
+    gallery: 'Gallery'
     logout: 'Logout'
     open_user_menu: 'Open user menu'
     close_user_menu: 'Close user menu'
@@ -47,6 +48,7 @@ timeline:
         empty: 'No upcoming events'
 
 post:
+    album_photos: '{count, plural, one {added a photo to the album} other {added # photos to the album}}'
     new:
         title: 'New Post'
         heading: 'Create new Post'
@@ -148,3 +150,45 @@ company:
         updated_at: 'Updated at'
     help:
         tax_id: 'For Chilean companies, the RUT (e.g. 76.123.456-7).'
+
+gallery:
+    title: 'Photo gallery'
+    empty: 'There are no albums yet.'
+    back: 'back to gallery'
+    album:
+        create: 'Create album'
+        new_title: 'New album'
+        photo_count: '{count, plural, =0 {No photos} one {# photo} other {# photos}}'
+        created_by: 'By {name}'
+        empty: 'This album has no photos yet. Upload the first ones.'
+        delete: 'Delete album'
+        delete_confirm: 'Delete this album and all its photos?'
+        field:
+            title: 'Title'
+            event_date: 'Date of the activity'
+            description: 'Description'
+            created_by: 'Created by'
+            photos: 'Photos'
+            created_at: 'Created at'
+    upload:
+        submit: 'Upload'
+        help: 'JPEG, PNG, WebP or GIF, up to 10 MB each and 20 photos at a time.'
+        field:
+            photos: 'Add photos'
+    photo:
+        open: 'Open photo'
+        previous: 'Previous photo'
+        next: 'Next photo'
+        delete: 'Delete photo'
+        delete_confirm: 'Delete this photo?'
+        field:
+            image: 'Photo'
+            album: 'Album'
+            caption: 'Caption'
+            uploaded_by: 'Uploaded by'
+            created_at: 'Uploaded at'
+    admin:
+        album_singular: 'Album'
+        album_plural: 'Albums'
+        photo_singular: 'Photo'
+        photo_plural: 'Photos'

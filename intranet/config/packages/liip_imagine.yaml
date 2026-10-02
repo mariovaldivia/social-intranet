@@ -28,4 +28,17 @@ liip_imagine:
             quality: 75
             filters:
                 thumbnail: { size: [32, 32], mode: outbound }
+
+        # Photo gallery: square grid thumbnails and the lightbox image
+        gallery_thumb:
+            quality: 80
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [400, 400], mode: outbound }
+
+        gallery_large:
+            quality: 85
+            filters:
+                auto_rotate: ~
+                thumbnail: { size: [1600, 1600], mode: inset }
                 

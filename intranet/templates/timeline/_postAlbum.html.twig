@@ -1,0 +1,32 @@
+{# Gallery post: the photos added to an album in one upload (up to 4 shown) #}
+{% set photos = post.photos %}
+{% set count = photos|length %}
+{% set album_url = path('app_gallery_show', {'id': post.album.id}) %}
+<div class="post-album">
+    <p class="text-sm">
+        <i class="bi bi-images mr-1"></i>
+        {{ 'post.album_photos'|trans({count: count}) }}
+        <a href="{{ album_url }}" class="font-semibold hover:underline">{{ post.album.title }}</a>
+    </p>
+
+    {% if count > 0 %}
+        <div class="grid gap-1 mt-2 rounded-box overflow-hidden {{ count == 1 ? 'grid-cols-1' : 'grid-cols-2' }}">
+            {% for photo in photos|slice(0, 4) %}
+                {# One photo is shown large; with three, the first spans the row #}
+                {% set wide = count == 1 or (count == 3 and loop.first) %}
+                <a href="{{ album_url }}"
+                    class="relative block bg-base-300 {{ count == 1 ? '' : (wide ? 'col-span-2 aspect-[2/1]' : 'aspect-square') }}">
+                    <img src="{{ vich_uploader_asset(photo, 'imageFile')|imagine_filter(wide ? 'gallery_large' : 'gallery_thumb') }}"
+                        alt="{{ photo.caption }}"
+                        class="w-full h-full object-cover {{ count == 1 ? 'max-h-[28rem]' : '' }}"
+                        loading="lazy">
+                    {% if loop.index == 4 and count > 4 %}
+                        <span class="absolute inset-0 flex items-center justify-center bg-black/50 text-white text-2xl font-semibold">
+                            +{{ count - 4 }}
+                        </span>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>

@@ -26,6 +26,7 @@
                 <div class="flex-1 gap-2">
                     <a class="btn btn-ghost text-xl" href="{{ path('app_timeline') }}">{{ 'app.brand'|trans }}</a>
                     <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_event_index') }}">{{ 'nav.events'|trans }}</a>
+                    <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_gallery_index') }}">{{ 'nav.gallery'|trans }}</a>
                 </div>
                 {% if app.user %}
                     <label for="user-drawer" class="btn btn-ghost btn-square" aria-label="{{ 'nav.open_user_menu'|trans }}">
@@ -75,6 +76,7 @@
                         <li><a href="{{ path('app_timeline') }}"><i class="bi bi-house"></i> {{ 'nav.timeline'|trans }}</a></li>
                         <li><a href="{{ path('app_event_index') }}"><i class="bi bi-calendar2"></i> {{ 'nav.events'|trans }}</a></li>
                         <li><a href="{{ path('app_profile_index') }}"><i class="bi bi-people"></i> {{ 'nav.employees'|trans }}</a></li>
+                        <li><a href="{{ path('app_gallery_index') }}"><i class="bi bi-images"></i> {{ 'nav.gallery'|trans }}</a></li>
                     </ul>
                 </div>
             </div>

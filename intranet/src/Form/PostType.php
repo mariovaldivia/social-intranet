@@ -19,7 +19,7 @@ class PostType extends AbstractType
             ->add('message', null, [
                 'label' => 'post.field.message',
                 'constraints' => [
-                    // Key in translations/validators+intl-icu.*.yaml
+                    // Key in translations/validators.*.yaml
                     new NotBlank(message: 'post.message.not_blank'),
                 ],
             ])

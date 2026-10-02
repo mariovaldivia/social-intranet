@@ -1,0 +1,22 @@
+post:
+    message:
+        not_blank: 'Escribe algo antes de publicar.'
+
+comment:
+    message:
+        not_blank: 'Escribe algo antes de comentar.'
+
+company:
+    tax_id:
+        unique: 'Ya existe una empresa con este RUT.'
+
+gallery:
+    album:
+        title:
+            not_blank: 'Ponle un título al álbum.'
+    photos:
+        min: 'Elige al menos una foto.'
+        max: 'Puedes subir hasta {{ limit }} fotos a la vez.'
+    photo:
+        not_image: 'Solo se pueden subir imágenes JPEG, PNG, WebP o GIF.'
+        too_large: 'Cada foto puede pesar hasta {{ limit }} {{ suffix }}.'

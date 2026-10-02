@@ -79,6 +79,9 @@ RUN mkdir -p /appdata/www
 # Config XDEBUG
 COPY ./xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
 
+# Upload limits for the photo gallery
+COPY ./uploads.ini /usr/local/etc/php/conf.d/uploads.ini
+
 WORKDIR /appdata/www
 
 RUN chown -R appuser:appuser ${HOME_DIR}

@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'gallery.album.new_title'|trans }}{% endblock %}
+
+{% block body %}
+    <h1 class="text-2xl font-bold mb-4">{{ 'gallery.album.new_title'|trans }}</h1>
+
+    <div class="card bg-base-100 shadow-sm max-w-2xl">
+        <div class="card-body">
+            {{ form_start(form) }}
+                {{ form_widget(form) }}
+                <button class="btn btn-primary mt-4">{{ 'gallery.album.create'|trans }}</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+    <a href="{{ path('app_gallery_index') }}" class="btn btn-ghost mt-4">
+        <i class="bi bi-arrow-left"></i> {{ 'gallery.back'|trans }}
+    </a>
+{% endblock %}

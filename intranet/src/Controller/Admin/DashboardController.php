@@ -14,6 +14,8 @@ use App\Entity\Department;
 use App\Entity\Company;
 use App\Entity\Event;
 use App\Entity\Management;
+use App\Entity\Photo;
+use App\Entity\PhotoAlbum;
 use App\Entity\Profile;
 use App\Entity\User;
 
@@ -54,6 +56,8 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Profiles', 'fas fa-user', Profile::class);
         yield MenuItem::linkToCrud('Events', 'fas fa-calendar', Event::class);
         yield MenuItem::linkToCrud('company.admin.plural', 'fas fa-building', Company::class);
+        yield MenuItem::linkToCrud('gallery.admin.album_plural', 'fas fa-images', PhotoAlbum::class);
+        yield MenuItem::linkToCrud('gallery.admin.photo_plural', 'fas fa-image', Photo::class);
 
         yield MenuItem::linkToCrud('Managements', 'fas fa-list', Management::class);
         yield MenuItem::linkToCrud('Deparments', 'fas fa-list', Department::class);

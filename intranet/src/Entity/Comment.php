@@ -32,7 +32,8 @@ class Comment
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'comment')]
+    // cascade remove: comments with likes could not be deleted (FK on like.comment_id)
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'comment', cascade: ['remove'])]
     private Collection $likes;
 
     public function __construct()

@@ -63,6 +63,36 @@ class PostLikeTest extends WebTestCase
         self::assertSame('click->comments#openFromPost', $card->attr('data-action'));
     }
 
+    public function testDeletingAnEventWhosePostHasLikesWorks(): void
+    {
+        $client = static::createClient();
+        $manager = static::getContainer()->get('doctrine')->getManager();
+        $user = $this->logIn($client, $manager);
+
+        $event = new Event();
+        $event->setUser($user);
+        $event->setDescription('Event to delete');
+        $event->setDate(new \DateTime('+1 day'));
+        $manager->persist($event);
+        $post = new Post();
+        $post->setUser($user);
+        $post->setEvent($event);
+        $manager->persist($post);
+        $manager->flush();
+        [$eventId, $postId] = [$event->getId(), $post->getId()];
+
+        $client->request('GET', sprintf('/post/%d/like', $postId));
+
+        // Used to fail on the like's foreign key: likes are now removed with the post
+        $crawler = $client->request('GET', sprintf('/event/%d/edit', $eventId));
+        $client->submit($crawler->filter(sprintf('form[action="/event/%d"]', $eventId))->form());
+
+        self::assertResponseRedirects('/event/');
+        $manager->clear();
+        self::assertNull($manager->getRepository(Event::class)->find($eventId));
+        self::assertNull($manager->getRepository(Post::class)->find($postId));
+    }
+
     public function testEventListUsesAjaxLikeButton(): void
     {
         $client = static::createClient();

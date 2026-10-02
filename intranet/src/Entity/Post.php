@@ -33,16 +33,27 @@ class Post
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
 
-    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post')]
+    // cascade remove: a post with likes could not be deleted (FK on like.post_id)
+    #[ORM\OneToMany(targetEntity: Like::class, mappedBy: 'post', cascade: ['remove'])]
     private Collection $likes;
 
     #[ORM\OneToOne(inversedBy: 'post', cascade: ['persist', 'remove'])]
     private ?Event $event = null;
 
+    // Gallery post: photos added to this album in one upload (see TimelineService::addPhotos)
+    #[ORM\ManyToOne(inversedBy: 'posts')]
+    private ?PhotoAlbum $album = null;
+
+    /** @var Collection<int, Photo> */
+    #[ORM\OneToMany(targetEntity: Photo::class, mappedBy: 'post')]
+    #[ORM\OrderBy(['id' => 'ASC'])]
+    private Collection $photos;
+
     public function __construct()
     {
         $this->comments = new ArrayCollection();
         $this->likes = new ArrayCollection();
+        $this->photos = new ArrayCollection();
     }
 
     #[ORM\PrePersist]
@@ -157,6 +168,34 @@ class Post
             if ($like->getPost() === $this) {
                 $like->setPost(null);
             }
+        }
+
+        return $this;
+    }
+
+    public function getAlbum(): ?PhotoAlbum
+    {
+        return $this->album;
+    }
+
+    public function setAlbum(?PhotoAlbum $album): static
+    {
+        $this->album = $album;
+
+        return $this;
+    }
+
+    /** @return Collection<int, Photo> */
+    public function getPhotos(): Collection
+    {
+        return $this->photos;
+    }
+
+    public function addPhoto(Photo $photo): static
+    {
+        if (!$this->photos->contains($photo)) {
+            $this->photos->add($photo);
+            $photo->setPost($this);
         }
 
         return $this;

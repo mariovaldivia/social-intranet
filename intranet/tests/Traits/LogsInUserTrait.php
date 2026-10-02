@@ -5,6 +5,8 @@ namespace App\Tests\Traits;
 use App\Entity\Comment;
 use App\Entity\Event;
 use App\Entity\Like;
+use App\Entity\Photo;
+use App\Entity\PhotoAlbum;
 use App\Entity\Post;
 use App\Entity\Profile;
 use App\Entity\User;
@@ -61,6 +63,16 @@ trait LogsInUserTrait
         if (!$user) {
             return;
         }
+
+        // Through the ORM rather than DQL so VichUploader deletes the files
+        // (albums cascade to their photos)
+        foreach ($manager->getRepository(PhotoAlbum::class)->findBy(['createdBy' => $user]) as $album) {
+            $manager->remove($album);
+        }
+        foreach ($manager->getRepository(Photo::class)->findBy(['uploadedBy' => $user]) as $photo) {
+            $manager->remove($photo);
+        }
+        $manager->flush();
 
         // Children before parents: likes reference posts/comments, comments
         // reference posts, posts reference events

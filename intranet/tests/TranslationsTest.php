@@ -32,7 +32,9 @@ class TranslationsTest extends TestCase
     /** @return string[] dotted keys */
     private function keys(string $domain, string $locale): array
     {
-        $file = sprintf('%s/translations/%s+intl-icu.%s.yaml', dirname(__DIR__), $domain, $locale);
+        // messages use ICU; validators use the plain format ({{ limit }} placeholders)
+        $format = 'messages' === $domain ? '+intl-icu' : '';
+        $file = sprintf('%s/translations/%s%s.%s.yaml', dirname(__DIR__), $domain, $format, $locale);
 
         return $this->flatten(Yaml::parseFile($file));
     }
