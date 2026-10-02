@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Profile;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextEditorField;
@@ -19,11 +20,17 @@ class ProfileCrudController extends AbstractCrudController
     {
         return Profile::class;
     }
-    
+
     public function configureFields(string $pageName): iterable
     {
         return [
             // IdField::new('id'),
+            // Photo or default avatar (templates/admin/field/profile_photo.html.twig)
+            TextField::new('imageName', 'profile.field.image')
+                ->setTemplatePath('admin/field/profile_photo.html.twig')
+                ->setCustomOption('filter', Crud::PAGE_DETAIL === $pageName ? 'user' : 'user_post')
+                ->setSortable(false)
+                ->hideOnForm(),
             TextField::new('identification'),
             TextField::new('name'),
             TextField::new('lastName'),
@@ -33,12 +40,11 @@ class ProfileCrudController extends AbstractCrudController
             DateField::new('birthDate'),
             DateField::new('hireDate'),
             TextField::new('phone'),
+            // Upload field, only on the forms
             TextareaField::new('imageFile')
-                ->setFormType(VichImageType::class) // Use VichImageType for handling uploads
-                // ->setBasePath('/uploads/users') // Define the base path for displaying images
-                // ->onlyOnDetail()
-                //  ->onlyOnForms(),
+                ->setFormType(VichImageType::class)
+                ->onlyOnForms(),
         ];
     }
-    
+
 }

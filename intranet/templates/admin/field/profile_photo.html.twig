@@ -1,0 +1,16 @@
+{# EasyAdmin field: the profile photo, or the default avatar when there is none.
+   The Liip filter comes from the field's "filter" custom option. #}
+{% set profile = entity.instance %}
+{% set filter = field.customOptions.get('filter') %}
+{% set size = filter == 'user' ? 128 : 48 %}
+{% if profile.imageName %}
+    <img src="{{ vich_uploader_asset(profile, 'imageFile')|imagine_filter(filter) }}"
+        alt="{{ profile }}" title="{{ profile }}"
+        width="{{ size }}" height="{{ size }}"
+        class="rounded-circle" style="object-fit: cover">
+{% else %}
+    <img src="{{ 'images/user-default.jpg'|imagine_filter(filter) }}"
+        alt="{{ profile }}" title="{{ profile }}"
+        width="{{ size }}" height="{{ size }}"
+        class="rounded-circle" style="object-fit: cover">
+{% endif %}
