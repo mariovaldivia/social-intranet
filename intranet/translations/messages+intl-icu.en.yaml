@@ -120,3 +120,31 @@ time_ago:
     minutes: '{count, plural, one {# minute ago} other {# minutes ago}}'
     hours: '{count, plural, one {# hour ago} other {# hours ago}}'
     days: '{count, plural, one {# day ago} other {# days ago}}'
+
+company:
+    admin:
+        singular: 'Company'
+        plural: 'Companies'
+    section:
+        identification: 'Identification'
+        contact: 'Contact'
+        address: 'Address'
+        status: 'Status'
+    field:
+        legal_name: 'Legal name'
+        trade_name: 'Trade name'
+        tax_id: 'Tax ID'
+        industry: 'Industry'
+        email: 'Email'
+        phone: 'Phone'
+        website: 'Website'
+        address: 'Address'
+        city: 'City'
+        region: 'Region'
+        country: 'Country'
+        postal_code: 'Postal code'
+        active: 'Active'
+        created_at: 'Created at'
+        updated_at: 'Updated at'
+    help:
+        tax_id: 'For Chilean companies, the RUT (e.g. 76.123.456-7).'

@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 use App\Controller\Admin\UserCrudController;
 use App\Entity\Department;
+use App\Entity\Company;
 use App\Entity\Event;
 use App\Entity\Management;
 use App\Entity\Profile;
@@ -52,6 +53,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Users', 'fas fa-user', User::class);
         yield MenuItem::linkToCrud('Profiles', 'fas fa-user', Profile::class);
         yield MenuItem::linkToCrud('Events', 'fas fa-calendar', Event::class);
+        yield MenuItem::linkToCrud('company.admin.plural', 'fas fa-building', Company::class);
 
         yield MenuItem::linkToCrud('Managements', 'fas fa-list', Management::class);
         yield MenuItem::linkToCrud('Deparments', 'fas fa-list', Department::class);

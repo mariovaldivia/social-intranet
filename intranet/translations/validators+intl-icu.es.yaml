@@ -5,3 +5,7 @@ post:
 comment:
     message:
         not_blank: 'Escribe algo antes de comentar.'
+
+company:
+    tax_id:
+        unique: 'Ya existe una empresa con este RUT.'

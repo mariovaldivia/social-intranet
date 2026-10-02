@@ -120,3 +120,31 @@ time_ago:
     minutes: '{count, plural, one {hace # minuto} other {hace # minutos}}'
     hours: '{count, plural, one {hace # hora} other {hace # horas}}'
     days: '{count, plural, one {hace # día} other {hace # días}}'
+
+company:
+    admin:
+        singular: 'Empresa'
+        plural: 'Empresas'
+    section:
+        identification: 'Identificación'
+        contact: 'Contacto'
+        address: 'Dirección'
+        status: 'Estado'
+    field:
+        legal_name: 'Razón social'
+        trade_name: 'Nombre de fantasía'
+        tax_id: 'RUT'
+        industry: 'Giro'
+        email: 'Correo electrónico'
+        phone: 'Teléfono'
+        website: 'Sitio web'
+        address: 'Dirección'
+        city: 'Ciudad'
+        region: 'Región'
+        country: 'País'
+        postal_code: 'Código postal'
+        active: 'Activa'
+        created_at: 'Creada el'
+        updated_at: 'Actualizada el'
+    help:
+        tax_id: 'Para empresas chilenas, el RUT (ej.: 76.123.456-7).'
