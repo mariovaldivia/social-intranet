@@ -20,9 +20,12 @@
         </div>
 
         <div class="flex items-center gap-3 text-xs mt-1 pl-3">
+            {% set liked = comment.hasLike(app.user) %}
             <a href="{{ path('like_comment', {'id': comment.id}) }}"
                 data-action="replace#load"
-                class="comment-like font-semibold hover:underline {{ comment.hasLike(app.user) ? 'text-primary' : 'opacity-60' }}">
+                aria-pressed="{{ liked ? 'true' : 'false' }}"
+                class="comment-like inline-flex items-center gap-1 font-semibold hover:underline transition-transform active:scale-95 {{ liked ? 'text-primary' : 'text-base-content/60' }}">
+                <i class="bi {{ liked ? 'bi-hand-thumbs-up-fill' : 'bi-hand-thumbs-up' }}"></i>
                 {{ 'like.action'|trans }}
             </a>
             {% include "timeline/_commentLikes.html.twig" with {'likes': comment.likes, 'id': comment.id} %}

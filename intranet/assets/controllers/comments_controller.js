@@ -2,10 +2,14 @@ import { Controller } from '@hotwired/stimulus';
 
 /*
  * Comment thread of a post: loads the comment form and submits it.
- * post_comment answers 200 with the new comment (appended to the list) or
- * 422 with the form and its validation errors (shown in place of the form).
+ * The form opens from the Comment button or from a click anywhere on the
+ * post. post_comment answers 200 with the new comment (appended to the
+ * list) or 422 with the form and its validation errors (shown in place of
+ * the form).
  *
- *   <div data-controller="comments">
+ *   <div data-controller="comments"
+ *        data-comments-url-value="/post/1/comment"
+ *        data-action="click->comments#openFromPost">
  *       <a href="/post/1/comment" data-action="comments#open">Comment</a>
  *       <div data-comments-target="list">...</div>
  *       <div data-comments-target="form"></div>
@@ -15,17 +19,49 @@ import { Controller } from '@hotwired/stimulus';
  */
 export default class extends Controller {
     static targets = ['list', 'form'];
+    static values = { url: String };
 
-    async open(event) {
+    // Elements that do their own thing when clicked
+    static INTERACTIVE = 'a, button, input, textarea, select, label, [role="button"]';
+
+    open(event) {
         event.preventDefault();
+        this.load();
+    }
 
-        const response = await fetch(event.currentTarget.href);
-        if (!response.ok) {
-            console.error(`Request to ${response.url} failed with status ${response.status}`);
+    openFromPost(event) {
+        if (event.target.closest(this.constructor.INTERACTIVE)
+            || this.formTarget.contains(event.target)
+            || window.getSelection()?.toString()) {
             return;
         }
 
-        this.showForm(await response.text());
+        this.load();
+    }
+
+    async load() {
+        // Already open: keep what was typed, just focus it
+        const textarea = this.formTarget.querySelector('textarea');
+        if (textarea) {
+            textarea.focus();
+            return;
+        }
+        if (this.loading) {
+            return;
+        }
+
+        this.loading = true;
+        try {
+            const response = await fetch(this.urlValue);
+            if (!response.ok) {
+                console.error(`Request to ${response.url} failed with status ${response.status}`);
+                return;
+            }
+
+            this.showForm(await response.text());
+        } finally {
+            this.loading = false;
+        }
     }
 
     async submit(event) {

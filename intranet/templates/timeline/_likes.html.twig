@@ -1,13 +1,13 @@
 {% set num_likes = likes|length %}
 
 {% if num_likes > 0 %}
-    <span class="text-sm">
-        <a href="{{ path('likes_post', {'id': id}) }}"
-            data-action="info-modal#open"
-            class="link link-hover"
-            title="{{ 'like.post_title'|trans }}">
-            <i class="bi bi-hand-thumbs-up mr-1"></i>
-            {{ num_likes }}
-        </a>
-    </span>
+    <a href="{{ path('likes_post', {'id': id}) }}"
+        data-action="info-modal#open"
+        class="inline-flex items-center gap-1 text-xs text-base-content/70 hover:underline"
+        title="{{ 'like.post_title'|trans }}">
+        <span class="inline-flex items-center justify-center size-4 rounded-full bg-primary text-primary-content text-[0.55rem]">
+            <i class="bi bi-hand-thumbs-up-fill"></i>
+        </span>
+        {{ num_likes }}
+    </a>
 {% endif %}

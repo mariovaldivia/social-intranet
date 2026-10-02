@@ -24,7 +24,13 @@
 
     {% for event in events %}
         <div class="card bg-base-100 shadow-sm mb-4">
-            <div class="card-body post" data-controller="comments">
+            {# Clicking anywhere on the event (outside links and buttons) opens the comment box #}
+            <div class="card-body post"
+                {% if event.post %}
+                    data-controller="comments"
+                    data-comments-url-value="{{ path('post_comment', {'id': event.post.id}) }}"
+                    data-action="click->comments#openFromPost"
+                {% endif %}>
                 <div class="flex items-start justify-between gap-2">
                     <h4 class="card-title">
                         <i class="bi bi-calendar2"></i>

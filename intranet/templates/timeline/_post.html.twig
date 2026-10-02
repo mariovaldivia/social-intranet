@@ -1,7 +1,11 @@
 {% set user = post.user %}
 {% set profile = user.profile %}
 <div class="card bg-base-100 shadow-sm mb-4">
-    <div class="card-body post" data-controller="comments">
+    {# Clicking anywhere on the post (outside links and buttons) opens the comment box #}
+    <div class="card-body post"
+        data-controller="comments"
+        data-comments-url-value="{{ path('post_comment', {'id': post.id}) }}"
+        data-action="click->comments#openFromPost">
         <div class="flex gap-3 items-center">
             <a href="{{ path('app_wall', {'username': user.username}) }}" class="shrink-0">
                 {% include "_imageUser.html.twig" with {'user': user, 'size': 'user_post'} %}
