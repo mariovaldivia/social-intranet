@@ -23,6 +23,19 @@ common:
     close: 'Cerrar'
     id: 'Id'
     load_error: 'No se pudo cargar este contenido.'
+    month_short:
+        '1': 'Ene'
+        '2': 'Feb'
+        '3': 'Mar'
+        '4': 'Abr'
+        '5': 'May'
+        '6': 'Jun'
+        '7': 'Jul'
+        '8': 'Ago'
+        '9': 'Sep'
+        '10': 'Oct'
+        '11': 'Nov'
+        '12': 'Dic'
 
 login:
     title: '¡Inicia sesión!'
@@ -48,6 +61,7 @@ timeline:
         empty: 'No hay eventos próximos'
 
 post:
+    event_label: 'Evento'
     album_photos: '{count, plural, one {agregó una foto al álbum} other {agregó # fotos al álbum}}'
     new:
         title: 'Nueva publicación'
@@ -69,6 +83,9 @@ like:
     comment_title: 'Personas a las que les gusta este comentario'
 
 event:
+    status:
+        today: 'Hoy'
+        past: 'Finalizado'
     list:
         title: 'Eventos'
         past_title: 'Eventos pasados'

@@ -31,18 +31,7 @@
                     data-comments-url-value="{{ path('post_comment', {'id': event.post.id}) }}"
                     data-action="click->comments#openFromPost"
                 {% endif %}>
-                <div class="flex items-start justify-between gap-2">
-                    <h4 class="card-title">
-                        <i class="bi bi-calendar2"></i>
-                        {{ event.date ? event.date|date('d/m/Y', false) : '' }}
-                    </h4>
-                    <div class="flex gap-1">
-                        <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.show'|trans }}</a>
-                        <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.edit'|trans }}</a>
-                    </div>
-                </div>
-
-                <p>{{ event.description|nl2br }}</p>
+                {% include "timeline/_postEvent.html.twig" with {'event': event, 'actions': true} %}
 
                 {% set post = event.post %}
                 {% if post %}

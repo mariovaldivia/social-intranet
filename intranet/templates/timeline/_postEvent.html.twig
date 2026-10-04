@@ -1,0 +1,42 @@
+{# Event block: calendar sheet, label, date and description.
+   Used in timeline posts and on /event/ (with show/edit links: actions = true).
+   event.date is a date-only column: always |date(format, false). #}
+{% set actions = actions|default(false) %}
+{% set day = event.date ? event.date|date('Y-m-d', false) : null %}
+{% set today = 'now'|date('Y-m-d') %}
+<div class="post-event flex gap-4 items-start rounded-box border border-base-200 bg-base-200/40 p-3 sm:p-4">
+    {% if event.date %}
+        <div class="shrink-0 w-14 text-center rounded-lg overflow-hidden shadow-sm bg-base-100" aria-hidden="true">
+            <div class="bg-primary text-primary-content text-[0.7rem] font-semibold uppercase py-0.5">
+                {{ ('common.month_short.' ~ event.date|date('n', false))|trans }}
+            </div>
+            <div class="text-2xl font-bold leading-none py-2">{{ event.date|date('j', false) }}</div>
+        </div>
+    {% endif %}
+
+    <div class="min-w-0 flex-1">
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="text-xs font-semibold uppercase tracking-wide text-primary">
+                <i class="bi bi-calendar-event mr-1"></i>{{ 'post.event_label'|trans }}
+            </span>
+            {% if day == today %}
+                <span class="badge badge-sm badge-success badge-soft">{{ 'event.status.today'|trans }}</span>
+            {% elseif day and day < today %}
+                <span class="badge badge-sm badge-ghost">{{ 'event.status.past'|trans }}</span>
+            {% endif %}
+
+            {% if actions %}
+                <div class="ml-auto flex gap-1">
+                    <a href="{{ path('app_event_show', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.show'|trans }}</a>
+                    <a href="{{ path('app_event_edit', {'id': event.id}) }}" class="btn btn-ghost btn-xs">{{ 'common.edit'|trans }}</a>
+                </div>
+            {% endif %}
+        </div>
+
+        {% if event.date %}
+            <p class="text-sm opacity-70 mt-0.5">{{ event.date|date('d/m/Y', false) }}</p>
+        {% endif %}
+
+        <p class="post-event-description mt-2 whitespace-pre-line break-words leading-relaxed">{{ event.description }}</p>
+    </div>
+</div>

@@ -23,6 +23,19 @@ common:
     close: 'Close'
     id: 'Id'
     load_error: 'Could not load this content.'
+    month_short:
+        '1': 'Jan'
+        '2': 'Feb'
+        '3': 'Mar'
+        '4': 'Apr'
+        '5': 'May'
+        '6': 'Jun'
+        '7': 'Jul'
+        '8': 'Aug'
+        '9': 'Sep'
+        '10': 'Oct'
+        '11': 'Nov'
+        '12': 'Dec'
 
 login:
     title: 'Log in!'
@@ -48,6 +61,7 @@ timeline:
         empty: 'No upcoming events'
 
 post:
+    event_label: 'Event'
     album_photos: '{count, plural, one {added a photo to the album} other {added # photos to the album}}'
     new:
         title: 'New Post'
@@ -69,6 +83,9 @@ like:
     comment_title: 'People who like this comment'
 
 event:
+    status:
+        today: 'Today'
+        past: 'Ended'
     list:
         title: 'Events'
         past_title: 'Past events'

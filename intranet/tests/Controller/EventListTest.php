@@ -26,6 +26,13 @@ class EventListTest extends WebTestCase
 
         self::assertResponseIsSuccessful();
         self::assertSame(['Today event', 'Next week event'], $this->descriptions($crawler));
+
+        // Event block: "Today" badge and translated month on the calendar sheet
+        $today = $crawler->filter('.post-event')->first();
+        self::assertStringContainsString('Today', $today->text());
+        $month = static::getContainer()->get('translator')
+            ->trans('common.month_short.'.static::getContainer()->get(ClockInterface::class)->now()->format('n'));
+        self::assertStringContainsString($month, $today->text());
         self::assertSelectorExists('a[href="/event/past"]');
     }
 
@@ -75,6 +82,6 @@ class EventListTest extends WebTestCase
     /** @return string[] */
     private function descriptions($crawler): array
     {
-        return $crawler->filter('.card-body.post > p')->each(fn ($node) => trim($node->text()));
+        return $crawler->filter('.post-event-description')->each(fn ($node) => trim($node->text()));
     }
 }
