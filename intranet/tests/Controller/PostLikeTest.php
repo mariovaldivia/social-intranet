@@ -63,6 +63,32 @@ class PostLikeTest extends WebTestCase
         self::assertSame('click->comments#openFromPost', $card->attr('data-action'));
     }
 
+    public function testPostShowsItsDateNextToTheAuthor(): void
+    {
+        $client = static::createClient();
+        $manager = static::getContainer()->get('doctrine')->getManager();
+        $user = $this->logIn($client, $manager);
+
+        $recent = (new Post())->setUser($user)->setMessage('Recent post');
+        $old = (new Post())->setUser($user)->setMessage('Old post');
+        $manager->persist($recent);
+        $manager->persist($old);
+        $manager->flush();
+        // The date is set on insert; move this one back a month
+        $oldDate = new \DateTime('-30 days');
+        $old->setDate($oldDate);
+        $manager->flush();
+
+        $crawler = $client->request('GET', '/');
+        $date = fn (string $message) => trim($crawler->filter('.card-body.post')
+            ->reduce(fn ($card) => str_contains($card->text(), $message))
+            ->filter('time.post-date')->text());
+
+        self::assertSame('just now', $date('Recent post'));
+        $timezone = new \DateTimeZone(static::getContainer()->getParameter('app.timezone'));
+        self::assertSame((clone $oldDate)->setTimezone($timezone)->format('d M, H:i'), $date('Old post'));
+    }
+
     public function testDeletingAnEventWhosePostHasLikesWorks(): void
     {
         $client = static::createClient();

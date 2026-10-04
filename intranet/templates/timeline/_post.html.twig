@@ -12,15 +12,25 @@
             </a>
 
             <div>
-                {% if user.username %}
-                    <h4 class="font-semibold leading-tight">
-                        <a href="{{ path('app_wall', {'username': user.username}) }}" class="hover:underline">
-                            {{ user }}
-                        </a>
-                    </h4>
-                {% else %}
-                    {{ user }}
-                {% endif %}
+                <div class="flex flex-wrap items-baseline gap-x-2">
+                    {% if user.username %}
+                        <h4 class="font-semibold leading-tight">
+                            <a href="{{ path('app_wall', {'username': user.username}) }}" class="hover:underline">
+                                {{ user }}
+                            </a>
+                        </h4>
+                    {% else %}
+                        <span class="font-semibold">{{ user }}</span>
+                    {% endif %}
+                    {% if post.date %}
+                        {# "5 minutes ago"; a week or older shows the date (time_ago filter) #}
+                        <time class="post-date text-xs opacity-60"
+                            datetime="{{ post.date|date('c') }}"
+                            title="{{ post.date|date('d/m/Y H:i') }}">
+                            {{ post.date|time_ago }}
+                        </time>
+                    {% endif %}
+                </div>
 
                 {% if profile %}
                     <span class="text-sm opacity-70">

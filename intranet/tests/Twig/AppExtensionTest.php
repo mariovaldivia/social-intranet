@@ -21,6 +21,21 @@ class AppExtensionTest extends KernelTestCase
         self::assertSame($expected, $extension->timeAgo(new \DateTimeImmutable($date)));
     }
 
+    public function testOlderDatesAreFormattedInTheClockTimezone(): void
+    {
+        self::bootKernel();
+        $santiago = new \DateTimeZone('America/Santiago');
+        $extension = new AppExtension(
+            new MockClock(new \DateTimeImmutable('2026-10-15 12:00:00', $santiago)),
+            static::getContainer()->get('translator')
+        );
+
+        // Stored in UTC: 01:00 on Oct 1st UTC is 22:00 on Sep 30th in Santiago (UTC-3)
+        $stored = new \DateTimeImmutable('2026-10-01 01:00:00', new \DateTimeZone('UTC'));
+
+        self::assertSame('30 Sep, 22:00', $extension->timeAgo($stored));
+    }
+
     public static function timeAgoProvider(): iterable
     {
         yield 'seconds ago' => ['2026-09-30 14:59:30', 'just now'];

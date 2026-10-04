@@ -27,14 +27,18 @@ class AppExtension extends AbstractExtension
 
     /**
      * "5 minutes ago", "3 hours ago", "2 days ago"; dates a week old or more
-     * are formatted with $fallbackFormat instead.
+     * are formatted with $fallbackFormat instead, in the clock's time zone
+     * (APP_TIMEZONE) since stored dates are UTC.
      */
     public function timeAgo(\DateTimeInterface $date, string $fallbackFormat = 'd M, H:i'): string
     {
-        $seconds = $this->clock->now()->getTimestamp() - $date->getTimestamp();
+        $now = $this->clock->now();
+        $seconds = $now->getTimestamp() - $date->getTimestamp();
 
         if ($seconds >= self::RELATIVE_LIMIT_SECONDS) {
-            return $date->format($fallbackFormat);
+            return \DateTimeImmutable::createFromInterface($date)
+                ->setTimezone($now->getTimezone())
+                ->format($fallbackFormat);
         }
         // Future dates (clock drift between servers) count as "just now"
         if ($seconds < 60) {
