@@ -53,6 +53,11 @@ class SiteActivity
     #[Assert\Length(max: 1000)]
     private ?string $cancellationReason = null;
 
+    // Why it could not be done: required when the status is NotDone
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 1000)]
+    private ?string $notDoneReason = null;
+
     /** @var Collection<int, User> People who carry out the work */
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinTable(name: 'site_activity_user')]
@@ -87,11 +92,16 @@ class SiteActivity
     }
 
     #[Assert\Callback]
-    public function validateCancellationReason(ExecutionContextInterface $context): void
+    public function validateReasons(ExecutionContextInterface $context): void
     {
         if (ActivityStatus::Cancelled === $this->status && '' === trim((string) $this->cancellationReason)) {
             $context->buildViolation('activity.cancellation_reason.not_blank')
                 ->atPath('cancellationReason')
+                ->addViolation();
+        }
+        if (ActivityStatus::NotDone === $this->status && '' === trim((string) $this->notDoneReason)) {
+            $context->buildViolation('activity.not_done_reason.not_blank')
+                ->atPath('notDoneReason')
                 ->addViolation();
         }
     }
@@ -174,6 +184,18 @@ class SiteActivity
     public function setCancellationReason(?string $cancellationReason): static
     {
         $this->cancellationReason = $cancellationReason;
+
+        return $this;
+    }
+
+    public function getNotDoneReason(): ?string
+    {
+        return $this->notDoneReason;
+    }
+
+    public function setNotDoneReason(?string $notDoneReason): static
+    {
+        $this->notDoneReason = $notDoneReason;
 
         return $this;
     }

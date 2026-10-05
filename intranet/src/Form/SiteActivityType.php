@@ -68,7 +68,7 @@ class SiteActivityType extends AbstractType
         ;
 
         // New activities always start as scheduled (the entity default);
-        // the status, and the reason when cancelled, are edited afterwards
+        // the status, and its reason when cancelled or not done, are edited afterwards
         if (!$options['is_new']) {
             $builder
                 ->add('status', EnumType::class, [
@@ -79,6 +79,12 @@ class SiteActivityType extends AbstractType
                 ->add('cancellationReason', TextareaType::class, [
                     'label' => 'activity.field.cancellation_reason',
                     'help' => 'activity.help.cancellation_reason',
+                    'required' => false,
+                    'attr' => ['rows' => 2],
+                ])
+                ->add('notDoneReason', TextareaType::class, [
+                    'label' => 'activity.field.not_done_reason',
+                    'help' => 'activity.help.not_done_reason',
                     'required' => false,
                     'attr' => ['rows' => 2],
                 ]);

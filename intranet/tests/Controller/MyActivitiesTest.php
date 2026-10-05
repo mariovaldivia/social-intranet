@@ -43,6 +43,7 @@ class MyActivitiesTest extends WebTestCase
             ['Done work', '-1 day', ActivityStatus::Completed, [$me]],
             ['Today work', '+0 day', ActivityStatus::InProgress, [$me]],
             ['Cancelled work', '+1 day', ActivityStatus::Cancelled, [$me]],
+            ['Not done work', '+3 days', ActivityStatus::NotDone, [$me]],
             ['Upcoming two days', '+2 days', ActivityStatus::Scheduled, [$me]],
             ['Team work', '+5 days', ActivityStatus::Scheduled, [$me, $other]],
             ['Other person work', '+0 day', ActivityStatus::Scheduled, [$other]],
@@ -82,7 +83,7 @@ class MyActivitiesTest extends WebTestCase
         self::assertResponseIsSuccessful();
 
         self::assertSame(['Overdue work'], $this->descriptions($crawler->filter('.activities-overdue')));
-        // Soonest first, without cancelled work or work assigned to others
+        // Soonest first, without cancelled or not done work, or work assigned to others
         self::assertSame(['Today work', 'Upcoming two days', 'Team work'], $this->descriptions($crawler->filter('.activities-upcoming')));
 
         self::assertStringContainsString('Today', $crawler->filter('.day-heading')->first()->text());
@@ -102,7 +103,7 @@ class MyActivitiesTest extends WebTestCase
     /** @return string[] descriptions of this test's activities, in page order */
     private function descriptions(Crawler $root): array
     {
-        $ours = ['Overdue work', 'Done work', 'Today work', 'Cancelled work', 'Upcoming two days', 'Team work', 'Other person work'];
+        $ours = ['Overdue work', 'Done work', 'Today work', 'Cancelled work', 'Not done work', 'Upcoming two days', 'Team work', 'Other person work'];
         $all = $root->filter('.activity-description')->each(fn ($node) => trim($node->text()));
 
         return array_values(array_intersect($all, $ours));

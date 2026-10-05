@@ -10,7 +10,10 @@
     </div>
     {{ form_row(form.description) }}
     {% if form.cancellationReason is defined %}
-        {{ form_row(form.cancellationReason) }}
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+            {{ form_row(form.cancellationReason) }}
+            {{ form_row(form.notDoneReason) }}
+        </div>
     {% endif %}
 
     {# Users as a checkbox list, in columns #}

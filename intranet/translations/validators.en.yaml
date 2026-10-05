@@ -28,3 +28,5 @@ site:
 activity:
     cancellation_reason:
         not_blank: 'Tell why the activity is cancelled.'
+    not_done_reason:
+        not_blank: 'Tell why the activity could not be done.'

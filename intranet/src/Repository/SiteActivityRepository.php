@@ -23,8 +23,8 @@ class SiteActivityRepository extends ServiceEntityRepository
     }
 
     /**
-     * Planned work of a user from $today on, soonest first; cancelled
-     * activities are left out.
+     * Planned work of a user from $today on, soonest first; cancelled and
+     * not done activities are left out.
      *
      * @return SiteActivity[]
      */
@@ -32,9 +32,9 @@ class SiteActivityRepository extends ServiceEntityRepository
     {
         return $this->assignedTo($user)
             ->andWhere('a.date >= :today')
-            ->andWhere('a.status != :cancelled')
+            ->andWhere('a.status NOT IN (:closed)')
             ->setParameter('today', $today, Types::DATE_MUTABLE)
-            ->setParameter('cancelled', ActivityStatus::Cancelled)
+            ->setParameter('closed', [ActivityStatus::Cancelled, ActivityStatus::NotDone])
             ->orderBy('a.date', 'ASC')
             ->addOrderBy('a.id', 'ASC')
             ->getQuery()

@@ -40,12 +40,15 @@
                 {% endif %}
             </div>
 
-            {# While scheduled, assigned users and planners can start or cancel it #}
-            {% if is_granted('ACTIVITY_START', activity) or is_granted('ACTIVITY_CANCEL', activity) %}
-                <div class="activity-status-actions flex flex-wrap gap-2 rounded-box bg-base-200/60 p-3"
-                    data-controller="dialog"
-                    data-dialog-open-value="{{ cancel_form.vars.submitted ? 'true' : 'false' }}">
-                    {% if is_granted('ACTIVITY_START', activity) %}
+            {# Status changes for assigned users and planners: while scheduled,
+               start or cancel; while in progress, complete or mark as not done #}
+            {% set can_start = is_granted('ACTIVITY_START', activity) %}
+            {% set can_cancel = is_granted('ACTIVITY_CANCEL', activity) %}
+            {% set can_complete = is_granted('ACTIVITY_COMPLETE', activity) %}
+            {% set can_not_done = is_granted('ACTIVITY_NOT_DONE', activity) %}
+            {% if can_start or can_cancel or can_complete or can_not_done %}
+                <div class="activity-status-actions flex flex-wrap gap-2 rounded-box bg-base-200/60 p-3">
+                    {% if can_start %}
                         <form method="post" action="{{ path('app_activity_start', {id: activity.id}) }}">
                             <input type="hidden" name="_token" value="{{ csrf_token('start-activity' ~ activity.id) }}">
                             <button class="activity-start btn btn-warning btn-sm">
@@ -54,29 +57,52 @@
                         </form>
                     {% endif %}
 
-                    {% if is_granted('ACTIVITY_CANCEL', activity) %}
-                        <button type="button" class="activity-cancel btn btn-error btn-outline btn-sm" data-action="dialog#open">
-                            <i class="bi bi-x-circle"></i> {{ 'activity.action.cancel'|trans }}
-                        </button>
+                    {% if can_cancel %}
+                        {% include 'activity/_reasonDialog.html.twig' with {
+                            form: cancel_form,
+                            field: cancel_form.cancellationReason,
+                            name: 'cancel',
+                            button_label: 'activity.action.cancel'|trans,
+                            button_class: 'btn-error btn-outline',
+                            icon: 'bi-x-circle',
+                            title: 'activity.action.cancel'|trans,
+                            help: 'activity.cancel.help'|trans,
+                            confirm_label: 'activity.cancel.confirm'|trans,
+                        } %}
+                    {% endif %}
 
-                        <dialog class="modal" data-dialog-target="dialog">
-                            <div class="modal-box">
-                                <h3 class="text-lg font-bold mb-1">{{ 'activity.action.cancel'|trans }}</h3>
-                                <p class="text-sm opacity-70 mb-3">{{ 'activity.cancel.help'|trans }}</p>
-                                {{ form_start(cancel_form) }}
-                                    {{ form_row(cancel_form.cancellationReason) }}
-                                    <div class="modal-action">
-                                        <button type="button" class="btn btn-ghost" data-action="dialog#close">{{ 'activity.cancel.keep'|trans }}</button>
-                                        <button class="btn btn-error">{{ 'activity.cancel.confirm'|trans }}</button>
-                                    </div>
-                                {{ form_end(cancel_form) }}
-                            </div>
-                            <form method="dialog" class="modal-backdrop">
-                                <button>{{ 'common.close'|trans }}</button>
-                            </form>
-                        </dialog>
+                    {% if can_complete %}
+                        <form method="post" action="{{ path('app_activity_complete', {id: activity.id}) }}">
+                            <input type="hidden" name="_token" value="{{ csrf_token('complete-activity' ~ activity.id) }}">
+                            <button class="activity-complete btn btn-success btn-sm">
+                                <i class="bi bi-check-lg"></i> {{ 'activity.action.complete'|trans }}
+                            </button>
+                        </form>
+                    {% endif %}
+
+                    {% if can_not_done %}
+                        {% include 'activity/_reasonDialog.html.twig' with {
+                            form: not_done_form,
+                            field: not_done_form.notDoneReason,
+                            name: 'not-done',
+                            button_label: 'activity.action.not_done'|trans,
+                            button_class: 'btn-error btn-outline',
+                            icon: 'bi-slash-circle',
+                            title: 'activity.not_done.title'|trans,
+                            help: 'activity.not_done.help'|trans,
+                            confirm_label: 'activity.not_done.confirm'|trans,
+                        } %}
                     {% endif %}
                 </div>
+            {% endif %}
+
+            {% if activity.status.value == 'not_done' and activity.notDoneReason %}
+                <section class="activity-not-done rounded-box border border-error/30 bg-error/5 p-3">
+                    <h2 class="text-sm font-semibold uppercase text-error mb-1">
+                        <i class="bi bi-slash-circle mr-1"></i>{{ 'activity.field.not_done_reason'|trans }}
+                    </h2>
+                    <p class="whitespace-pre-line break-words">{{ activity.notDoneReason }}</p>
+                </section>
             {% endif %}
 
             {% if activity.status.value == 'cancelled' and activity.cancellationReason %}

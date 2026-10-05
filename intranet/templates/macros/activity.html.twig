@@ -22,15 +22,18 @@
         'in_progress': 'badge-warning badge-soft',
         'completed': 'badge-success badge-soft',
         'cancelled': 'badge-ghost',
+        'not_done': 'badge-error badge-soft',
     }[status.value] ?? 'badge-ghost' }}
 {%- endmacro %}
 
-{# Left border color for an App\Enum\ActivityStatus (calendar entries) #}
-{% macro status_border(status) -%}
+{# Calendar entry colors for an App\Enum\ActivityStatus: tinted background
+   (text stays readable) plus a left border of the same color #}
+{% macro status_chip(status) -%}
     {{ {
-        'scheduled': 'border-info',
-        'in_progress': 'border-warning',
-        'completed': 'border-success',
-        'cancelled': 'border-base-300',
-    }[status.value] ?? 'border-base-300' }}
+        'scheduled': 'bg-info/15 hover:bg-info/25 border-info',
+        'in_progress': 'bg-warning/20 hover:bg-warning/30 border-warning',
+        'completed': 'bg-success/15 hover:bg-success/25 border-success',
+        'cancelled': 'bg-base-200 hover:bg-base-300 border-base-300 line-through opacity-60',
+        'not_done': 'bg-error/15 hover:bg-error/25 border-error',
+    }[status.value] ?? 'bg-base-200 hover:bg-base-300 border-base-300' }}
 {%- endmacro %}

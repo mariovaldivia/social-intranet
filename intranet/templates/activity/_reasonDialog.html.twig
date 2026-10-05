@@ -1,0 +1,28 @@
+{# Button that opens a <dialog> asking for the reason of a status change
+   (cancel, not done). Reopens with the errors when the form came back 422.
+
+   Parameters: form, field (the reason field), name (css hook: activity-<name>),
+   button_label, button_class, icon, title, help, confirm_label #}
+<div class="activity-{{ name }}-dialog" data-controller="dialog"
+    data-dialog-open-value="{{ form.vars.submitted ? 'true' : 'false' }}">
+    <button type="button" class="activity-{{ name }} btn btn-sm {{ button_class }}" data-action="dialog#open">
+        <i class="bi {{ icon }}"></i> {{ button_label }}
+    </button>
+
+    <dialog class="modal" data-dialog-target="dialog">
+        <div class="modal-box">
+            <h3 class="text-lg font-bold mb-1">{{ title }}</h3>
+            <p class="text-sm opacity-70 mb-3">{{ help }}</p>
+            {{ form_start(form) }}
+                {{ form_row(field) }}
+                <div class="modal-action">
+                    <button type="button" class="btn btn-ghost" data-action="dialog#close">{{ 'activity.reason_dialog.keep'|trans }}</button>
+                    <button class="btn {{ button_class|replace({'btn-outline': ''}) }}">{{ confirm_label }}</button>
+                </div>
+            {{ form_end(form) }}
+        </div>
+        <form method="dialog" class="modal-backdrop">
+            <button>{{ 'common.close'|trans }}</button>
+        </form>
+    </dialog>
+</div>

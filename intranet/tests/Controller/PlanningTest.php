@@ -88,6 +88,36 @@ class PlanningTest extends WebTestCase
         self::assertStringNotContainsString('South yard', $day->text());
     }
 
+    public function testEntriesAreColoredByStatusWithALegend(): void
+    {
+        $this->logIn($this->client, $this->manager(), ['ROLE_PLANNER']);
+        [$north] = $this->createSites();
+        $colors = [
+            ActivityStatus::Scheduled->value => 'bg-info/15',
+            ActivityStatus::InProgress->value => 'bg-warning/20',
+            ActivityStatus::Completed->value => 'bg-success/15',
+            ActivityStatus::Cancelled->value => 'line-through',
+            ActivityStatus::NotDone->value => 'bg-error/15',
+        ];
+        foreach (ActivityStatus::cases() as $i => $status) {
+            $this->createActivity($north, sprintf('2027-03-%02d', 10 + $i), 'Status '.$status->value)
+                ->setStatus($status)
+                ->setCancellationReason(ActivityStatus::Cancelled === $status ? 'Not needed' : null)
+                ->setNotDoneReason(ActivityStatus::NotDone === $status ? 'Could not access' : null);
+        }
+        $this->manager()->flush();
+
+        $crawler = $this->client->request('GET', '/planning/?month=2027-03');
+
+        foreach ($colors as $status => $class) {
+            $entry = $crawler->filter(sprintf('.planning-calendar .planning-activity[data-status="%s"]', $status));
+            self::assertCount(1, $entry, $status);
+            self::assertStringContainsString($class, $entry->attr('class'), $status);
+        }
+        $legend = $crawler->filter('.planning-legend');
+        self::assertSame(['Scheduled', 'In progress', 'Completed', 'Cancelled', 'Not done'], $legend->filter('span.inline-flex')->each(fn ($n) => trim($n->text())));
+    }
+
     public function testInvalidMonthFallsBackToTheCurrentMonth(): void
     {
         $this->logIn($this->client, $this->manager(), ['ROLE_PLANNER']);

@@ -277,12 +277,19 @@ site:
         code: 'Optional internal code, unique within the company.'
 
 activity:
+    not_done:
+        title: 'Mark as not done'
+        help: 'Tell why it could not be done. Everyone who can see the activity will see the reason.'
+        confirm: 'Confirm'
+    reason_dialog:
+        keep: 'Go back'
     action:
         start: 'Mark as in progress'
         cancel: 'Cancel activity'
+        complete: 'Mark as completed'
+        not_done: 'Not done'
     cancel:
         help: 'Tell why it is cancelled. Everyone who can see the activity will see the reason.'
-        keep: 'Keep it'
         confirm: 'Confirm cancellation'
     show:
         location: 'Location'
@@ -306,6 +313,7 @@ activity:
         in_progress: 'In progress'
         completed: 'Completed'
         cancelled: 'Cancelled'
+        not_done: 'Not done'
     field:
         date: 'Date'
         site: 'Site'
@@ -313,6 +321,7 @@ activity:
         status: 'Status'
         description: 'Description'
         cancellation_reason: 'Reason for cancellation'
+        not_done_reason: 'Reason it was not done'
         assigned_users: 'Assigned users'
         created_by: 'Created by'
         created_at: 'Created at'
@@ -320,6 +329,7 @@ activity:
     help:
         assigned_users: 'People who will do this work. Can be assigned later.'
         cancellation_reason: 'Required when the status is Cancelled.'
+        not_done_reason: 'Required when the status is Not done.'
 
 my_activities:
     title: 'My activities'

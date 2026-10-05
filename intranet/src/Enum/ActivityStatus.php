@@ -14,6 +14,8 @@ enum ActivityStatus: string implements TranslatableInterface
     case InProgress = 'in_progress';
     case Completed = 'completed';
     case Cancelled = 'cancelled';
+    // Started but could not be finished (with a reason)
+    case NotDone = 'not_done';
 
     public function trans(TranslatorInterface $translator, ?string $locale = null): string
     {

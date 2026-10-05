@@ -68,12 +68,16 @@ class SiteActivityCrudController extends AbstractCrudController
                 ActivityStatus::InProgress->name => 'warning',
                 ActivityStatus::Completed->name => 'success',
                 ActivityStatus::Cancelled->name => 'secondary',
+                ActivityStatus::NotDone->name => 'danger',
             ]);
         yield TextareaField::new('description', 'activity.field.description')
             ->setNumOfRows(4)
             ->setMaxLength(80);
         yield TextareaField::new('cancellationReason', 'activity.field.cancellation_reason')
             ->setHelp('activity.help.cancellation_reason')
+            ->hideOnIndex();
+        yield TextareaField::new('notDoneReason', 'activity.field.not_done_reason')
+            ->setHelp('activity.help.not_done_reason')
             ->hideOnIndex();
         yield AssociationField::new('assignedUsers', 'activity.field.assigned_users')
             ->autocomplete()

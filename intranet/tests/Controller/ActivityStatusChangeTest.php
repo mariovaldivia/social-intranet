@@ -49,9 +49,12 @@ class ActivityStatusChangeTest extends WebTestCase
         self::assertResponseRedirects($this->url($id));
         self::assertSame(ActivityStatus::InProgress, $this->reload($id)->getStatus());
 
-        // No longer scheduled: the buttons are gone and starting again is refused
+        // Now in progress: start/cancel give way to complete/not done, and
+        // starting again is refused
         $crawler = $this->client->request('GET', $this->url($id));
-        self::assertCount(0, $crawler->filter('.activity-status-actions'));
+        self::assertCount(0, $crawler->filter('button.activity-start'));
+        self::assertCount(0, $crawler->filter('button.activity-cancel'));
+        self::assertCount(1, $crawler->filter('button.activity-complete'));
         $this->client->request('POST', $this->url($id).'/start');
         self::assertResponseStatusCodeSame(403);
     }
@@ -86,7 +89,7 @@ class ActivityStatusChangeTest extends WebTestCase
 
         self::assertResponseStatusCodeSame(422);
         self::assertStringContainsString('Tell why the activity is cancelled.', $crawler->filter('dialog .text-error')->text());
-        self::assertSame('true', $crawler->filter('.activity-status-actions')->attr('data-dialog-open-value'), 'The dialog reopens with the error');
+        self::assertSame('true', $crawler->filter('.activity-cancel-dialog')->attr('data-dialog-open-value'), 'The dialog reopens with the error');
         self::assertSame(ActivityStatus::Scheduled, $this->reload($id)->getStatus());
     }
 
@@ -117,7 +120,76 @@ class ActivityStatusChangeTest extends WebTestCase
         self::assertSame(ActivityStatus::Cancelled, $this->reload($id)->getStatus());
     }
 
-    private function createActivity(array $roles = [], bool $assignToMe = false): SiteActivity
+    public function testInProgressActivityCanBeCompleted(): void
+    {
+        $id = $this->createActivity(assignToMe: true, status: ActivityStatus::InProgress)->getId();
+
+        $crawler = $this->client->request('GET', $this->url($id));
+        self::assertCount(0, $crawler->filter('button.activity-start'), 'Start/cancel are for scheduled activities');
+        self::assertCount(1, $crawler->filter('button.activity-complete'));
+        self::assertCount(1, $crawler->filter('button.activity-not-done'));
+
+        $this->client->submit($crawler->filter('button.activity-complete')->form());
+        self::assertResponseRedirects($this->url($id));
+        self::assertSame(ActivityStatus::Completed, $this->reload($id)->getStatus());
+
+        $crawler = $this->client->request('GET', $this->url($id));
+        self::assertCount(0, $crawler->filter('.activity-status-actions'), 'Completed: no more status changes');
+    }
+
+    public function testInProgressActivityMarkedNotDoneWithAReason(): void
+    {
+        $id = $this->createActivity(roles: ['ROLE_PLANNER'], status: ActivityStatus::InProgress)->getId();
+
+        // Without a reason: refused, with the dialog reopened
+        $crawler = $this->client->request('GET', $this->url($id));
+        $form = $crawler->filter('form[name="activity_not_done"]')->form();
+        $form['activity_not_done[notDoneReason]'] = '';
+        $crawler = $this->client->submit($form, [], ['HTTP_ORIGIN' => 'http://localhost']);
+        self::assertResponseStatusCodeSame(422);
+        self::assertStringContainsString('Tell why the activity could not be done.', $crawler->filter('dialog .text-error')->text());
+        self::assertSame('true', $crawler->filter('.activity-not-done-dialog')->attr('data-dialog-open-value'));
+        self::assertSame(ActivityStatus::InProgress, $this->reload($id)->getStatus());
+
+        $form = $crawler->filter('form[name="activity_not_done"]')->form();
+        $form['activity_not_done[notDoneReason]'] = 'No access: the road was closed';
+        $this->client->submit($form, [], ['HTTP_ORIGIN' => 'http://localhost']);
+        self::assertResponseRedirects($this->url($id));
+
+        $activity = $this->reload($id);
+        self::assertSame(ActivityStatus::NotDone, $activity->getStatus());
+        self::assertSame('No access: the road was closed', $activity->getNotDoneReason());
+        $crawler = $this->client->request('GET', $this->url($id));
+        self::assertStringContainsString('No access: the road was closed', $crawler->filter('.activity-not-done')->text());
+    }
+
+    public function testScheduledActivityCannotBeCompletedDirectly(): void
+    {
+        $id = $this->createActivity(assignToMe: true)->getId();
+
+        $this->client->request('POST', $this->url($id).'/complete');
+        self::assertResponseStatusCodeSame(403);
+        $this->client->request('POST', $this->url($id).'/not-done');
+        self::assertResponseStatusCodeSame(403);
+    }
+
+    public function testEditFormRequiresAReasonWhenNotDone(): void
+    {
+        $id = $this->createActivity(roles: ['ROLE_PLANNER'], status: ActivityStatus::InProgress)->getId();
+
+        $crawler = $this->client->request('GET', sprintf('/planning/%d/edit', $id));
+        $form = $crawler->filter('form[name="site_activity"]')->form();
+        $form['site_activity[status]'] = ActivityStatus::NotDone->value;
+        $this->client->submit($form, [], ['HTTP_ORIGIN' => 'http://localhost']);
+        self::assertResponseStatusCodeSame(422);
+
+        $form['site_activity[notDoneReason]'] = 'Equipment did not arrive';
+        $this->client->submit($form, [], ['HTTP_ORIGIN' => 'http://localhost']);
+        self::assertResponseRedirects($this->url($id));
+        self::assertSame(ActivityStatus::NotDone, $this->reload($id)->getStatus());
+    }
+
+    private function createActivity(array $roles = [], bool $assignToMe = false, ActivityStatus $status = ActivityStatus::Scheduled): SiteActivity
     {
         $user = $this->logIn($this->client, $this->manager(), $roles);
 
@@ -128,7 +200,8 @@ class ActivityStatusChangeTest extends WebTestCase
             ->setSite($site)
             ->setDate(new \DateTime('2027-06-01'))
             ->setType(ActivityType::TechnicalVisit)
-            ->setDescription('Visit the substation');
+            ->setDescription('Visit the substation')
+            ->setStatus($status);
         if ($assignToMe) {
             $activity->addAssignedUser($user);
         }

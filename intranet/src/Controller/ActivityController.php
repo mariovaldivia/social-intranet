@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\SiteActivity;
 use App\Enum\ActivityStatus;
 use App\Form\ActivityCancelType;
+use App\Form\ActivityNotDoneType;
 use App\Security\Voter\SiteActivityVoter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,8 +16,9 @@ use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Detail of a site activity, for planners and the people assigned to it,
- * and the status changes they can make from it while it is scheduled
- * (start it, or cancel it with a reason). Editing is in PlanningController.
+ * and the status changes they can make from it: while scheduled, start it
+ * or cancel it (with a reason); while in progress, complete it or mark it
+ * as not done (with a reason). Editing is in PlanningController.
  */
 #[Route('/activities/{id}', requirements: ['id' => '\d+'])]
 class ActivityController extends AbstractController
@@ -26,7 +28,7 @@ class ActivityController extends AbstractController
     {
         $this->denyAccessUnlessGranted(SiteActivityVoter::VIEW, $activity);
 
-        return $this->renderDetail($activity, $this->createCancelForm($activity));
+        return $this->renderDetail($activity);
     }
 
     #[Route('/start', name: 'app_activity_start', methods: ['POST'])]
@@ -52,10 +54,42 @@ class ActivityController extends AbstractController
 
         if (!$form->isSubmitted() || !$form->isValid()) {
             // 422 with the dialog open showing the error
-            return $this->renderDetail($activity, $form);
+            return $this->renderDetail($activity, cancelForm: $form);
         }
 
         $activity->setStatus(ActivityStatus::Cancelled);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/complete', name: 'app_activity_complete', methods: ['POST'])]
+    public function complete(Request $request, SiteActivity $activity, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted(SiteActivityVoter::COMPLETE, $activity);
+
+        if ($this->isCsrfTokenValid('complete-activity'.$activity->getId(), $request->getPayload()->getString('_token'))) {
+            $activity->setStatus(ActivityStatus::Completed);
+            $entityManager->flush();
+        }
+
+        return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/not-done', name: 'app_activity_not_done', methods: ['POST'])]
+    public function notDone(Request $request, SiteActivity $activity, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted(SiteActivityVoter::NOT_DONE, $activity);
+
+        $form = $this->createNotDoneForm($activity);
+        $form->handleRequest($request);
+
+        if (!$form->isSubmitted() || !$form->isValid()) {
+            // 422 with the dialog open showing the error
+            return $this->renderDetail($activity, notDoneForm: $form);
+        }
+
+        $activity->setStatus(ActivityStatus::NotDone);
         $entityManager->flush();
 
         return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()], Response::HTTP_SEE_OTHER);
@@ -68,11 +102,19 @@ class ActivityController extends AbstractController
         ]);
     }
 
-    private function renderDetail(SiteActivity $activity, FormInterface $cancelForm): Response
+    private function createNotDoneForm(SiteActivity $activity): FormInterface
+    {
+        return $this->createForm(ActivityNotDoneType::class, $activity, [
+            'action' => $this->generateUrl('app_activity_not_done', ['id' => $activity->getId()]),
+        ]);
+    }
+
+    private function renderDetail(SiteActivity $activity, ?FormInterface $cancelForm = null, ?FormInterface $notDoneForm = null): Response
     {
         return $this->render('activity/show.html.twig', [
             'activity' => $activity,
-            'cancel_form' => $cancelForm,
+            'cancel_form' => $cancelForm ?? $this->createCancelForm($activity),
+            'not_done_form' => $notDoneForm ?? $this->createNotDoneForm($activity),
         ]);
     }
 }

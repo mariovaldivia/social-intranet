@@ -277,12 +277,19 @@ site:
         code: 'Código interno opcional, único dentro de la empresa.'
 
 activity:
+    not_done:
+        title: 'Marcar como no realizada'
+        help: 'Indica por qué no se pudo realizar. Quienes pueden ver la actividad verán el motivo.'
+        confirm: 'Confirmar'
+    reason_dialog:
+        keep: 'Volver'
     action:
         start: 'Marcar en curso'
         cancel: 'Cancelar actividad'
+        complete: 'Marcar completada'
+        not_done: 'No realizada'
     cancel:
         help: 'Indica por qué se cancela. Quienes pueden ver la actividad verán el motivo.'
-        keep: 'No cancelar'
         confirm: 'Confirmar cancelación'
     show:
         location: 'Ubicación'
@@ -306,6 +313,7 @@ activity:
         in_progress: 'En curso'
         completed: 'Completada'
         cancelled: 'Cancelada'
+        not_done: 'No realizada'
     field:
         date: 'Fecha'
         site: 'Sitio'
@@ -313,6 +321,7 @@ activity:
         status: 'Estado'
         description: 'Descripción'
         cancellation_reason: 'Motivo de la cancelación'
+        not_done_reason: 'Motivo de la no realización'
         assigned_users: 'Usuarios asignados'
         created_by: 'Creada por'
         created_at: 'Creada el'
@@ -320,6 +329,7 @@ activity:
     help:
         assigned_users: 'Personas que realizarán este trabajo. Se pueden asignar después.'
         cancellation_reason: 'Obligatorio cuando el estado es Cancelada.'
+        not_done_reason: 'Obligatorio cuando el estado es No realizada.'
 
 my_activities:
     title: 'Mis actividades'
