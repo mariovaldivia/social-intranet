@@ -277,6 +277,13 @@ site:
         code: 'Optional internal code, unique within the company.'
 
 activity:
+    action:
+        start: 'Mark as in progress'
+        cancel: 'Cancel activity'
+    cancel:
+        help: 'Tell why it is cancelled. Everyone who can see the activity will see the reason.'
+        keep: 'Keep it'
+        confirm: 'Confirm cancellation'
     show:
         location: 'Location'
         no_location: 'No address or contact registered for this site.'
@@ -305,12 +312,14 @@ activity:
         type: 'Task type'
         status: 'Status'
         description: 'Description'
+        cancellation_reason: 'Reason for cancellation'
         assigned_users: 'Assigned users'
         created_by: 'Created by'
         created_at: 'Created at'
         updated_at: 'Updated at'
     help:
         assigned_users: 'People who will do this work. Can be assigned later.'
+        cancellation_reason: 'Required when the status is Cancelled.'
 
 my_activities:
     title: 'My activities'

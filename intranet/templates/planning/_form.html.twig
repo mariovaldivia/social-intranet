@@ -3,9 +3,15 @@
         {{ form_row(form.site) }}
         {{ form_row(form.date) }}
         {{ form_row(form.type) }}
-        {{ form_row(form.status) }}
+        {# Only when editing: new activities are always scheduled #}
+        {% if form.status is defined %}
+            {{ form_row(form.status) }}
+        {% endif %}
     </div>
     {{ form_row(form.description) }}
+    {% if form.cancellationReason is defined %}
+        {{ form_row(form.cancellationReason) }}
+    {% endif %}
 
     {# Users as a checkbox list, in columns #}
     <fieldset class="fieldset">

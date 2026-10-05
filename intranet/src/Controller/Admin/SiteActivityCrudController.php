@@ -72,6 +72,9 @@ class SiteActivityCrudController extends AbstractCrudController
         yield TextareaField::new('description', 'activity.field.description')
             ->setNumOfRows(4)
             ->setMaxLength(80);
+        yield TextareaField::new('cancellationReason', 'activity.field.cancellation_reason')
+            ->setHelp('activity.help.cancellation_reason')
+            ->hideOnIndex();
         yield AssociationField::new('assignedUsers', 'activity.field.assigned_users')
             ->autocomplete()
             ->setFormTypeOption('by_reference', false)

@@ -106,6 +106,7 @@ class PlanningTest extends WebTestCase
         $form = $crawler->filter('form[name="site_activity"]')->form();
         self::assertSame('2027-03-15', $form['site_activity[date]']->getValue(), 'Date prefilled from the calendar');
         self::assertSame((string) $north->getId(), $form['site_activity[site]']->getValue(), 'Site prefilled from the filter');
+        self::assertFalse($form->has('site_activity[status]'), 'New activities are always scheduled');
 
         $form['site_activity[type]'] = ActivityType::Installation->value;
         $form['site_activity[description]'] = 'Install the new sensors';

@@ -10,6 +10,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Context\ExecutionContextInterface;
 
 /**
  * Work done at a company site (technical visit, maintenance...), with the
@@ -47,6 +48,11 @@ class SiteActivity
     #[Assert\NotNull]
     private ?ActivityStatus $status = ActivityStatus::Scheduled;
 
+    // Why the activity was cancelled: required when the status is Cancelled
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Assert\Length(max: 1000)]
+    private ?string $cancellationReason = null;
+
     /** @var Collection<int, User> People who carry out the work */
     #[ORM\ManyToMany(targetEntity: User::class)]
     #[ORM\JoinTable(name: 'site_activity_user')]
@@ -78,6 +84,16 @@ class SiteActivity
     public function setUpdatedAtValue(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
+    }
+
+    #[Assert\Callback]
+    public function validateCancellationReason(ExecutionContextInterface $context): void
+    {
+        if (ActivityStatus::Cancelled === $this->status && '' === trim((string) $this->cancellationReason)) {
+            $context->buildViolation('activity.cancellation_reason.not_blank')
+                ->atPath('cancellationReason')
+                ->addViolation();
+        }
     }
 
     public function __toString(): string
@@ -146,6 +162,18 @@ class SiteActivity
     public function setStatus(?ActivityStatus $status): static
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getCancellationReason(): ?string
+    {
+        return $this->cancellationReason;
+    }
+
+    public function setCancellationReason(?string $cancellationReason): static
+    {
+        $this->cancellationReason = $cancellationReason;
 
         return $this;
     }

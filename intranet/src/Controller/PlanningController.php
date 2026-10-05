@@ -85,7 +85,7 @@ class PlanningController extends AbstractController
             $activity->setSite($site);
         }
 
-        $form = $this->createForm(SiteActivityType::class, $activity);
+        $form = $this->createForm(SiteActivityType::class, $activity, ['is_new' => true]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

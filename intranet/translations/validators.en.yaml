@@ -24,3 +24,7 @@ gallery:
 site:
     code:
         unique: 'This company already has a site with this code.'
+
+activity:
+    cancellation_reason:
+        not_blank: 'Tell why the activity is cancelled.'

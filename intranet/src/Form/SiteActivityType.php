@@ -47,11 +47,6 @@ class SiteActivityType extends AbstractType
                 // The enum is TranslatableInterface: labels are activity.type.*
                 'choice_label' => fn (ActivityType $type) => $type,
             ])
-            ->add('status', EnumType::class, [
-                'class' => ActivityStatus::class,
-                'label' => 'activity.field.status',
-                'choice_label' => fn (ActivityStatus $status) => $status,
-            ])
             ->add('description', TextareaType::class, [
                 'label' => 'activity.field.description',
                 'attr' => ['rows' => 4],
@@ -71,12 +66,31 @@ class SiteActivityType extends AbstractType
                     ->addOrderBy('u.email', 'ASC'),
             ])
         ;
+
+        // New activities always start as scheduled (the entity default);
+        // the status, and the reason when cancelled, are edited afterwards
+        if (!$options['is_new']) {
+            $builder
+                ->add('status', EnumType::class, [
+                    'class' => ActivityStatus::class,
+                    'label' => 'activity.field.status',
+                    'choice_label' => fn (ActivityStatus $status) => $status,
+                ])
+                ->add('cancellationReason', TextareaType::class, [
+                    'label' => 'activity.field.cancellation_reason',
+                    'help' => 'activity.help.cancellation_reason',
+                    'required' => false,
+                    'attr' => ['rows' => 2],
+                ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => SiteActivity::class,
+            'is_new' => false,
         ]);
+        $resolver->setAllowedTypes('is_new', 'bool');
     }
 }
