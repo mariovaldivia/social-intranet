@@ -165,6 +165,7 @@ company:
         active: 'Activa'
         created_at: 'Creada el'
         updated_at: 'Actualizada el'
+        sites: 'Sitios'
     help:
         tax_id: 'Para empresas chilenas, el RUT (ej.: 76.123.456-7).'
 
@@ -209,3 +210,36 @@ gallery:
         album_plural: 'Álbumes'
         photo_singular: 'Foto'
         photo_plural: 'Fotos'
+
+site:
+    admin:
+        singular: 'Sitio'
+        plural: 'Sitios'
+    section:
+        identification: 'Identificación'
+        location: 'Ubicación'
+        contact: 'Contacto'
+        status: 'Estado'
+    type:
+        office: 'Oficina'
+        branch: 'Sucursal'
+        worksite: 'Faena'
+        plant: 'Planta'
+        warehouse: 'Bodega'
+        other: 'Otro'
+    field:
+        company: 'Empresa'
+        name: 'Nombre'
+        type: 'Tipo'
+        code: 'Código'
+        address: 'Dirección'
+        city: 'Ciudad'
+        region: 'Región'
+        country: 'País'
+        phone: 'Teléfono'
+        email: 'Correo electrónico'
+        active: 'Activo'
+        created_at: 'Creado el'
+        updated_at: 'Actualizado el'
+    help:
+        code: 'Código interno opcional, único dentro de la empresa.'

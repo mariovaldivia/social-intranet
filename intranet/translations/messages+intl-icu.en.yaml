@@ -165,6 +165,7 @@ company:
         active: 'Active'
         created_at: 'Created at'
         updated_at: 'Updated at'
+        sites: 'Sites'
     help:
         tax_id: 'For Chilean companies, the RUT (e.g. 76.123.456-7).'
 
@@ -209,3 +210,36 @@ gallery:
         album_plural: 'Albums'
         photo_singular: 'Photo'
         photo_plural: 'Photos'
+
+site:
+    admin:
+        singular: 'Site'
+        plural: 'Sites'
+    section:
+        identification: 'Identification'
+        location: 'Location'
+        contact: 'Contact'
+        status: 'Status'
+    type:
+        office: 'Office'
+        branch: 'Branch'
+        worksite: 'Work site'
+        plant: 'Plant'
+        warehouse: 'Warehouse'
+        other: 'Other'
+    field:
+        company: 'Company'
+        name: 'Name'
+        type: 'Type'
+        code: 'Code'
+        address: 'Address'
+        city: 'City'
+        region: 'Region'
+        country: 'Country'
+        phone: 'Phone'
+        email: 'Email'
+        active: 'Active'
+        created_at: 'Created at'
+        updated_at: 'Updated at'
+    help:
+        code: 'Optional internal code, unique within the company.'

@@ -20,3 +20,7 @@ gallery:
     photo:
         not_image: 'Solo se pueden subir imágenes JPEG, PNG, WebP o GIF.'
         too_large: 'Cada foto puede pesar hasta {{ limit }} {{ suffix }}.'
+
+site:
+    code:
+        unique: 'Esta empresa ya tiene un sitio con este código.'

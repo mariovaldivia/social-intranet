@@ -8,6 +8,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\CountryField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
@@ -76,6 +77,8 @@ class CompanyCrudController extends AbstractCrudController
 
         yield FormField::addFieldset('company.section.status');
         yield BooleanField::new('active', 'company.field.active');
+        // Number of sites on the index, their list on the detail page
+        yield AssociationField::new('sites', 'company.field.sites')->hideOnForm();
         yield DateTimeField::new('createdAt', 'company.field.created_at')->onlyOnDetail();
         yield DateTimeField::new('updatedAt', 'company.field.updated_at')->onlyOnDetail();
     }
