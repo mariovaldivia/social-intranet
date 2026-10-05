@@ -3,8 +3,8 @@
 {% block title %}{{ 'planning.edit_title'|trans }}{% endblock %}
 
 {% block body %}
-    <a href="{{ path('app_planning', {month: activity.date|date('Y-m', false)}) }}" class="btn btn-ghost btn-sm mb-2">
-        <i class="bi bi-arrow-left"></i> {{ 'planning.back'|trans }}
+    <a href="{{ path('app_activity_show', {id: activity.id}) }}" class="btn btn-ghost btn-sm mb-2">
+        <i class="bi bi-arrow-left"></i> {{ 'activity.show.back'|trans }}
     </a>
     <h1 class="text-2xl font-bold mb-4">{{ 'planning.edit_title'|trans }}</h1>
 

@@ -75,6 +75,7 @@ class PlanningTest extends WebTestCase
         self::assertCount(35, $crawler->filter('.planning-day'));
         $day = $crawler->filter('.planning-day[data-date="2027-03-10"]');
         self::assertCount(2, $day->filter('.planning-activity'));
+        self::assertMatchesRegularExpression('#^/activities/\d+$#', $day->filter('.planning-activity')->attr('href'), 'Entries open the detail page');
         self::assertStringContainsString('North plant', $day->text());
         // The last week runs into April: its days are shown (dimmed) with their work
         self::assertStringContainsString('North plant', $crawler->filter('.planning-day[data-date="2027-04-02"]')->text());
@@ -144,7 +145,7 @@ class PlanningTest extends WebTestCase
         $form = $crawler->filter('form[name="site_activity"]')->form();
         $form['site_activity[status]'] = ActivityStatus::Completed->value;
         $this->client->submit($form, [], ['HTTP_ORIGIN' => 'http://localhost']);
-        self::assertResponseRedirects('/planning/?month=2027-03');
+        self::assertResponseRedirects(sprintf('/activities/%d', $id), null, 'Back to the detail page');
         $this->manager()->clear();
         self::assertSame(ActivityStatus::Completed, $this->manager()->getRepository(SiteActivity::class)->find($id)->getStatus());
 

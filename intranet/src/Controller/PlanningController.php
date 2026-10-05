@@ -110,7 +110,8 @@ class PlanningController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToMonth($activity);
+            // Back to the detail page the planner came from
+            return $this->redirectToRoute('app_activity_show', ['id' => $activity->getId()], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('planning/edit.html.twig', [

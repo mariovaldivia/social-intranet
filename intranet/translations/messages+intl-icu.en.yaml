@@ -277,6 +277,11 @@ site:
         code: 'Optional internal code, unique within the company.'
 
 activity:
+    show:
+        location: 'Location'
+        no_location: 'No address or contact registered for this site.'
+        no_team: 'No one assigned yet.'
+        back: 'back to the activity'
     admin:
         singular: 'Activity'
         plural: 'Activities'

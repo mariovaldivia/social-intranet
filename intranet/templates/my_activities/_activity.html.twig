@@ -17,7 +17,9 @@
         </div>
 
         <h3 class="font-semibold leading-tight">
-            <i class="bi bi-building mr-1 opacity-60"></i>{{ site.company }} · {{ site.name }}
+            <a href="{{ path('app_activity_show', {id: activity.id}) }}" class="hover:underline">
+                <i class="bi bi-building mr-1 opacity-60"></i>{{ site.company }} · {{ site.name }}
+            </a>
         </h3>
         {% if site.address or site.city or site.region %}
             <p class="text-sm opacity-70 -mt-1">

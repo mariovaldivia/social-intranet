@@ -1,0 +1,94 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/activity.html.twig' as activity_ui %}
+
+{% set site = activity.site %}
+{% block title %}{{ activity.type|trans }} · {{ site.name }}{% endblock %}
+
+{% block body %}
+    {# Planners come from the calendar; assigned users from "My activities" #}
+    {% if is_granted('ROLE_PLANNER') %}
+        <a href="{{ path('app_planning', {month: activity.date|date('Y-m', false)}) }}" class="btn btn-ghost btn-sm mb-2">
+            <i class="bi bi-arrow-left"></i> {{ 'planning.back'|trans }}
+        </a>
+    {% else %}
+        <a href="{{ path('app_my_activities') }}" class="btn btn-ghost btn-sm mb-2">
+            <i class="bi bi-arrow-left"></i> {{ 'my_activities.back'|trans }}
+        </a>
+    {% endif %}
+
+    <div class="card bg-base-100 shadow-sm max-w-3xl">
+        <div class="card-body gap-4">
+            <div class="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2 mb-1">
+                        <span class="badge badge-outline gap-1">
+                            <i class="bi {{ activity_ui.type_icon(activity.type) }}"></i> {{ activity.type|trans }}
+                        </span>
+                        <span class="activity-status badge {{ activity_ui.status_badge(activity.status) }}">{{ activity.status|trans }}</span>
+                    </div>
+                    <h1 class="text-2xl font-bold leading-tight">{{ site.company }} · {{ site.name }}</h1>
+                    <p class="opacity-70">
+                        <i class="bi bi-calendar3 mr-1"></i>
+                        {{ ('common.weekday.' ~ activity.date|date('N', false))|trans }} {{ activity.date|date('d/m/Y', false) }}
+                    </p>
+                </div>
+
+                {% if is_granted('ACTIVITY_EDIT', activity) %}
+                    <a href="{{ path('app_planning_edit', {id: activity.id}) }}" class="activity-update btn btn-primary btn-sm">
+                        <i class="bi bi-pencil"></i> {{ 'common.update'|trans }}
+                    </a>
+                {% endif %}
+            </div>
+
+            <section>
+                <h2 class="text-sm font-semibold uppercase opacity-60 mb-1">{{ 'activity.field.description'|trans }}</h2>
+                <p class="activity-description whitespace-pre-line break-words leading-relaxed">{{ activity.description }}</p>
+            </section>
+
+            <section>
+                <h2 class="text-sm font-semibold uppercase opacity-60 mb-1">{{ 'activity.show.location'|trans }}</h2>
+                <div class="text-sm space-y-0.5">
+                    {% if site.address or site.city or site.region %}
+                        <p><i class="bi bi-geo-alt mr-1"></i>{{ [site.address, site.city, site.region]|filter(v => v)|join(', ') }}</p>
+                    {% endif %}
+                    {% if site.phone %}
+                        <p><i class="bi bi-telephone mr-1"></i>{{ site.phone }}</p>
+                    {% endif %}
+                    {% if site.email %}
+                        <p><i class="bi bi-envelope mr-1"></i><a href="mailto:{{ site.email }}" class="link link-hover">{{ site.email }}</a></p>
+                    {% endif %}
+                    {% if not (site.address or site.city or site.region or site.phone or site.email) %}
+                        <p class="opacity-60">{{ 'activity.show.no_location'|trans }}</p>
+                    {% endif %}
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-sm font-semibold uppercase opacity-60 mb-2">{{ 'activity.field.assigned_users'|trans }}</h2>
+                {% if activity.assignedUsers is not empty %}
+                    <ul class="activity-team grid grid-cols-1 sm:grid-cols-2 gap-2">
+                        {% for member in activity.assignedUsers %}
+                            <li class="flex items-center gap-2">
+                                {% include "_imageUser.html.twig" with {'user': member, 'size': 'user_post'} %}
+                                <div class="min-w-0">
+                                    <div class="font-medium truncate">{{ member }}</div>
+                                    {% if member.profile and member.profile.position %}
+                                        <div class="text-xs opacity-70 truncate">{{ member.profile.position }}</div>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="text-sm opacity-60">{{ 'activity.show.no_team'|trans }}</p>
+                {% endif %}
+            </section>
+
+            <p class="text-xs opacity-60 border-t border-base-200 pt-3">
+                {% if activity.createdBy %}{{ 'activity.field.created_by'|trans }}: {{ activity.createdBy }} · {% endif %}
+                {{ 'activity.field.created_at'|trans }}: {{ activity.createdAt|date('d/m/Y H:i') }}
+                {% if activity.updatedAt %} · {{ 'activity.field.updated_at'|trans }}: {{ activity.updatedAt|date('d/m/Y H:i') }}{% endif %}
+            </p>
+        </div>
+    </div>
+{% endblock %}

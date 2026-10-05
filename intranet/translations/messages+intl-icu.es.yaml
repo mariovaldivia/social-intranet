@@ -277,6 +277,11 @@ site:
         code: 'Código interno opcional, único dentro de la empresa.'
 
 activity:
+    show:
+        location: 'Ubicación'
+        no_location: 'Este sitio no tiene dirección ni contacto registrados.'
+        no_team: 'Aún no hay personas asignadas.'
+        back: 'volver a la actividad'
     admin:
         singular: 'Actividad'
         plural: 'Actividades'

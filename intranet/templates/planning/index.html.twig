@@ -84,7 +84,7 @@
                             </a>
                         </div>
                         {% for activity in activities_by_day[key] ?? [] %}
-                            <a href="{{ path('app_planning_edit', {id: activity.id}) }}"
+                            <a href="{{ path('app_activity_show', {id: activity.id}) }}"
                                 class="planning-activity block text-xs leading-snug rounded px-1.5 py-1 border-l-4 {{ activity_ui.status_border(activity.status) }} bg-base-200 hover:bg-base-300 {{ activity.status.value == 'cancelled' ? 'line-through opacity-60' : '' }}"
                                 title="{{ activity.type|trans }} · {{ activity.status|trans }} · {{ activity.site }}&#10;{{ activity.description }}">
                                 <span class="flex items-center gap-1 font-medium truncate">
@@ -112,7 +112,7 @@
                         </h2>
                         <div class="flex flex-col gap-1">
                             {% for activity in activities_by_day[key] %}
-                                <a href="{{ path('app_planning_edit', {id: activity.id}) }}"
+                                <a href="{{ path('app_activity_show', {id: activity.id}) }}"
                                     class="card bg-base-100 shadow-sm border-l-4 {{ activity_ui.status_border(activity.status) }} px-3 py-2 text-sm">
                                     <span class="font-medium"><i class="bi {{ activity_ui.type_icon(activity.type) }} mr-1"></i>{{ activity.site }}</span>
                                     <span class="opacity-70">{{ activity.type|trans }} · {{ activity.status|trans }}</span>
