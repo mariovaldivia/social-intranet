@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'my_activities.history_title'|trans }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_my_activities') }}" class="btn btn-ghost btn-sm mb-2">
+        <i class="bi bi-arrow-left"></i> {{ 'my_activities.back'|trans }}
+    </a>
+    <h1 class="text-2xl font-bold mb-4">{{ 'my_activities.history_title'|trans }}</h1>
+
+    <div class="flex flex-col gap-3">
+        {% for activity in activities %}
+            {% include "my_activities/_activity.html.twig" with {'activity': activity, 'show_date': true} %}
+        {% else %}
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body">{{ 'my_activities.history_empty'|trans }}</div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{{ form_start(form) }}
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
+        {{ form_row(form.site) }}
+        {{ form_row(form.date) }}
+        {{ form_row(form.type) }}
+        {{ form_row(form.status) }}
+    </div>
+    {{ form_row(form.description) }}
+
+    {# Users as a checkbox list, in columns #}
+    <fieldset class="fieldset">
+        {{ form_label(form.assignedUsers) }}
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1">
+            {% for user in form.assignedUsers %}
+                <label class="label cursor-pointer gap-2 text-base-content">
+                    {{ form_widget(user) }} {{ user.vars.label }}
+                </label>
+            {% endfor %}
+        </div>
+        {{ form_help(form.assignedUsers) }}
+        {{ form_errors(form.assignedUsers) }}
+    </fieldset>
+
+    <button class="btn btn-primary mt-4">{{ button_label|default('common.save')|trans }}</button>
+{{ form_end(form) }}

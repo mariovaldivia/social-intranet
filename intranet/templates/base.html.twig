@@ -27,6 +27,10 @@
                     <a class="btn btn-ghost text-xl" href="{{ path('app_timeline') }}">{{ 'app.brand'|trans }}</a>
                     <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_event_index') }}">{{ 'nav.events'|trans }}</a>
                     <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_gallery_index') }}">{{ 'nav.gallery'|trans }}</a>
+                    <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_my_activities') }}">{{ 'nav.my_activities'|trans }}</a>
+                    {% if is_granted('ROLE_PLANNER') %}
+                        <a class="btn btn-ghost btn-sm hidden sm:inline-flex" href="{{ path('app_planning') }}">{{ 'nav.planning'|trans }}</a>
+                    {% endif %}
                 </div>
                 {% if app.user %}
                     <label for="user-drawer" class="btn btn-ghost btn-square" aria-label="{{ 'nav.open_user_menu'|trans }}">
@@ -77,6 +81,10 @@
                         <li><a href="{{ path('app_event_index') }}"><i class="bi bi-calendar2"></i> {{ 'nav.events'|trans }}</a></li>
                         <li><a href="{{ path('app_profile_index') }}"><i class="bi bi-people"></i> {{ 'nav.employees'|trans }}</a></li>
                         <li><a href="{{ path('app_gallery_index') }}"><i class="bi bi-images"></i> {{ 'nav.gallery'|trans }}</a></li>
+                        <li><a href="{{ path('app_my_activities') }}"><i class="bi bi-clipboard-check"></i> {{ 'nav.my_activities'|trans }}</a></li>
+                        {% if is_granted('ROLE_PLANNER') %}
+                            <li><a href="{{ path('app_planning') }}"><i class="bi bi-calendar-week"></i> {{ 'nav.planning'|trans }}</a></li>
+                        {% endif %}
                     </ul>
                 </div>
             </div>

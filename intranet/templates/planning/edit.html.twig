@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'planning.edit_title'|trans }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_planning', {month: activity.date|date('Y-m', false)}) }}" class="btn btn-ghost btn-sm mb-2">
+        <i class="bi bi-arrow-left"></i> {{ 'planning.back'|trans }}
+    </a>
+    <h1 class="text-2xl font-bold mb-4">{{ 'planning.edit_title'|trans }}</h1>
+
+    <div class="card bg-base-100 shadow-sm max-w-3xl">
+        <div class="card-body">
+            {{ include('planning/_form.html.twig', {'button_label': 'common.update'}) }}
+
+            <div class="card-actions justify-end">
+                <form method="post" action="{{ path('app_planning_delete', {id: activity.id}) }}"
+                    onsubmit="return confirm({{ 'planning.delete_confirm'|trans|json_encode|e('html_attr') }});">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete-activity' ~ activity.id) }}">
+                    <button class="btn btn-error btn-outline btn-sm">
+                        <i class="bi bi-trash"></i> {{ 'planning.delete'|trans }}
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+{% endblock %}

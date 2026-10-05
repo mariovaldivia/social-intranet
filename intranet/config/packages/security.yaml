@@ -9,6 +9,10 @@ security:
             entity:
                 class: App\Entity\User
                 property: email
+    # Planners schedule site activities (/planning); admins can too
+    role_hierarchy:
+        ROLE_ADMIN: [ROLE_PLANNER]
+
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
@@ -39,6 +43,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/planning, roles: ROLE_PLANNER }
         - { path: ^/login, roles: PUBLIC_ACCESS }
         - { path: ^/, roles: ROLE_USER }
 

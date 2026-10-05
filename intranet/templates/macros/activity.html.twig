@@ -1,0 +1,36 @@
+{# Shared look of site activities (My activities, planning calendar).
+   Usage: {% import 'macros/activity.html.twig' as activity_ui %} #}
+
+{# Bootstrap Icons class for an App\Enum\ActivityType #}
+{% macro type_icon(type) -%}
+    {{ {
+        'technical_visit': 'bi-clipboard-check',
+        'maintenance': 'bi-tools',
+        'installation': 'bi-box-seam',
+        'repair': 'bi-wrench',
+        'inspection': 'bi-search',
+        'emergency': 'bi-exclamation-triangle',
+        'training': 'bi-mortarboard',
+        'other': 'bi-three-dots',
+    }[type.value] ?? 'bi-three-dots' }}
+{%- endmacro %}
+
+{# daisyUI badge classes for an App\Enum\ActivityStatus #}
+{% macro status_badge(status) -%}
+    {{ {
+        'scheduled': 'badge-info badge-soft',
+        'in_progress': 'badge-warning badge-soft',
+        'completed': 'badge-success badge-soft',
+        'cancelled': 'badge-ghost',
+    }[status.value] ?? 'badge-ghost' }}
+{%- endmacro %}
+
+{# Left border color for an App\Enum\ActivityStatus (calendar entries) #}
+{% macro status_border(status) -%}
+    {{ {
+        'scheduled': 'border-info',
+        'in_progress': 'border-warning',
+        'completed': 'border-success',
+        'cancelled': 'border-base-300',
+    }[status.value] ?? 'border-base-300' }}
+{%- endmacro %}

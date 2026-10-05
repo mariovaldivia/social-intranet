@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'planning.new_activity'|trans }}{% endblock %}
+
+{% block body %}
+    <a href="{{ path('app_planning', {month: form.vars.value.date ? form.vars.value.date|date('Y-m', false) : null}|filter(v => v)) }}" class="btn btn-ghost btn-sm mb-2">
+        <i class="bi bi-arrow-left"></i> {{ 'planning.back'|trans }}
+    </a>
+    <h1 class="text-2xl font-bold mb-4">{{ 'planning.new_activity'|trans }}</h1>
+
+    <div class="card bg-base-100 shadow-sm max-w-3xl">
+        <div class="card-body">
+            {{ include('planning/_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

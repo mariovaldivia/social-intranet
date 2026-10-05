@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\SiteType;
 use App\Repository\SiteRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -76,6 +78,16 @@ class Site
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
     private ?\DateTimeImmutable $updatedAt = null;
+
+    /** @var Collection<int, SiteActivity> Work done at this site, latest first */
+    #[ORM\OneToMany(targetEntity: SiteActivity::class, mappedBy: 'site', cascade: ['remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['date' => 'DESC'])]
+    private Collection $activities;
+
+    public function __construct()
+    {
+        $this->activities = new ArrayCollection();
+    }
 
     #[ORM\PrePersist]
     public function setCreatedAtValue(): void
@@ -239,5 +251,11 @@ class Site
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updatedAt;
+    }
+
+    /** @return Collection<int, SiteActivity> */
+    public function getActivities(): Collection
+    {
+        return $this->activities;
     }
 }

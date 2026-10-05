@@ -1,0 +1,131 @@
+{% extends 'base.html.twig' %}
+{% import 'macros/activity.html.twig' as activity_ui %}
+
+{% block title %}{{ 'planning.title'|trans }}{% endblock %}
+
+{% block body %}
+    {# Active filters, kept when moving between months and in the "+" links #}
+    {% set filter_params = {
+        company: filters.company ? filters.company.id : null,
+        site: filters.site ? filters.site.id : null,
+        user: filters.user ? filters.user.id : null,
+    }|filter(v => v) %}
+    {% set month_key = month.format('Y-m') %}
+    {% set month_title = ('common.month_long.' ~ month.format('n'))|trans ~ ' ' ~ month.format('Y') %}
+
+    <div class="flex flex-wrap items-center justify-between gap-3 mb-3">
+        <div class="flex items-center gap-3">
+            <h1 class="text-2xl font-bold planning-month">{{ month_title }}</h1>
+            <div class="join">
+                <a href="{{ path('app_planning', filter_params|merge({month: previous_month})) }}" class="btn btn-sm join-item" aria-label="{{ 'planning.previous'|trans }}">
+                    <i class="bi bi-chevron-left"></i>
+                </a>
+                <a href="{{ path('app_planning', filter_params) }}" class="btn btn-sm join-item">{{ 'planning.today'|trans }}</a>
+                <a href="{{ path('app_planning', filter_params|merge({month: next_month})) }}" class="btn btn-sm join-item" aria-label="{{ 'planning.next'|trans }}">
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            </div>
+        </div>
+        <a href="{{ path('app_planning_new', filters.site ? {site: filters.site.id} : {}) }}" class="btn btn-primary btn-sm">
+            <i class="bi bi-plus-lg"></i> {{ 'planning.new_activity'|trans }}
+        </a>
+    </div>
+
+    <form method="get" action="{{ path('app_planning') }}" class="planning-filters flex flex-wrap items-end gap-2 mb-4"
+        data-controller="auto-submit" data-action="change->auto-submit#submit">
+        <input type="hidden" name="month" value="{{ month_key }}">
+        <select name="company" class="select select-sm w-auto" aria-label="{{ 'activity.field.site'|trans }}">
+            <option value="">{{ 'planning.filter.all_companies'|trans }}</option>
+            {% for company in companies %}
+                <option value="{{ company.id }}" {{ filters.company and filters.company.id == company.id ? 'selected' }}>{{ company }}</option>
+            {% endfor %}
+        </select>
+        <select name="site" class="select select-sm w-auto" aria-label="{{ 'activity.field.site'|trans }}">
+            <option value="">{{ 'planning.filter.all_sites'|trans }}</option>
+            {% for site in sites %}
+                <option value="{{ site.id }}" {{ filters.site and filters.site.id == site.id ? 'selected' }}>{{ site }}</option>
+            {% endfor %}
+        </select>
+        <select name="user" class="select select-sm w-auto" aria-label="{{ 'activity.field.assigned_users'|trans }}">
+            <option value="">{{ 'planning.filter.all_users'|trans }}</option>
+            {% for user in users %}
+                <option value="{{ user.id }}" {{ filters.user and filters.user.id == user.id ? 'selected' }}>{{ user }}</option>
+            {% endfor %}
+        </select>
+        <noscript><button class="btn btn-sm">{{ 'planning.filter.apply'|trans }}</button></noscript>
+        {% if filter_params is not empty %}
+            <a href="{{ path('app_planning', {month: month_key}) }}" class="btn btn-ghost btn-sm">{{ 'planning.filter.clear'|trans }}</a>
+        {% endif %}
+    </form>
+
+    {# Month grid (md and up) #}
+    <div class="planning-calendar hidden md:block card bg-base-100 shadow-sm overflow-hidden">
+        <div class="grid grid-cols-7 border-b border-base-200 bg-base-200/50 text-xs font-semibold uppercase text-center">
+            {% for n in 1..7 %}
+                <div class="py-2">{{ ('common.weekday_short.' ~ n)|trans }}</div>
+            {% endfor %}
+        </div>
+        {% for week in weeks %}
+            <div class="grid grid-cols-7 {{ loop.last ? '' : 'border-b border-base-200' }}">
+                {% for day in week %}
+                    {% set key = day.format('Y-m-d') %}
+                    {% set in_month = day.format('Y-m') == month_key %}
+                    <div class="planning-day group min-h-28 p-1.5 flex flex-col gap-1 {{ loop.last ? '' : 'border-r border-base-200' }} {{ in_month ? '' : 'bg-base-200/40 text-base-content/50' }}"
+                        data-date="{{ key }}">
+                        <div class="flex items-center justify-between">
+                            <span class="text-sm font-semibold {{ key == today ? 'inline-flex items-center justify-center size-6 rounded-full bg-primary text-primary-content' : '' }}">
+                                {{ day.format('j') }}
+                            </span>
+                            <a href="{{ path('app_planning_new', filter_params|filter((v, k) => k == 'site')|merge({date: key})) }}"
+                                class="planning-add btn btn-ghost btn-xs btn-square opacity-0 group-hover:opacity-100 focus:opacity-100"
+                                title="{{ 'planning.add_on_day'|trans({date: day.format('d/m/Y')}) }}"
+                                aria-label="{{ 'planning.add_on_day'|trans({date: day.format('d/m/Y')}) }}">
+                                <i class="bi bi-plus-lg"></i>
+                            </a>
+                        </div>
+                        {% for activity in activities_by_day[key] ?? [] %}
+                            <a href="{{ path('app_planning_edit', {id: activity.id}) }}"
+                                class="planning-activity block text-xs leading-snug rounded px-1.5 py-1 border-l-4 {{ activity_ui.status_border(activity.status) }} bg-base-200 hover:bg-base-300 {{ activity.status.value == 'cancelled' ? 'line-through opacity-60' : '' }}"
+                                title="{{ activity.type|trans }} · {{ activity.status|trans }} · {{ activity.site }}&#10;{{ activity.description }}">
+                                <span class="flex items-center gap-1 font-medium truncate">
+                                    <i class="bi {{ activity_ui.type_icon(activity.type) }} shrink-0"></i>
+                                    <span class="truncate">{{ activity.site.name }}</span>
+                                </span>
+                                <span class="block truncate opacity-70">{{ activity.site.company }}</span>
+                            </a>
+                        {% endfor %}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endfor %}
+    </div>
+
+    {# Agenda of the month (small screens) #}
+    <div class="planning-agenda md:hidden flex flex-col gap-3">
+        {% for week in weeks %}
+            {% for day in week %}
+                {% set key = day.format('Y-m-d') %}
+                {% if day.format('Y-m') == month_key and activities_by_day[key] is defined %}
+                    <div>
+                        <h2 class="text-sm font-semibold mb-1 {{ key == today ? 'text-primary' : '' }}">
+                            {{ ('common.weekday.' ~ day.format('N'))|trans }} {{ day.format('d/m') }}
+                        </h2>
+                        <div class="flex flex-col gap-1">
+                            {% for activity in activities_by_day[key] %}
+                                <a href="{{ path('app_planning_edit', {id: activity.id}) }}"
+                                    class="card bg-base-100 shadow-sm border-l-4 {{ activity_ui.status_border(activity.status) }} px-3 py-2 text-sm">
+                                    <span class="font-medium"><i class="bi {{ activity_ui.type_icon(activity.type) }} mr-1"></i>{{ activity.site }}</span>
+                                    <span class="opacity-70">{{ activity.type|trans }} · {{ activity.status|trans }}</span>
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
+        {# Variables set inside a for loop do not leave it, so check the days directly #}
+        {% if activities_by_day|filter((v, k) => k starts with month_key)|length == 0 %}
+            <p class="text-sm opacity-70">{{ 'planning.empty_month'|trans }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

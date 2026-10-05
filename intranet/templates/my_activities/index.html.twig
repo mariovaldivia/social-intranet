@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ 'my_activities.title'|trans }}{% endblock %}
+
+{% block body %}
+    <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+        <h1 class="text-2xl font-bold">{{ 'my_activities.title'|trans }}</h1>
+        <a href="{{ path('app_my_activities_history') }}" class="link link-primary text-sm">
+            <i class="bi bi-clock-history"></i> {{ 'my_activities.view_history'|trans }}
+        </a>
+    </div>
+
+    {% if overdue is not empty %}
+        <section class="activities-overdue mb-6">
+            <h2 class="text-lg font-semibold text-warning flex items-center gap-2">
+                <i class="bi bi-exclamation-circle"></i> {{ 'my_activities.overdue'|trans }}
+            </h2>
+            <p class="text-sm opacity-70 mb-2">{{ 'my_activities.overdue_help'|trans }}</p>
+            <div class="flex flex-col gap-3">
+                {% for activity in overdue %}
+                    {% include "my_activities/_activity.html.twig" with {'activity': activity, 'show_date': true} %}
+                {% endfor %}
+            </div>
+        </section>
+    {% endif %}
+
+    {# Planned work grouped by day: Today, Tomorrow, then weekday and date #}
+    {% set today = 'now'|date('Y-m-d') %}
+    {% set tomorrow = 'now'|date_modify('+1 day')|date('Y-m-d') %}
+    {% set previous_day = null %}
+    <section class="activities-upcoming flex flex-col gap-3">
+        {% for activity in upcoming %}
+            {% set day = activity.date|date('Y-m-d', false) %}
+            {% if day != previous_day %}
+                <h2 class="day-heading text-lg font-semibold {{ loop.first ? '' : 'mt-3' }} {{ day == today ? 'text-primary' : '' }}">
+                    {% if day == today %}
+                        {{ 'my_activities.today'|trans }}
+                    {% elseif day == tomorrow %}
+                        {{ 'my_activities.tomorrow'|trans }}
+                    {% else %}
+                        {{ ('common.weekday.' ~ activity.date|date('N', false))|trans }}
+                    {% endif %}
+                    <span class="text-sm font-normal opacity-60">{{ activity.date|date('d/m/Y', false) }}</span>
+                </h2>
+                {% set previous_day = day %}
+            {% endif %}
+            {% include "my_activities/_activity.html.twig" with {'activity': activity} %}
+        {% else %}
+            <div class="card bg-base-100 shadow-sm">
+                <div class="card-body items-center text-center">
+                    <i class="bi bi-calendar-check text-4xl opacity-30"></i>
+                    <p>{{ 'my_activities.empty'|trans }}</p>
+                </div>
+            </div>
+        {% endfor %}
+    </section>
+{% endblock %}

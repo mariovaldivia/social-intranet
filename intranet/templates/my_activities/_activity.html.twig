@@ -1,0 +1,42 @@
+{# One site activity. show_date: print the date (when not grouped under a day heading) #}
+{% set show_date = show_date|default(false) %}
+{% import 'macros/activity.html.twig' as activity_ui %}
+{% set site = activity.site %}
+<div class="activity card bg-base-100 shadow-sm">
+    <div class="card-body p-4 gap-2">
+        <div class="flex flex-wrap items-center gap-2">
+            <span class="badge badge-outline gap-1">
+                <i class="bi {{ activity_ui.type_icon(activity.type) }}"></i> {{ activity.type|trans }}
+            </span>
+            <span class="activity-status badge {{ activity_ui.status_badge(activity.status) }}">{{ activity.status|trans }}</span>
+            {% if show_date %}
+                <span class="ml-auto text-sm opacity-70">
+                    <i class="bi bi-calendar3 mr-1"></i>{{ activity.date|date('d/m/Y', false) }}
+                </span>
+            {% endif %}
+        </div>
+
+        <h3 class="font-semibold leading-tight">
+            <i class="bi bi-building mr-1 opacity-60"></i>{{ site.company }} · {{ site.name }}
+        </h3>
+        {% if site.address or site.city or site.region %}
+            <p class="text-sm opacity-70 -mt-1">
+                <i class="bi bi-geo-alt mr-1"></i>{{ [site.address, site.city, site.region]|filter(v => v)|join(', ') }}
+            </p>
+        {% endif %}
+
+        <p class="activity-description whitespace-pre-line break-words leading-relaxed">{{ activity.description }}</p>
+
+        {% if activity.assignedUsers|length > 0 %}
+            <div class="flex flex-wrap items-center gap-2 text-sm">
+                <span class="opacity-70">{{ 'my_activities.team'|trans }}:</span>
+                {% for member in activity.assignedUsers %}
+                    <span class="inline-flex items-center gap-1">
+                        {% include "_imageUser.html.twig" with {'user': member, 'size': 'user_comment'} %}
+                        {{ member }}
+                    </span>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+</div>

@@ -18,6 +18,7 @@ use App\Entity\Photo;
 use App\Entity\PhotoAlbum;
 use App\Entity\Profile;
 use App\Entity\Site;
+use App\Entity\SiteActivity;
 use App\Entity\User;
 
 class DashboardController extends AbstractDashboardController
@@ -58,6 +59,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Events', 'fas fa-calendar', Event::class);
         yield MenuItem::linkToCrud('company.admin.plural', 'fas fa-building', Company::class);
         yield MenuItem::linkToCrud('site.admin.plural', 'fas fa-location-dot', Site::class);
+        yield MenuItem::linkToCrud('activity.admin.plural', 'fas fa-screwdriver-wrench', SiteActivity::class);
         yield MenuItem::linkToCrud('gallery.admin.album_plural', 'fas fa-images', PhotoAlbum::class);
         yield MenuItem::linkToCrud('gallery.admin.photo_plural', 'fas fa-image', Photo::class);
 

@@ -83,6 +83,8 @@ class SiteCrudController extends AbstractCrudController
 
         yield FormField::addFieldset('site.section.status');
         yield BooleanField::new('active', 'site.field.active');
+        // Number of activities on the index, their list on the detail page
+        yield AssociationField::new('activities', 'site.field.activities')->hideOnForm();
         yield DateTimeField::new('createdAt', 'site.field.created_at')->onlyOnDetail();
         yield DateTimeField::new('updatedAt', 'site.field.updated_at')->onlyOnDetail();
     }
